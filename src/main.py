@@ -17,3 +17,6 @@ async def create_sticker(file: UploadFile):
 
     return Response(content=sticker_data, media_type="image/png")
     
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
