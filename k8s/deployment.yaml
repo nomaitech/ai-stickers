@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-sticker-api
+  namespace: ai-stickers
+  labels:
+    app: ai-sticker-api
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-sticker-api
+  template:
+    metadata:
+      labels:
+        app: ai-sticker-api
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: ai-sticker-api
+        image: ai-sticker:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: OPENAI_API_KEY
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /docs
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /docs
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-sticker-api-service
+  namespace: ai-stickers
+  labels:
+    app: ai-sticker-api
+spec:
+  ports:
+  - port: 80
+    targetPort: 8000
+  selector:
+    app: ai-sticker-api
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-sticker-api-ingress
+  namespace: ai-stickers
+  labels:
+    app: ai-sticker-api
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - ai-stickers-api.jonbesga.com
+      secretName: tls-ai-stickers-api-ingress-dns
+  rules:
+  - host: ai-stickers-api.jonbesga.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ai-sticker-api-service
+            port:
+              number: 80
