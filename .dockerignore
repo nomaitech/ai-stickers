@@ -1,4 +1,10 @@
 .venv
-Dockerfile
+.github
+k8s
 .dockerignore
+.envrc
+.gitignore
+.python-version
+Dockerfile
 Makefile
+README.md
