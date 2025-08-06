@@ -22,7 +22,7 @@ def resize_image(image_data):
 
 def generate_sticker(image_data, ref_path):
     
-    prompt = """Using the style of the first image provided as reference for the art style, generate a Telegram-style sticker of the second image provided.
+    prompt = """Using the style of the first image provided as reference for the art style, generate a Telegram-style sticker of the second image provided. Make sure the background is transparent and focus on the main subjects of the image.
     """
 
     base64_image1 = encode_image(ref_path)
