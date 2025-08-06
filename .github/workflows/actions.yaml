@@ -2,7 +2,7 @@ name: Build, Push and Deploy to K3S cluster
 
 on:
   push:
-    branches: [ jon/debug-ci ]
+    branches: [ main ]
 
 env:
   IMAGE_NAME: pdr.jonbesga.com/ai-sticker
