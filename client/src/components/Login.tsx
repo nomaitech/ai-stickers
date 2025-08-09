@@ -6,11 +6,11 @@ type FormData = {
 };
 
 type Props = {
-  onShowRegister: () => void;
+  showRegister: () => void;
   handleToken: (token: string) => void;
 };
 
-const Login = ({ onShowRegister, handleToken }: Props) => {
+const Login = ({ showRegister, handleToken }: Props) => {
   const {
     register,
     handleSubmit
@@ -63,7 +63,7 @@ const Login = ({ onShowRegister, handleToken }: Props) => {
         </button>
         <button
           type="button"
-          onClick={onShowRegister}
+          onClick={showRegister}
           className="text-sm text-muted-foreground underline cursor-pointer"
         >
           Register
