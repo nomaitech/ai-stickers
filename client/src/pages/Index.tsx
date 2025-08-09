@@ -20,9 +20,9 @@ const Index = () => {
     setEnableButton(!!promptInputText && !!imageFile);
   }, [promptInputText, imageFile]);
 
-  useEffect(()=>{
+  useEffect(() => {
     updateCredits();
-  }, [])
+  }, []);
 
   const updateCredits = async () => {
     const token = localStorage.getItem("jwt");
@@ -93,7 +93,7 @@ const Index = () => {
         logout={logout}
         showRegister={() => setShowRegister(true)}
       />
-      <div className="container mx-auto px-6 py-6 flex lg:flex-row gap-6 items-stretch">
+      <div className="container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
         <ImageGenInput
           setImageFileHandler={setImageFileHandler}
           promptInputText={promptInputText}

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 
 type Props = {
   enableButton: boolean;
@@ -18,7 +18,8 @@ const GenButton = ({ enableButton, generateSticker }: Props) => {
         onClick={generateSticker}
       >
         Generate Sticker
-        <ArrowRight className="w-5 h-5" />
+        <ArrowDown className="w-5 h-5 lg:hidden" />
+        <ArrowRight className="w-5 h-5 hidden lg:inline" />
       </button>
     </div>
   );
