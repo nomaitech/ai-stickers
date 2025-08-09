@@ -1,0 +1,76 @@
+import { useForm } from "react-hook-form";
+import { toast } from 'sonner';
+type FormData = {
+  email: string;
+  password: string;
+};
+
+type Props = {
+  showRegister: () => void;
+  updateCredits: () => void
+};
+
+const Login = ({ showRegister, updateCredits }: Props) => {
+  const {
+    register,
+    handleSubmit
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    if(response.ok){
+      const { token } = await response.json();
+      localStorage.setItem('jwt', token);
+      updateCredits();
+    }else{
+      toast.error('Login failed');
+      console.error('Login failed');
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex p-2 flex-col items-center gap-0"
+    >
+      <input
+        type="email"
+        placeholder="Email"
+        className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
+        {...register("email", {
+          required: true,
+          pattern: /^\S+@\S+$/i,
+        })}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
+        {...register("password", {
+          required: true,
+          minLength: 6,
+        })}
+      />
+      <div className="flex gap-x-2 justify-between items-center">
+        <button
+          type="submit"
+          className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-md hover:bg-primary/90 transition"
+        >
+          Login
+        </button>
+        <button
+          type="button"
+          onClick={showRegister}
+          className="text-sm text-muted-foreground underline cursor-pointer"
+        >
+          Register
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default Login;
