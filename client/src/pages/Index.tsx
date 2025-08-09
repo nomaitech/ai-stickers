@@ -1,31 +1,28 @@
 import { useState, useEffect } from "react";
 import { Toaster, toast } from "sonner";
-import Card from "../components/Card";
 import Header from "../components/Header";
+import ImageGenInput from "../components/ImageGenInput";
+import GenButton from "../components/GenButton";
+import ImageGenOutput from "../components/ImageGenOutput";
+import Footer from "../components/Footer";
 import Register from "../components/Register";
-import ImageUploader from "../components/ImageUploader";
-import stickerPlaceholder from "../assets/stickerPlaceholder.png";
-import {
-  Image,
-  ArrowRight,
-  Sticker,
-  Pen,
-  LoaderCircle,
-} from "lucide-react";
-import clsx from "clsx";
 
 const Index = () => {
-  const [promptInputText, setPromptInputText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [enableButton, setEnableButton] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
+  const [promptInputText, setPromptInputText] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [enableButton, setEnableButton] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   useEffect(() => {
     setEnableButton(!!promptInputText && !!imageFile);
   }, [promptInputText, imageFile]);
+
+  useEffect(()=>{
+    updateCredits();
+  }, [])
 
   const updateCredits = async () => {
     const token = localStorage.getItem("jwt");
@@ -54,7 +51,8 @@ const Index = () => {
 
   const setImageFileHandler = (file: File) => {
     setImageFile(file);
-  }
+  };
+
   const generateSticker = async () => {
     setIsLoading(true);
     try {
@@ -96,81 +94,18 @@ const Index = () => {
         showRegister={() => setShowRegister(true)}
       />
       <div className="container mx-auto px-6 py-6 flex lg:flex-row gap-6 items-stretch">
-        <div className="flex-1">
-          <Card>
-            <div>
-              <h3 className="flex items-center gap-2 text-lg text-green-700">
-                <Image className="h-5 w-5" />
-                Upload your image
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Drag and drop your image here
-              </p>
-              <div>
-                <ImageUploader setImageFileHandler={setImageFileHandler} />
-              </div>
-            </div>
-
-            <span className="w-full mt-10 mb-10 bg-primary h-[2px]" />
-
-            <div>
-              <h3 className="flex items-center gap-2 text-lg text-red-700">
-                <Pen className="h-5 w-5" />
-                Describe what you want
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Gimme some text to work with
-              </p>
-              <textarea
-                placeholder="Describe what you want"
-                value={promptInputText}
-                onChange={(e) => setPromptInputText(e.target.value)}
-                className="min-h-[400px] w-full text-sm leading-relaxed border border-blue-200 focus:border-blue-400 resize-none p-3 mt-2"
-              />
-            </div>
-          </Card>
-        </div>
-
-        <div
-          className={clsx("flex items-center justify-center", {
-            "pointer-events-none opacity-50": !enableButton,
-          })}
-        >
-          <button
-            className="min-w-[160px] rounded-lg cursor-pointer bg-primary hover:bg-primary/90 h12 text-lg text-input px-8 flex items-center gap-2 pt-4 pb-4"
-            onClick={generateSticker}
-          >
-            Generate Sticker
-            <ArrowRight className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="flex-1">
-          <Card>
-            <h3 className="flex items-center gap-2 text-lg text-purple-700">
-              <Sticker className="h-5 w-5" />
-              Receive your sticker
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Render personalized sticker
-            </p>
-            <div className="flex items-center justify-center">
-              {isLoading ? (
-                <LoaderCircle className="animate-spin w-8 h-8 text-primary" />
-              ) : stickerResult ? (
-                <img src={stickerResult} className="w-full mt-2" />
-              ) : (
-                <img src={stickerPlaceholder} className="w-full mt-2" />
-              )}
-            </div>
-          </Card>
-        </div>
+        <ImageGenInput
+          setImageFileHandler={setImageFileHandler}
+          promptInputText={promptInputText}
+          setPromptInputText={setPromptInputText}
+        />
+        <GenButton
+          enableButton={enableButton}
+          generateSticker={generateSticker}
+        />
+        <ImageGenOutput isLoading={isLoading} stickerResult={stickerResult} />
       </div>
-
-      <div className="mt-12 text-center">
-        <p className="text-sm text-muted-foreground">
-          Input an image with some description, get a cool sticker
-        </p>
-      </div>
+      <Footer />
       {showRegister && <Register hideRegister={() => setShowRegister(false)} />}
       <Toaster />
     </div>
