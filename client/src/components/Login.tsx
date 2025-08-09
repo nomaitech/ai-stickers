@@ -7,10 +7,10 @@ type FormData = {
 
 type Props = {
   showRegister: () => void;
-  handleToken: (token: string) => void;
+  updateCredits: () => void
 };
 
-const Login = ({ showRegister, handleToken }: Props) => {
+const Login = ({ showRegister, updateCredits }: Props) => {
   const {
     register,
     handleSubmit
@@ -24,7 +24,7 @@ const Login = ({ showRegister, handleToken }: Props) => {
     if(response.ok){
       const { token } = await response.json();
       localStorage.setItem('jwt', token);
-      handleToken(token);
+      updateCredits();
     }else{
       toast.error('Login failed');
       console.error('Login failed');

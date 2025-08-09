@@ -3,12 +3,12 @@ import Login from "./Login";
 
 type Props = {
   credits: number | null;
-  handleToken: (token: string) => void;
+  updateCredits: () => void;
   logout: () => void;
   showRegister: () => void;
 };
 
-const Header = ({ credits, handleToken, logout, showRegister }: Props) =>{
+const Header = ({ credits, updateCredits, logout, showRegister }: Props) =>{
     return(
       <div className="border-b-1 border-border bg-white/50 backdrop-blur-sm">
         <div className="relative container mx-auto px-6 py-6">
@@ -40,8 +40,8 @@ const Header = ({ credits, handleToken, logout, showRegister }: Props) =>{
               </p>
             ) : (
               <Login
-                handleToken={handleToken}
                 showRegister={() => showRegister()}
+                updateCredits={() => updateCredits()}
               />
             )}
           </div>

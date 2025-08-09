@@ -21,16 +21,11 @@ const Index = () => {
   const [enableButton, setEnableButton] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   useEffect(() => {
     setEnableButton(!!promptInputText && !!imageFile);
   }, [promptInputText, imageFile]);
-
-  useEffect(() => {
-    updateCredits();
-  }, [token]);
 
   const updateCredits = async () => {
     const token = localStorage.getItem("jwt");
@@ -45,7 +40,6 @@ const Index = () => {
         const { credits } = await response.json();
         setCredits(credits);
       } else {
-        setToken(null);
         localStorage.removeItem("jwt");
       }
     } catch {
@@ -53,13 +47,8 @@ const Index = () => {
     }
   };
 
-  const handleToken = (token: string) => {
-    setToken(token);
-  };
-
   const logout = () => {
     localStorage.removeItem("jwt");
-    setToken(null);
     setCredits(null);
   };
 
@@ -70,6 +59,7 @@ const Index = () => {
     setIsLoading(true);
     try {
       const formData = new FormData();
+      const token = localStorage.getItem("jwt");
       if (typeof token === "string") {
         formData.append("token", token);
       }
@@ -101,7 +91,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
       <Header
         credits={credits}
-        handleToken={handleToken}
+        updateCredits={updateCredits}
         logout={logout}
         showRegister={() => setShowRegister(true)}
       />
