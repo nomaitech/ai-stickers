@@ -47,7 +47,7 @@ def generate_sticker(image_data, ref_path):
             }
         ],
         tools=[{
-            "type": "image_generation", "background": "transparent"}],
+            "type": "image_generation", "size": "1024x1024", "background": "transparent"}],
     )
 
     image_generation_calls = [
