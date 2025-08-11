@@ -2,11 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './global.css'
 import App from './App.tsx'
+import { enableMocks } from '../constants/env';
 
 const prepareMocks = async () => {
-  const ENABLE_MSW = import.meta.env.VITE_ENABLE_MSW === 'true';
-
-  if (ENABLE_MSW) {
+  if (enableMocks) {
     const { worker } = await import('./mocks/browser');
     await worker.start({
       serviceWorker: {
