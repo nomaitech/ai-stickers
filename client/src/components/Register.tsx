@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { domainUrl } from "../../constants/env";
 
 type FormData = {
   email: string;
@@ -20,7 +21,7 @@ const Register = ({ hideRegister }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
+    const response = await fetch(`${domainUrl}/register`, {
       method: "POST",
       body: JSON.stringify(data),
     });
