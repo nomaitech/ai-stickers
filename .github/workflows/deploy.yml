@@ -10,6 +10,7 @@ on:
       
 env:
   BRANCH_NAME: ${{ github.ref_name }}
+  VITE_API_URL: ${{ vars.VITE_API_URL }}
 
 jobs:
   build-and-deploy:
