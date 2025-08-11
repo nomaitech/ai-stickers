@@ -1,7 +1,7 @@
 import { http } from "msw";
 
 export const handlers = [
-  http.post("/api/login", async ({ request }) => {
+  http.post("/login", async ({ request }) => {
     const requestBody = await request.json();
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
@@ -16,14 +16,14 @@ export const handlers = [
     });
   }),
 
-  http.post("/api/register", async () => {
+  http.post("/register", async () => {
     return new Response(JSON.stringify({ message: "User registered" }), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
   }),
 
-  http.get("/api/credits", async ({ request }) => {
+  http.get("/credits", async ({ request }) => {
     const authHeader = request.headers.get("Authorization") || "";
     const token = authHeader.replace("Bearer ", "");
     const creditNumber = Math.floor(Math.random() * 100);
@@ -42,8 +42,9 @@ export const handlers = [
 
 http.post("/generate-sticker", async ({ request }) => {
   const formData = await request.formData();
+  console.log(formData);
   const prompt = formData.get("prompt");
-  const image = formData.get("image");
+  const image = formData.get("file");
   const token = formData.get("token");
   if (!token) {
     return new Response(JSON.stringify({ message: "Missing token" }), { status: 400, headers: { "Content-Type": "application/json" } });
