@@ -3,10 +3,12 @@ name: Deploy AI-stickers
 on:
   push:
     paths:
+      - '.github/workflows/deploy.yml'
       - 'client/**'
   pull_request:
     paths:
       - 'client/**'
+      - '.github/workflows/deploy.yml'
       
 env:
   BRANCH_NAME: ${{ github.ref_name }}
