@@ -41,7 +41,7 @@ export const handlers = [
     });
   }),
 
-http.post("/api/stickers", async ({ request }) => {
+http.post("/generate-sticker", async ({ request }) => {
   const formData = await request.formData();
   const prompt = formData.get("prompt");
   const image = formData.get("image");

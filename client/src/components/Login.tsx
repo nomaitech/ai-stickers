@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { toast } from 'sonner';
+import { domainUrl } from "../../constants/env";
+
 type FormData = {
   email: string;
   password: string;
@@ -17,7 +19,7 @@ const Login = ({ showRegister, updateCredits }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch('/api/login', {
+    const response = await fetch(`${domainUrl}/login`, {
       method: 'POST',
       body: JSON.stringify(data)
     })
