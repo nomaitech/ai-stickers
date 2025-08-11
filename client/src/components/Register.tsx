@@ -20,7 +20,7 @@ const Register = ({ hideRegister }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch("/api/register", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
       method: "POST",
       body: JSON.stringify(data),
     });

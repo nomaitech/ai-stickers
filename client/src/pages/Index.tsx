@@ -29,7 +29,7 @@ const Index = () => {
     if (!token) return;
 
     try {
-      const response = await fetch("/api/credits", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/credits`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -65,7 +65,7 @@ const Index = () => {
         formData.append("image", imageFile);
       }
       formData.append("prompt", promptInputText);
-      const response = await fetch("/api/stickers", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/generate-sticker`, {
         method: "POST",
         body: formData,
       });

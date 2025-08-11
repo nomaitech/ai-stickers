@@ -17,7 +17,7 @@ const Login = ({ showRegister, updateCredits }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch('/api/login', {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
       method: 'POST',
       body: JSON.stringify(data)
     })
