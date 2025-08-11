@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex="https:\/\/([a-z0-9]+--)?ai-stickers\.netlify\.app"
+    allow_origin_regex="https:\/\/([a-z0-9]+--)?ai-stickers\.netlify\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
