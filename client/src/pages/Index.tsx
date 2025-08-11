@@ -62,7 +62,7 @@ const Index = () => {
         formData.append("token", token);
       }
       if (imageFile instanceof Blob) {
-        formData.append("image", imageFile);
+        formData.append("file", imageFile);
       }
       formData.append("prompt", promptInputText);
       const response = await fetch(`${import.meta.env.VITE_API_URL}/generate-sticker`, {
