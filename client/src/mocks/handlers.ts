@@ -2,7 +2,8 @@ import { http } from "msw";
 
 export const handlers = [
   http.post("/login", async ({ request }) => {
-    const requestBody = await request.json();
+    type LoginBody = { email: string; password: string };
+    const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
       return new Response(JSON.stringify({ token: "mock-token" }), {
@@ -57,4 +58,22 @@ http.post("/generate-sticker", async ({ request }) => {
 
   return new Response(JSON.stringify({ url: "/mocks/mockSticker.png" }), { status: 200, headers: { "Content-Type": "application/json" } });
 }),
+
+  http.get("/topup", async ({ request }) => {
+    const authHeader = request.headers.get("Authorization") || "";
+    const token = authHeader.replace("Bearer ", "");
+    if (token === "mock-token") {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          Location: "https://www.topupUrl.com",
+        },
+      });
+    }
+
+    return new Response(JSON.stringify({ message: "Invalid token" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
 ];
