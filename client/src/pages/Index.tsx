@@ -71,8 +71,10 @@ const Index = () => {
         body: formData,
       });
       if (response.ok) {
-        const sticker = await response.json();
-        setStickerResult(sticker.url);
+        const stickerData = await response.blob();
+        const blob = new Blob([stickerData], { type: "image/png" });
+        const sticker = URL.createObjectURL(blob);
+        setStickerResult(sticker);
         updateCredits();
         setIsLoading(false);
         toast.success("Sticker generated!");

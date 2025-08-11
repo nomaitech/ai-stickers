@@ -1,5 +1,17 @@
 import { http } from "msw";
 
+import base64data from '../../public/mocks/base64Placeholder.txt?raw';
+
+const base64ToArrayBuffer = (base64:string) => {
+  const binary = atob(base64);
+  const len = binary.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
 export const handlers = [
   http.post("/login", async ({ request }) => {
     type LoginBody = { email: string; password: string };
@@ -56,7 +68,11 @@ http.post("/generate-sticker", async ({ request }) => {
 
   await new Promise((r) => setTimeout(r, 500));
 
-  return new Response(JSON.stringify({ url: "/mocks/mockSticker.png" }), { status: 200, headers: { "Content-Type": "application/json" } });
+  const buffer = base64ToArrayBuffer(base64data);
+  return new Response(buffer, {
+    status: 200,
+    headers: { "Content-Type": "image/png" },
+  });
 }),
 
   http.get("/topup", async ({ request }) => {
