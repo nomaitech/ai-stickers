@@ -2,7 +2,8 @@ import { http } from "msw";
 
 export const handlers = [
   http.post("/api/login", async ({ request }) => {
-    const requestBody = await request.json();
+    type LoginBody = { email: string; password: string };
+    const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
       return new Response(JSON.stringify({ token: "mock-token" }), {
