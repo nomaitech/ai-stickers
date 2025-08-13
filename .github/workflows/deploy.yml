@@ -66,7 +66,7 @@ jobs:
 
       - name: Comment URL Preview on PR
         uses: actions/github-script@v7
-        if: github.event_name == 'pull_request' && env.BRANCH_NAME != 'main'
+        if: github.event_name != 'pull_request' && env.BRANCH_NAME != 'main'
         env:
           NETLIFY_PREVIEW_URL: ${{ steps.url_preview.outputs.NETLIFY_PREVIEW_URL }}
         with:
