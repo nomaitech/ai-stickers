@@ -71,26 +71,6 @@ const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
           )}
         </div>
       </div>
-      <div className="absolute top-1/2 right-6 lg:block transform -translate-y-1/2">
-        {credits !== null ? (
-          <p className="text-sm font-semibold text-muted-foreground">
-            You have <span className="text-primary">{credits}</span> credits
-            left. (
-            <span
-              className="cursor-pointer text-destructive"
-              onClick={() => logout()}
-            >
-              Logout
-            </span>
-            )
-          </p>
-        ) : (
-          <Login
-            showRegister={() => showRegister()}
-            updateCredits={() => updateCredits()}
-          />
-        )}
-      </div>
     </div>
   );
 };
