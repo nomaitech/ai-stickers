@@ -43,7 +43,7 @@ const ImageGenInput = ({
             placeholder="Describe what you want"
             value={promptInputText}
             onChange={(e) => setPromptInputText(e.target.value)}
-            className="min-h-[400px] w-full text-sm leading-relaxed border border-blue-200 focus:border-blue-400 resize-none p-3 mt-2"
+            className="lg:min-h-[80px] xl:min-h-[230px] 2xl:min-h-[361px] w-full text-sm leading-relaxed border border-blue-200 focus:border-blue-400 resize-none p-3 mt-2"
           />
         </div>
       </Card>
