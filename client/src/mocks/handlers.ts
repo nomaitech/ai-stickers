@@ -1,8 +1,9 @@
 import { http } from "msw";
 
 export const handlers = [
-  http.post("/api/login", async ({ request }) => {
-    const requestBody = await request.json();
+  http.post("/login", async ({ request }) => {
+    type LoginBody = { email: string; password: string };
+    const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
       return new Response(JSON.stringify({ token: "mock-token" }), {
@@ -16,14 +17,14 @@ export const handlers = [
     });
   }),
 
-  http.post("/api/register", async () => {
+  http.post("/register", async () => {
     return new Response(JSON.stringify({ message: "User registered" }), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
   }),
 
-  http.get("/api/credits", async ({ request }) => {
+  http.get("/credits", async ({ request }) => {
     const authHeader = request.headers.get("Authorization") || "";
     const token = authHeader.replace("Bearer ", "");
     const creditNumber = Math.floor(Math.random() * 100);
@@ -40,10 +41,11 @@ export const handlers = [
     });
   }),
 
-http.post("/api/stickers", async ({ request }) => {
+http.post("/generate-sticker", async ({ request }) => {
   const formData = await request.formData();
+  console.log(formData);
   const prompt = formData.get("prompt");
-  const image = formData.get("image");
+  const image = formData.get("file");
   const token = formData.get("token");
   if (!token) {
     return new Response(JSON.stringify({ message: "Missing token" }), { status: 400, headers: { "Content-Type": "application/json" } });
@@ -56,4 +58,22 @@ http.post("/api/stickers", async ({ request }) => {
 
   return new Response(JSON.stringify({ url: "/mocks/mockSticker.png" }), { status: 200, headers: { "Content-Type": "application/json" } });
 }),
+
+  http.get("/topup", async ({ request }) => {
+    const authHeader = request.headers.get("Authorization") || "";
+    const token = authHeader.replace("Bearer ", "");
+    if (token === "mock-token") {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          Location: "https://www.topupUrl.com",
+        },
+      });
+    }
+
+    return new Response(JSON.stringify({ message: "Invalid token" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
 ];

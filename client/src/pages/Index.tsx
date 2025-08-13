@@ -6,6 +6,7 @@ import GenButton from "../components/GenButton";
 import ImageGenOutput from "../components/ImageGenOutput";
 import Footer from "../components/Footer";
 import Register from "../components/Register";
+import { domainUrl } from "../../constants/env";
 
 const Index = () => {
   const [showRegister, setShowRegister] = useState(false);
@@ -29,7 +30,7 @@ const Index = () => {
     if (!token) return;
 
     try {
-      const response = await fetch("/api/credits", {
+      const response = await fetch(`${domainUrl}/credits`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -62,10 +63,10 @@ const Index = () => {
         formData.append("token", token);
       }
       if (imageFile instanceof Blob) {
-        formData.append("image", imageFile);
+        formData.append("file", imageFile);
       }
       formData.append("prompt", promptInputText);
-      const response = await fetch("/api/stickers", {
+      const response = await fetch(`${domainUrl}/generate-sticker`, {
         method: "POST",
         body: formData,
       });
