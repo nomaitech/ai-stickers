@@ -1,6 +1,6 @@
 import { http } from "msw";
 
-import base64data from '../assets/stickerOutputMock.png'
+import imageRawData from '../assets/stickerOutputMock.png'
 
 export const handlers = [
   http.post("/login", async ({ request }) => {
@@ -58,7 +58,7 @@ http.post("/generate-sticker", async ({ request }) => {
 
   await new Promise((r) => setTimeout(r, 500));
 
-  const buffer = await fetch(base64data).then(r => r.blob());
+  const buffer = await fetch(imageRawData).then(r => r.blob());
 
   return new Response(buffer, {
     status: 200,
