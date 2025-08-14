@@ -1,5 +1,7 @@
 import { http } from "msw";
 
+import imageRawData from '../assets/stickerOutputMock.png'
+
 export const handlers = [
   http.post("/login", async ({ request }) => {
     type LoginBody = { email: string; password: string };
@@ -56,7 +58,12 @@ http.post("/generate-sticker", async ({ request }) => {
 
   await new Promise((r) => setTimeout(r, 500));
 
-  return new Response(JSON.stringify({ url: "/mocks/mockSticker.png" }), { status: 200, headers: { "Content-Type": "application/json" } });
+  const buffer = await fetch(imageRawData).then(r => r.blob());
+
+  return new Response(buffer, {
+    status: 200,
+    headers: { "Content-Type": "image/png" },
+  });
 }),
 
   http.get("/topup", async ({ request }) => {
