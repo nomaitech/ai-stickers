@@ -2,10 +2,23 @@ import asyncio
 import os
 from pathlib import Path
 from src.sticker_factory import generate_sticker
-from fastapi import FastAPI, UploadFile, Response
+from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Annotated
+from src.database import engine, SessionLocal
+from sqlalchemy.orm import Session
+from src.schemas import UserBase
+from src.models import Users
 
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+db_dependency = Annotated[Session, Depends(get_db)]
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,3 +42,12 @@ async def create_sticker(file: UploadFile):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.post("/register", status_code=status.HTTP_201_CREATED, tags=["users"])
+def register_new_user(user: UserBase, db:db_dependency):
+    new_user = Users(email=user.email, password=user.password, created_at=user.created_at)
+    db.add(new_user)
+    db.commit()
+    new_user_response = UserBase.model_validate(new_user)
+    return new_user_response
