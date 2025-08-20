@@ -5,10 +5,11 @@ from src.sticker_factory import generate_sticker
 from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Annotated
-from src.database import engine, SessionLocal
+from src.database import SessionLocal
 from sqlalchemy.orm import Session
 from src.schemas import UserBase
 from src.models import Users
+from src.hashed_pwd import hash_password
 
 app = FastAPI()
 
@@ -45,8 +46,8 @@ async def health():
 
 
 @app.post("/register", status_code=status.HTTP_201_CREATED, tags=["users"])
-def register_new_user(user: UserBase, db:db_dependency):
-    new_user = Users(email=user.email, password=user.password, created_at=user.created_at)
+async def register_new_user(user: UserBase, db:db_dependency):
+    new_user = Users(email=user.email, password=hash_password(user.password))
     db.add(new_user)
     db.commit()
     new_user_response = UserBase.model_validate(new_user)
