@@ -5,20 +5,12 @@ from src.sticker_factory import generate_sticker
 from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Annotated
-from src.database import SessionLocal
-from sqlalchemy.orm import Session
 from src.schemas import UserBase
-from src.models import Users
+from src.models import Users, get_db, Session
 from src.hashed_pwd import hash_password
 
 app = FastAPI()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 db_dependency = Annotated[Session, Depends(get_db)]
 
 app.add_middleware(
