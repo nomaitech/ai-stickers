@@ -9,7 +9,7 @@ type Props = {
 
 const ImageGenOutput = ({ isLoading, stickerResult }: Props) => {
   return (
-    <div className="flex-1">
+    <div className="lg:min-h-660px flex-1">
       <Card>
         <h3 className="flex items-center gap-2 text-lg text-purple-700">
           <Sticker className="h-5 w-5" />

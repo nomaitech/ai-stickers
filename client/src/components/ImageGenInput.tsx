@@ -10,9 +10,9 @@ const ImageGenInput = ({
   setImageFileHandler,
 }: Props) => {
   return (
-    <div className="h-full flex-1">
+    <div className="lg:min-h-660px flex-1">
       <Card>
-        <div className="h-full">
+        <div className="h-full flex flex-col">
           <h3 className="flex items-center gap-2 text-lg text-green-700">
             <Image className="h-5 w-5" />
             Upload your image
@@ -20,9 +20,7 @@ const ImageGenInput = ({
           <p className="text-sm text-muted-foreground">
             Drag and drop your image here
           </p>
-          <div>
             <ImageUploader setImageFileHandler={setImageFileHandler} />
-          </div>
         </div>
       </Card>
     </div>
