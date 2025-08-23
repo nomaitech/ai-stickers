@@ -27,7 +27,8 @@ def generate_sticker(image_data, ref_path):
             io.BytesIO(image_data)
         ],
         prompt=prompt,
-        background="transparent"
+        background="transparent",
+        size="1024x1024"
     )
     image_base64 = result.data[0].b64_json
     decoded_image_data = base64.b64decode(image_base64)
