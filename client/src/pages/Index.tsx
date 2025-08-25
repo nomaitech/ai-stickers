@@ -11,15 +11,14 @@ import { domainUrl } from "../../constants/env";
 const Index = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
-  const [promptInputText, setPromptInputText] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [enableButton, setEnableButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   useEffect(() => {
-    setEnableButton(!!promptInputText && !!imageFile);
-  }, [promptInputText, imageFile]);
+    setEnableButton(!!imageFile);
+  }, [imageFile]);
 
   useEffect(() => {
     updateCredits();
@@ -65,7 +64,6 @@ const Index = () => {
       if (imageFile instanceof Blob) {
         formData.append("file", imageFile);
       }
-      formData.append("prompt", promptInputText);
       const response = await fetch(`${domainUrl}/generate-sticker`, {
         method: "POST",
         body: formData,
@@ -96,11 +94,9 @@ const Index = () => {
         logout={logout}
         showRegister={() => setShowRegister(true)}
       />
-      <div className="container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
+      <div className="h-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
         <ImageGenInput
           setImageFileHandler={setImageFileHandler}
-          promptInputText={promptInputText}
-          setPromptInputText={setPromptInputText}
         />
         <GenButton
           enableButton={enableButton}

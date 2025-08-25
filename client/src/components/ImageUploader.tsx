@@ -28,7 +28,7 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
   return (
     <div
       {...getRootProps()}
-      className="p-4 border border-dashed border-blue-400 mt-2 text-center font-bold cursor-pointer flex items-center gap-2 justify-center"
+      className="flex-1 h-auto p-4 border border-dashed border-blue-400 mt-2 text-center font-bold cursor-pointer flex items-center gap-2 justify-center"
     >
       <input {...getInputProps()} />
       {previewUrl ? (
