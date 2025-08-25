@@ -46,14 +46,13 @@ export const handlers = [
 http.post("/generate-sticker", async ({ request }) => {
   const formData = await request.formData();
   console.log(formData);
-  const prompt = formData.get("prompt");
   const image = formData.get("file");
   const token = formData.get("token");
   if (!token) {
     return new Response(JSON.stringify({ message: "Missing token" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
-  if (!prompt || !image) {
-    return new Response(JSON.stringify({ message: "Missing prompt or image" }), { status: 400, headers: { "Content-Type": "application/json" } });
+  if (!image) {
+    return new Response(JSON.stringify({ message: "Missing image" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
 
   await new Promise((r) => setTimeout(r, 500));
