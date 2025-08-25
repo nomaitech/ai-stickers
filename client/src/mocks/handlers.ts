@@ -55,7 +55,7 @@ http.post("/generate-sticker", async ({ request }) => {
     return new Response(JSON.stringify({ message: "Missing image" }), { status: 400, headers: { "Content-Type": "application/json" } });
   }
 
-  await new Promise((r) => setTimeout(r, 500));
+  await new Promise((r) => setTimeout(r, 3000));
 
   const buffer = await fetch(imageRawData).then(r => r.blob());
 

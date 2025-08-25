@@ -10,7 +10,7 @@ const ImageGenInput = ({
   setImageFileHandler,
 }: Props) => {
   return (
-    <div className="lg:min-h-660px flex-1">
+    <div className="lg:min-h-[665px] flex-1">
       <Card>
         <div className="h-full flex flex-col">
           <h3 className="flex items-center gap-2 text-lg text-green-700">
