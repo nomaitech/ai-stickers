@@ -7,3 +7,13 @@ class UserBase(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
