@@ -1,14 +1,18 @@
 import Card from "../components/Card";
+import { useState } from "react";
 import { Image } from "lucide-react";
 import ImageUploader from "./ImageUploader";
+import { Emoji } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
+import './EmojiPicker.css';
 
 type Props = {
   setImageFileHandler: (file: File) => void;
 };
 
-const ImageGenInput = ({
-  setImageFileHandler,
-}: Props) => {
+const ImageGenInput = ({ setImageFileHandler }: Props) => {
+  const [emojiCode, setEmojiCode] = useState<string>("1f600");
+
   return (
     <div className="lg:min-h-660px flex-1">
       <Card>
@@ -20,7 +24,17 @@ const ImageGenInput = ({
           <p className="text-sm text-muted-foreground">
             Drag and drop your image here
           </p>
-            <ImageUploader setImageFileHandler={setImageFileHandler} />
+
+          <ImageUploader setImageFileHandler={setImageFileHandler} />
+          <span>SelectedEmoji: <Emoji unified={emojiCode} size={25} /></span>
+          <EmojiPicker 
+            open={true}
+            onEmojiClick={(selectedEmoji) => setEmojiCode(selectedEmoji.unified)}
+            skinTonesDisabled={true} 
+            width="100%" 
+            lazyLoadEmojis={true}
+            previewConfig={{ showPreview: false }}
+          />
         </div>
       </Card>
     </div>
