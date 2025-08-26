@@ -32,6 +32,21 @@ spec:
             secretKeyRef:
               name: ai-sticker-api-secrets
               key: OPENAI_API_KEY
+        - name: JWT_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: JWT_PRIVATE_KEY
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: JWT_PUBLIC_KEY
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: DATABASE_URL
         resources:
           requests:
             memory: "256Mi"
