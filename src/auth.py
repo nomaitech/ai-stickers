@@ -16,7 +16,9 @@ def create_access_token(data: dict, expires_delta: int = ACCESS_TOKEN_EXPIRE):
     to_encode = data.copy()
     expire = int(time.time()) + expires_delta
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, JWT_PRIVATE_KEY, algorithm=ALGORITHM)
+    encoded_hwt = jwt.encode(to_encode, JWT_PRIVATE_KEY, algorithm=ALGORITHM)
+    return encoded_hwt
+
 
 def verify_token(token: str):
     try:

@@ -10,7 +10,6 @@ class UserBase(BaseModel):
 
 
 class UserOut(BaseModel):
-    id: int
     email: str
 
 
