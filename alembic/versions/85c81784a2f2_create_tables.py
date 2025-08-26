@@ -1,10 +1,11 @@
 """create tables
 
 Revision ID: 85c81784a2f2
-Revises: 
+Revises:
 Create Date: 2025-08-08 16:18:15.622785
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -12,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '85c81784a2f2'
+revision: str = "85c81784a2f2"
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -45,6 +46,7 @@ def upgrade():
             created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
     """)
+
 
 def downgrade():
     op.execute("""
