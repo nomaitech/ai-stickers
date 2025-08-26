@@ -65,3 +65,18 @@ async def login(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depend
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"sub": str(user.id)})
     return {"access_token": token, "token_type": "bearer"}
+
+async def get_current_user(db: db_dependency, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user_id = payload.get("sub")
+    user = db.query(Users).get(user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
+
+#endpoint will not be used in the future, but it's dependant on user being logged in
+@app.get("/me", response_model=UserOut)
+async def get_current_active_user(current_user: Users = Depends(get_current_user)):
+    return get_current_active_user
