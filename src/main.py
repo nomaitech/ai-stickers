@@ -8,8 +8,9 @@ from typing import Annotated
 from src.schemas import UserBase, UserOut, Token
 from src.models import Users, get_db, Session, IntegrityError
 from src.hashed_pwd import hash_password, verify_password
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from src.auth import create_access_token, verify_token
+from src.security import LoginRequestForm
 
 app = FastAPI()
 
@@ -59,8 +60,8 @@ async def register_new_user(user: UserBase, db: db_dependency):
 
 
 @app.post("/login", response_model=Token)
-async def login(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depends()):
-    user = db.query(Users).filter(Users.email == form_data.username).first()
+async def login(db: db_dependency, form_data: LoginRequestForm = Depends()):
+    user = db.query(Users).filter(Users.email == form_data.email).first()
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"sub": str(user.id)})
