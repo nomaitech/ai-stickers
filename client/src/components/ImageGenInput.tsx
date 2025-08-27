@@ -18,7 +18,7 @@ const ImageGenInput = ({
             Upload your image
           </h3>
           <p className="text-sm text-muted-foreground">
-            Drag and drop your image here
+            Drop or paste your image here
           </p>
             <ImageUploader setImageFileHandler={setImageFileHandler} />
         </div>
