@@ -1,6 +1,5 @@
 import { useDropzone } from "react-dropzone";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
 
 type Props = {
   setImageFileHandler: (file: File) => void;
