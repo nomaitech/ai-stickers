@@ -1,7 +1,8 @@
 import Card from "./Card";
 import { Sticker, LoaderCircle } from "lucide-react";
+import { Line } from '@rc-component/progress';
 import stickerPlaceholder from "../assets/stickerPlaceholder.png";
-import LoadingComments from "./LoadingComments";
+import { useState, useEffect } from "react";
 
 type Props = {
   isLoading: boolean;
@@ -9,6 +10,25 @@ type Props = {
 };
 
 const ImageGenOutput = ({ isLoading, stickerResult }: Props) => {
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      const intervalId = setInterval(() => {
+        setLoadingProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(intervalId);
+            return 100;
+          }
+          return prev + 0.2;
+        });
+      }, 200);
+      return () => clearInterval(intervalId);
+    }else{
+      setLoadingProgress(0);
+    }
+  }, [isLoading]);
+
   return (
     <div className="lg:min-h-[665px] flex-1">
       <Card>
@@ -21,8 +41,8 @@ const ImageGenOutput = ({ isLoading, stickerResult }: Props) => {
         </p>
       <div className="flex flex-col justify-center items-center h-full gap-2">
         {isLoading ? (
-          <div className="flex flex-col justify-center items-center h-full gap-2">
-            <LoadingComments />
+          <div className="flex flex-col justify-center items-center h-full w-full gap-2">
+            <Line percent={loadingProgress} />
             <LoaderCircle className="animate-spin w-8 h-8 text-primary" />
           </div>
         ) : stickerResult ? (

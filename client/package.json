@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rc-component/progress": "^1.0.1",
     "@tailwindcss/vite": "^4.1.11",
     "clsx": "^2.1.1",
     "lucide-react": "^0.526.0",
