@@ -14,15 +14,12 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
   };
 
   useEffect(() => {
-    const handlePaste = (e) => {
-      const items = e.clipboardData?.items;
-      if (!items) return;
-      if (items.length > 1) {
-        toast.error("You may only upload singular images");
-      }
-      if (items[0].type.indexOf("image") !== -1) {
-        const item = items[0];
+    const handlePaste = (e: ClipboardEvent) => {
+      const item = e.clipboardData?.items[0];
+      if (!item) return;
+      if (item.type.indexOf("image") !== -1) {
         const file = item.getAsFile();
+        if (!file) return;
         const url = URL.createObjectURL(file);
         setImageFileHandler(file);
         setPreviewUrl(url);
