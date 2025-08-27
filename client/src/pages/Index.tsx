@@ -7,6 +7,7 @@ import ImageGenOutput from "../components/ImageGenOutput";
 import Footer from "../components/Footer";
 import Register from "../components/Register";
 import { domainUrl } from "../../constants/env";
+import { useBanner } from "../components/context/useBanner";
 
 const Index = () => {
   const [showRegister, setShowRegister] = useState(false);
@@ -15,6 +16,7 @@ const Index = () => {
   const [enableButton, setEnableButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
+  const { showBanner } = useBanner();
 
   useEffect(() => {
     setEnableButton(!!imageFile);
@@ -78,7 +80,7 @@ const Index = () => {
         toast.success("Sticker generated!");
       } else {
         setIsLoading(false);
-        toast.error("Generation failed");
+        showBanner("Generation failed");
       }
     } catch (err) {
       console.log(err);
