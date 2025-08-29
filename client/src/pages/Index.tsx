@@ -17,8 +17,8 @@ const Index = () => {
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   useEffect(() => {
-    setEnableButton(!!imageFile);
-  }, [imageFile]);
+    setEnableButton(!!imageFile && !isLoading);
+  }, [imageFile, isLoading]);
 
   useEffect(() => {
     updateCredits();
