@@ -1,5 +1,5 @@
 import { useDropzone } from "react-dropzone";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
   setImageFileHandler: (file: File) => void;
@@ -11,6 +11,23 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
     setImageFileHandler(file);
     setPreviewUrl(url);
   };
+
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const item = e.clipboardData?.items[0];
+      if (!item) return;
+      if (item.type.indexOf("image") !== -1) {
+        const file = item.getAsFile();
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        setImageFileHandler(file);
+        setPreviewUrl(url);
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, []);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
