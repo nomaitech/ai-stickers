@@ -82,4 +82,19 @@ http.post("/generate-sticker", async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
   }),
+
+  http.get("/dashboardInfo", async ({ request }) => {
+    const authHeader = request.headers.get("Authorization") || "";
+    const token = authHeader.replace("Bearer ", "");
+    if (token === "mock-token") {
+      return new Response(JSON.stringify({
+        credits: 100,
+        name: "John Doe",
+        email: "FkW7R@example.com",
+       }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  })
 ];
