@@ -40,18 +40,20 @@ const Layout = () => {
   }, []);
 
   return (
-    <>
+  <div className="min-h-screen flex flex-col">
       <Header
         credits={credits}
         updateCredits={updateCredits}
         logout={logout}
         showRegister={() => setShowRegister(true)}
       />
-      <Outlet context={{ credits, setCredits, updateCredits, domainUrl }}/>
+      <main className="flex-1 flex bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
+        <Outlet context={{ credits, setCredits, updateCredits, domainUrl }}/>
+      </main>
       <Footer />
       {showRegister && <Register hideRegister={() => setShowRegister(false)} />}
       <Toaster />
-    </>
+    </div>
   );
 };
 
