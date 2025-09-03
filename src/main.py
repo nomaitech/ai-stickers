@@ -35,7 +35,7 @@ async def create_sticker(file: UploadFile):
     image_data = await file.read()
     loop = asyncio.get_running_loop()
     sticker_data = await loop.run_in_executor(
-        None, generate_sticker, image_data, REF_IMAGE_PATH
+        None, generate_sticker, image_data, file.filename, REF_IMAGE_PATH
     )
 
     return Response(content=sticker_data, media_type="image/png")
