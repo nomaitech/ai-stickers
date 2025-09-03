@@ -34,7 +34,7 @@ class Users(Base):
 
 class TransactionList(enum.Enum):
     top_up = "top-up"
-    img_generation = "image generation"
+    img_generation = "image-generation"
     gift = "gift"
 
 class Transactions(Base):
@@ -50,6 +50,8 @@ class Transactions(Base):
     images = relationship("Images", back_populates="transaction")
 
 class Images(Base):
+    __tablename__ = "images"
+
     id = Column(Integer, primary_key=True, index=True)
     original_img = Column(LargeBinary, nullable=False, index=True)
     generated_img = Column(LargeBinary, nullable=False, index=True)
