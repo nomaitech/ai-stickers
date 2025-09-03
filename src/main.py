@@ -11,6 +11,14 @@ from src.hashed_pwd import hash_password, verify_password
 from fastapi.security import OAuth2PasswordBearer
 from src.auth import create_access_token, verify_token
 from src.security import LoginRequestForm
+import logging
+
+class EndpointFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return "/health" not in record.getMessage()
+
+logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
+
 
 app = FastAPI()
 
@@ -20,7 +28,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex="https:\/\/([a-z0-9]+--)?ai-stickers\.netlify\.app",
+    allow_origin_regex=r"https:\/\/([a-z0-9]+--)?ai-stickers\.netlify\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
