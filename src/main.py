@@ -2,6 +2,7 @@ import asyncio
 import os
 from pathlib import Path
 from fastapi import FastAPI
+from src.custom_swagger import override_openapi_schema
 from src.sticker_factory import generate_sticker
 from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,6 +25,8 @@ logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 
 
 app = FastAPI()
+
+app.openapi = override_openapi_schema(app)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -96,10 +99,11 @@ async def create_sticker(file: UploadFile, db: db_dependency, user: Users = Depe
 
     new_transaction = Transactions(current_transaction=TransactionList.img_generation, amount=-1, user_id=user.id)
     db.add(new_transaction)
-    db.commit()
    
     new_img = Images(original_img=image_data, generated_img=sticker_data, transaction_id=new_transaction.id)
     db.add(new_img)
     db.commit()
     
     return Response(content=sticker_data, media_type="image/png")
+
+
