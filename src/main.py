@@ -97,8 +97,9 @@ async def create_sticker(file: UploadFile, db: db_dependency, user: Users = Depe
         None, generate_sticker, image_data, file.filename, REF_IMAGE_PATH
     )
 
-    new_transaction = Transactions(current_transaction=TransactionList.img_generation, amount=-1, user_id=user.id)
+    new_transaction = Transactions(current_transaction=TransactionList.image_generation, amount=-1, user_id=user.id)
     db.add(new_transaction)
+    db.flush()
    
     new_img = Images(original_img=image_data, generated_img=sticker_data, transaction_id=new_transaction.id)
     db.add(new_img)
