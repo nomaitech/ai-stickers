@@ -106,4 +106,3 @@ async def create_sticker(file: UploadFile, db: db_dependency, user: Users = Depe
     
     return Response(content=sticker_data, media_type="image/png")
 
-
