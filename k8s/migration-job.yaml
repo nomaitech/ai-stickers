@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ai-sticker-api-migrate
+  namespace: ai-stickers
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: migrate
+        image: ai-sticker:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: DATABASE_URL
+        command: ["alembic", "upgrade", "head"]
+      restartPolicy: Never
+  backoffLimit: 3
