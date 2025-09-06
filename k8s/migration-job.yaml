@@ -18,6 +18,6 @@ spec:
             secretKeyRef:
               name: ai-sticker-api-secrets
               key: DATABASE_URL
-        command: ["uv", "run", "alembic", "upgrade", "head"]
+        command: ["alembic", "upgrade", "head"]
       restartPolicy: Never
   backoffLimit: 3
