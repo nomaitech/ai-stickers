@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 
-class UserBase(BaseModel):
+class UserSchema(BaseModel):
     email: str = Field(description="User email address")
     password: str = Field(description="User password")
 
@@ -13,7 +13,7 @@ class UserBase(BaseModel):
             "examples": [{"email": "test@example.com", "password": "password123"}]
         }
 
-
+   
 class UserOut(BaseModel):
     email: str = Field(description="User email address")
     credits: Optional[int] = Field(description="User credits", default=0)
@@ -38,6 +38,33 @@ class Token(BaseModel):
             ]
         }
 
+class StickersResponse(BaseModel):
+    id: int = Field(description="Image ID")
+    transaction_id: int = Field(description="Transaction ID")
+    created_at: datetime = Field(description="Image creation timestamp")
+    original_img_url: str = Field(description="Original image URL")
+    generated_img_url: str = Field(description="Generated image URL")
+    user_id: int = Field(description="User ID")
+    emoji: str = Field(description="Emoji")
+    prompt: Optional[str] = Field(description="Prompt")
+    sticker_pack_id: Optional[int] = Field(description="Sticker pack ID")
+    class Config:
+        orm_mode = True
+        from_attributes = True
+        json_schema_extra = {
+            "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
+        }
+
+class UpdateSticker(BaseModel):
+    emoji: Optional[str] = None
+    sticker_pack_id: Optional[int] = None
+
+
+class StickerPackSchema(BaseModel):
+    id: int = Field(description="Sticker pack ID")
+    name: str = Field(description="Sticker pack name")
+    user_id: int = Field(description="User ID")
+    created_at: datetime = Field(description="Sticker pack creation timestamp")
 
 class PaymentSessionCreate(BaseModel):
     price: str = Field(description="Stripe price ID")
@@ -66,15 +93,3 @@ class PaymentStatusResponse(BaseModel):
             ]
         }
 
-class StickersResponse(BaseModel):
-    id: int = Field(description="Image ID")
-    transaction_id: int = Field(description="Transaction ID")
-    created_at: datetime = Field(description="Image creation timestamp")
-    original_img_url: str = Field(description="Original image URL")
-    generated_img_url: str = Field(description="Generated image URL")
-
-    class Config:
-        from_attributes = True
-        json_schema_extra = {
-            "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
-        }
