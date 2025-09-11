@@ -1,8 +1,7 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 import datetime
 from src.models import PaymentSessions, Transactions, TransactionList
-from src.schemas import PaymentStatusResponse
-from sqlalchemy import func
 
 
 def create_payment_session_db(db: Session, stripe_session_id: str, user_id: int, price: str) -> PaymentSessions:
@@ -45,22 +44,6 @@ def add_credits_to_user(db: Session, user_id: int) -> Transactions:
     db.commit()
     db.refresh(new_transaction)
     return new_transaction
-
-
-def get_payment_status_response(db: Session, session_id: str) -> PaymentStatusResponse:
-    payment_session = get_payment_session_by_stripe_session_id(db, session_id)
-    
-    if not payment_session:
-        return None
-    
-    return PaymentStatusResponse(
-        session_id=payment_session.stripe_session_id,
-        status=payment_session.status,
-        price_id=payment_session.price_id,
-        created_at=payment_session.created_at,
-        completed_at=payment_session.completed_at
-    ) 
-
 
 def get_user_credits(db: Session, user_id: int) -> int:
     return db.query(func.sum(Transactions.amount)).filter(

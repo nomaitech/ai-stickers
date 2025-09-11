@@ -1,23 +1,21 @@
 import asyncio
 import os
-from fastapi import FastAPI
-from src.custom_swagger import override_openapi_schema
-from src.sticker_factory import generate_sticker
+import logging
+import datetime
+from typing import Annotated
 from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Annotated
-from src.schemas import UserBase, UserOut, Token, PaymentSessionCreate, PaymentStatusResponse
-from src.models import Users, get_db, Session, IntegrityError, Images, Transactions, TransactionList
-from src.hashed_pwd import hash_password, verify_password
 from fastapi.security import OAuth2PasswordBearer
-from src.auth import create_access_token, verify_token
-import logging
-from sqlalchemy import func
-import stripe
-from src import billing
-from src.db_operations import create_payment_session_db, get_payment_session_by_stripe_session_id, add_credits_to_user, get_user_credits
 from fastapi.responses import JSONResponse
-import datetime
+from sqlalchemy import func
+from src.custom_swagger import override_openapi_schema
+from src.db_operations import create_payment_session_db, get_payment_session_by_stripe_session_id, add_credits_to_user, get_user_credits
+from src.auth import create_access_token, verify_token
+from src.hashed_pwd import hash_password, verify_password
+from src.models import Users, get_db, Session, IntegrityError, Images, Transactions, TransactionList
+from src.schemas import UserBase, UserOut, Token, PaymentSessionCreate, PaymentStatusResponse
+from src.sticker_factory import generate_sticker
+from src import billing
 
 class EndpointFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
@@ -116,10 +114,10 @@ async def create_sticker(file: UploadFile, db: db_dependency, user: Users = Depe
     return Response(content=sticker_data, media_type="image/png")
 
 
-@app.exception_handler(stripe.error.StripeError)
-async def stripe_error_handler(request: Request, exc: stripe.error.StripeError):
+@app.exception_handler(billing.stripe.error.StripeError)
+async def stripe_error_handler(request: Request, exc: billing.stripe.error.StripeError):
     return JSONResponse(
-        status_code=400,
+        status_code=500,
         content={"detail": f"Payment processing failed: {str(exc)}"}
     )
 
@@ -156,12 +154,12 @@ async def check_payment_status(session_id: str, db: db_dependency, user: Users =
 async def stripe_webhook(request: Request, db: db_dependency):
     payload = await request.body()
     sig_header = request.headers.get('stripe-signature')
-    
+
     try:
         event = billing.construct_event(payload, sig_header)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid payload")
-    except stripe.error.SignatureVerificationError:
+    except billing.stripe.error.SignatureVerificationError:
         raise HTTPException(status_code=400, detail="Invalid signature")
     
     if event['type'] == 'checkout.session.completed':
