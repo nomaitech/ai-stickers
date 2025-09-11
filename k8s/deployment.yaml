@@ -70,7 +70,74 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 2
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-sticker-sentrybot
+  namespace: ai-stickers
+  labels:
+    app: ai-sticker-sentrybot
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-sticker-sentrybot
+  template:
+    metadata:
+      labels:
+        app: ai-sticker-sentrybot
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: ai-sticker-sentrybot
+        image: ai-sticker-sentrybot:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: TELEGRAM_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: sentry-bot-secrets
+              key: TELEGRAM_BOT_TOKEN
+        - name: TELEGRAM_CHAT_ID
+          valueFrom:
+            secretKeyRef:
+              name: sentry-bot-secrets
+              key: TELEGRAM_CHAT_ID
+        - name: WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sentry-bot-secrets
+              key: WEBHOOK_SECRET
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
 ---
 apiVersion: v1
 kind: Service

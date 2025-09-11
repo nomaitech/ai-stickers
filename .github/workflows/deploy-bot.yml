@@ -1,19 +1,19 @@
-name: Build, Push and Deploy to K3S cluster
+name: Build, Push and Deploy Sentry bot to K3S cluster
 
 on:
   push:
     branches:
       - main
     paths:
-      - '**'
-      - '!client/**'
-      - '!Makefile'
-      - '!README.md'
-      - '!sentryBot/**'
-      
+      - '.github/workflows/deploy-bot.yml'
+      - 'sentryBot/**'
+
 env:
-  IMAGE_NAME: pdr.jonbesga.com/ai-sticker
+  IMAGE_NAME: pdr.jonbesga.com/sentry-bot
   IMAGE_TAG: ${{ github.sha }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
 
 jobs:
   build-and-push:
