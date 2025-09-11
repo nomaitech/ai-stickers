@@ -39,3 +39,4 @@ HwIDAQAB
 -----END PUBLIC KEY-----"
 export STRIPE_SECRET_KEY=""
 export STRIPE_WEBHOOK_SECRET=""
+export FRONTEND_URL=""
