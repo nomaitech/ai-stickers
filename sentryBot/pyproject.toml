@@ -1,0 +1,16 @@
+[project]
+name = "sentry-bot"
+version = "0.1.0"
+description = "Telegram bot to report Sentry events"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.24.0",
+    "httpx>=1.2.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.alembic]
+script_location = "%(here)s/alembic"
+prepend_sys_path = [
+    "."
+]
