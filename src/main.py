@@ -1,21 +1,23 @@
 import asyncio
 import os
-from pathlib import Path
 from fastapi import FastAPI
 from src.custom_swagger import override_openapi_schema
 from src.sticker_factory import generate_sticker
-from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends
+from fastapi import FastAPI, UploadFile, Response, HTTPException, status, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Annotated
-from src.schemas import UserBase, UserOut, Token
+from src.schemas import UserBase, UserOut, Token, PaymentSessionCreate, PaymentStatusResponse
 from src.models import Users, get_db, Session, IntegrityError, Images, Transactions, TransactionList
 from src.hashed_pwd import hash_password, verify_password
 from fastapi.security import OAuth2PasswordBearer
 from src.auth import create_access_token, verify_token
-from src.security import LoginRequestForm
 import logging
 from sqlalchemy import func
-
+import stripe
+from src import billing
+from src.db_operations import create_payment_session_db, get_payment_session_by_stripe_session_id, add_credits_to_user
+from fastapi.responses import JSONResponse
+import datetime
 
 class EndpointFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
@@ -50,20 +52,19 @@ async def health():
 
 
 @app.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED, tags=["users"])
-async def register_new_user(user: UserBase, db: db_dependency):
+async def register_new_user(db: db_dependency, user: UserBase):
     try:
         new_user = Users(email=user.email, password=hash_password(user.password))
         db.add(new_user)
         db.commit()
         new_user_response = UserBase.model_validate(new_user)
     except IntegrityError:
-        # Error might be related to something other than email already registered
         raise HTTPException(status_code=400, detail="Email already registered")
     return new_user_response
 
 
-@app.post("/login", response_model=Token)
-async def login(db: db_dependency, form_data: LoginRequestForm = Depends()):
+@app.post("/login", response_model=Token, tags=["users"])
+async def login(db: db_dependency, form_data: UserBase):
     user = db.query(Users).filter(Users.email == form_data.email).first()
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -107,3 +108,71 @@ async def create_sticker(file: UploadFile, db: db_dependency, user: Users = Depe
     
     return Response(content=sticker_data, media_type="image/png")
 
+
+@app.exception_handler(stripe.error.StripeError)
+async def stripe_error_handler(request: Request, exc: stripe.error.StripeError):
+    return JSONResponse(
+        status_code=400,
+        content={"detail": f"Payment processing failed: {str(exc)}"}
+    )
+
+@app.post("/payments", tags=["payments"])
+async def create_payment_session(
+    payment_data: PaymentSessionCreate, 
+    db: db_dependency, 
+    user: Users = Depends(get_current_user)
+):
+    checkout_session = await billing.create_payment_session(payment_data, user.id)
+    create_payment_session_db(db, checkout_session.id, user.id, payment_data.price)
+
+    return {
+        "checkout_url": checkout_session.url
+    }
+        
+@app.get("/payment-status/{session_id}", response_model=PaymentStatusResponse, tags=["payments"])
+async def check_payment_status(session_id: str, db: db_dependency, user: Users = Depends(get_current_user)):
+    payment_session = get_payment_session_by_stripe_session_id(db, session_id, user.id)
+    
+    if not payment_session:
+        raise HTTPException(status_code=404, detail="Payment session not found")
+    
+    return PaymentStatusResponse(
+        session_id=payment_session.stripe_session_id,
+        status=payment_session.status,
+        price_id=payment_session.price_id,
+        created_at=payment_session.created_at,
+        completed_at=payment_session.completed_at
+    )
+
+
+@app.post("/payments/webhook", tags=["payments"])
+async def stripe_webhook(request: Request, db: db_dependency):
+    payload = await request.body()
+    sig_header = request.headers.get('stripe-signature')
+    
+    try:
+        event = billing.construct_event(payload, sig_header)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid payload")
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid signature")
+    
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        session_id = session['id']
+
+        user_id = session['metadata']['user_id']
+
+        payment_session = get_payment_session_by_stripe_session_id(db, session_id, user_id)
+        if not payment_session:
+            raise HTTPException(status_code=404, detail="Payment session not found")
+        
+        if payment_session and payment_session.status == "pending":
+            payment_session.status = "completed"
+            payment_session.completed_at = datetime.datetime.now(datetime.UTC)
+            add_credits_to_user(db, payment_session.user_id)
+            return {"status": "success"}
+        else:
+            raise HTTPException(status_code=400, detail="Payment session already completed")
+    else:
+        raise HTTPException(status_code=400, detail="Invalid event type")
