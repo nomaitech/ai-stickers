@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 import datetime
 from src.models import PaymentSessions, Transactions, TransactionList
 from src.schemas import PaymentStatusResponse
+from sqlalchemy import func
 
 
 def create_payment_session_db(db: Session, stripe_session_id: str, user_id: int, price: str) -> PaymentSessions:
@@ -59,3 +60,9 @@ def get_payment_status_response(db: Session, session_id: str) -> PaymentStatusRe
         created_at=payment_session.created_at,
         completed_at=payment_session.completed_at
     ) 
+
+
+def get_user_credits(db: Session, user_id: int) -> int:
+    return db.query(func.sum(Transactions.amount)).filter(
+        Transactions.user_id == user_id,
+    ).scalar() or 0

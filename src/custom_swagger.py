@@ -29,14 +29,12 @@ def override_openapi_schema(app: FastAPI):
 
         openapi_schema.pop("security", None)
 
-        protected_endpoints = ["/generate-sticker", "/payments", "/payment-status/{session_id}"]
+        protected_endpoints = ["/generate-sticker", "/payments", "/payment-status/{session_id}", "/user-details"]
         for endpoint in protected_endpoints:
             if endpoint in openapi_schema["paths"]:
                 for method in ["get", "post", "put", "delete", "patch"]:
                     if method in openapi_schema["paths"][endpoint]:
                         openapi_schema["paths"][endpoint][method]["security"] = [{"BearerAuth": []}]
-
-
         app.openapi_schema = openapi_schema
         return app.openapi_schema
     return _openapi

@@ -20,13 +20,15 @@ class UserBase(BaseModel):
 
 class UserOut(BaseModel):
     email: str = Field(description="User email address")
+    credits: int = Field(description="User credits")
 
     class Config:
         from_attributes = True
         json_schema_extra = {
             "examples": [
                 {
-                    "email": "test@example.com"
+                    "email": "test@example.com",
+                    "credits": 10
                 }
             ]
         }

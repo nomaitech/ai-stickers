@@ -15,7 +15,7 @@ import logging
 from sqlalchemy import func
 import stripe
 from src import billing
-from src.db_operations import create_payment_session_db, get_payment_session_by_stripe_session_id, add_credits_to_user
+from src.db_operations import create_payment_session_db, get_payment_session_by_stripe_session_id, add_credits_to_user, get_user_credits
 from fastapi.responses import JSONResponse
 import datetime
 
@@ -50,6 +50,23 @@ REF_IMAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ref.p
 async def health():
     return {"status": "ok"}
 
+async def get_current_user(db: db_dependency, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user_id = payload.get("sub")
+    user = db.query(Users).get(user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
+
+
+@app.get("/user-details", response_model=UserOut, tags=["users"])
+async def get_user_details(db: db_dependency, user: Users = Depends(get_current_user)):
+    credits = get_user_credits(db, user.id)
+    return UserOut(email=user.email, credits=credits)
+
+
 
 @app.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED, tags=["users"])
 async def register_new_user(db: db_dependency, user: UserBase):
@@ -70,16 +87,6 @@ async def login(db: db_dependency, form_data: UserBase):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"sub": str(user.id)})
     return {"access_token": token, "token_type": "bearer"}
-
-async def get_current_user(db: db_dependency, token: str = Depends(oauth2_scheme)):
-    payload = verify_token(token)
-    if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    user_id = payload.get("sub")
-    user = db.query(Users).get(user_id)
-    if user is None:
-        raise HTTPException(status_code=401, detail="User not found")
-    return user
 
 
 @app.post("/generate-sticker")
