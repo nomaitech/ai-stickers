@@ -81,8 +81,8 @@ class Images(Base):
     __tablename__ = "images"
 
     id = Column(Integer, primary_key=True, index=True)
-    original_img = Column(LargeBinary, nullable=False, index=True)
-    generated_img = Column(LargeBinary, nullable=False, index=True)
+    original_img_url = Column(String, nullable=False, index=True)
+    generated_img_url = Column(String, nullable=False, index=True)
     transaction_id = Column(Integer, ForeignKey("transactions.id"), index=True)
     created_at = Column(DateTime, index=True, server_default=func.current_timestamp())
 
