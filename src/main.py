@@ -66,7 +66,7 @@ async def get_user_details(db: db_dependency, user: Users = Depends(get_current_
 
 
 
-@app.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED, tags=["users"])
+@app.post("/auth/register", response_model=UserOut, status_code=status.HTTP_201_CREATED, tags=["users"])
 async def register_new_user(db: db_dependency, user: UserBase):
     try:
         new_user = Users(email=user.email, password=hash_password(user.password))
@@ -78,7 +78,7 @@ async def register_new_user(db: db_dependency, user: UserBase):
     return new_user_response
 
 
-@app.post("/login", response_model=Token, tags=["users"])
+@app.post("/auth/login", response_model=Token, tags=["users"])
 async def login(db: db_dependency, form_data: UserBase):
     user = db.query(Users).filter(Users.email == form_data.email).first()
     if not user or not verify_password(form_data.password, user.password):
