@@ -59,7 +59,7 @@ async def get_current_user(db: db_dependency, token: str = Depends(oauth2_scheme
     return user
 
 
-@app.get("/user-details", response_model=UserOut, tags=["users"])
+@app.get("/user-info", response_model=UserOut, tags=["users"])
 async def get_user_details(db: db_dependency, user: Users = Depends(get_current_user)):
     credits = get_user_credits(db, user.id)
     return UserOut(email=user.email, credits=credits)
@@ -172,7 +172,7 @@ async def stripe_webhook(request: Request, db: db_dependency):
         if not payment_session:
             raise HTTPException(status_code=404, detail="Payment session not found")
         
-        if payment_session and payment_session.status == "pending":
+        if payment_session.status == "pending":
             payment_session.status = "completed"
             payment_session.completed_at = datetime.datetime.now(datetime.UTC)
             add_credits_to_user(db, payment_session.user_id)
