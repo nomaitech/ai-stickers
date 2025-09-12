@@ -8,7 +8,7 @@ dependencies = [
     "alembic>=1.16.4",
     "argon2-cffi>=25.1.0",
     "cryptography>=45.0.6",
-    "fastapi[standard]>=0.116.1",
+    "fastapi>=0.116.1",
     "openai>=1.98.0",
     "pillow>=11.3.0",
     "psycopg2-binary>=2.9.10",
@@ -24,4 +24,10 @@ dependencies = [
 script_location = "%(here)s/alembic"
 prepend_sys_path = [
     "."
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.0",
+    "fastapi[standard]>=0.116.1",
 ]

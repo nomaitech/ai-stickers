@@ -5,14 +5,15 @@ Revises: a6f195fe346b
 Create Date: 2025-09-11 20:43:16.621660
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
 
 
 # revision identifiers, used by Alembic.
-revision: str = '961e166462cd'
-down_revision: Union[str, Sequence[str], None] = 'a6f195fe346b'
+revision: str = "961e166462cd"
+down_revision: Union[str, Sequence[str], None] = "a6f195fe346b"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -40,4 +41,4 @@ def upgrade():
 def downgrade():
     op.execute("""
         DROP TABLE IF EXISTS payment_sessions CASCADE;
-    """) 
+    """)
