@@ -14,8 +14,8 @@ async def create_payment_session(payment_data, user_id):
         cancel_url=f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/payments/cancelled",
         metadata={
             'user_id': str(user_id),
-            }
-        )
+        }
+    )
     return checkout_session
 
 def construct_event(payload, sig_header):

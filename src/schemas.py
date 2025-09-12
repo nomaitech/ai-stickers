@@ -20,7 +20,7 @@ class UserBase(BaseModel):
 
 class UserOut(BaseModel):
     email: str = Field(description="User email address")
-    credits: int = Field(description="User credits")
+    credits: Optional[int] = Field(description="User credits", default=0)
 
     class Config:
         from_attributes = True
