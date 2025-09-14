@@ -2,7 +2,14 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './global.css'
 import App from './App.tsx'
-import { enableMocks } from '../constants/env';
+import { enableMocks, sentryDSN } from '../constants/env';
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  dsn: sentryDSN,
+  environment: "development",
+  sendDefaultPii: true
+});
 
 const prepareMocks = async () => {
   if (enableMocks) {
