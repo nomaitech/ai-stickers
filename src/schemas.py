@@ -65,3 +65,16 @@ class PaymentStatusResponse(BaseModel):
                 }
             ]
         }
+
+class StickersResponse(BaseModel):
+    id: int = Field(description="Image ID")
+    transaction_id: int = Field(description="Transaction ID")
+    created_at: datetime = Field(description="Image creation timestamp")
+    original_img_url: str = Field(description="Original image URL")
+    generated_img_url: str = Field(description="Generated image URL")
+
+    class Config:
+        from_attributes = True
+        json_schema_extra = {
+            "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
+        }

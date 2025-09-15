@@ -40,9 +40,11 @@ from src.schemas import (
     Token,
     PaymentSessionCreate,
     PaymentStatusResponse,
+    StickersResponse,
 )
 from src.sticker_factory import generate_sticker
 from src import billing
+from src.storage import upload_original_image, upload_generated_image
 
 
 class EndpointFilter(logging.Filter):
@@ -121,7 +123,7 @@ async def login(db: db_dependency, form_data: UserBase):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@app.post("/generate-sticker")
+@app.post("/generate-sticker", response_model=StickersResponse)
 async def create_sticker(
     file: UploadFile, db: db_dependency, user: Users = Depends(get_current_user)
 ):
@@ -146,14 +148,14 @@ async def create_sticker(
     db.flush()
 
     new_img = Images(
-        original_img=image_data,
-        generated_img=sticker_data,
+        original_img_url=upload_original_image(image_data),
+        generated_img_url=upload_generated_image(sticker_data),
         transaction_id=new_transaction.id,
     )
     db.add(new_img)
     db.commit()
 
-    return Response(content=sticker_data, media_type="image/png")
+    return new_img
 
 
 @app.exception_handler(billing.stripe.error.StripeError)
