@@ -10,7 +10,8 @@ const Index = () => {
   const [enableButton, setEnableButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
-
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState<string | null>(null);
   const { updateCredits, domainUrl } = useOutletContext<{
   updateCredits: () => void;
   domainUrl: string;
@@ -29,14 +30,15 @@ const Index = () => {
     try {
       const formData = new FormData();
       const token = localStorage.getItem("jwt");
-      if (typeof token === "string") {
-        formData.append("token", token);
-      }
       if (imageFile instanceof Blob) {
         formData.append("file", imageFile);
       }
-      const response = await fetch(`${domainUrl}/generate-sticker`, {
+      formData.append("emoji", selectedEmoji || "😃");
+      const response = await fetch(`${domainUrl}/stickers`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
       if (response.ok) {

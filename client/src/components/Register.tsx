@@ -21,7 +21,7 @@ const Register = ({ hideRegister }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${domainUrl}/register`, {
+    const response = await fetch(`${domainUrl}/auth/register`, {
       method: "POST",
       body: JSON.stringify(data),
     });

@@ -18,14 +18,17 @@ const Login = ({ showRegister, updateCredits }: Props) => {
     handleSubmit
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${domainUrl}/login`, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
+const onSubmit = async (data: { email: string; password: string }) => {
+  const response = await fetch(`${domainUrl}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
     if(response.ok){
       const { token } = await response.json();
+      console.log("This the token", token);
       localStorage.setItem('jwt', token);
+      console.log(localStorage.getItem("jwt"));
       updateCredits();
     }else{
       toast.error('Login failed');
