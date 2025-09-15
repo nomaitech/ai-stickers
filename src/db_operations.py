@@ -43,12 +43,13 @@ def update_payment_session_status(
     return payment_session
 
 
-def add_credits_to_user(db: Session, user_id: int) -> Transactions:
+def add_credits_to_user(db: Session, user_id: int, payment_session_id: int) -> Transactions:
     credits_to_add = 10
     new_transaction = Transactions(
         current_transaction=TransactionList.top_up,
         amount=credits_to_add,
         user_id=user_id,
+        payment_session_id=payment_session_id,
     )
     db.add(new_transaction)
     db.commit()

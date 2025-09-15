@@ -226,7 +226,7 @@ async def stripe_webhook(request: Request, db: db_dependency):
         if payment_session.status == "pending":
             payment_session.status = "completed"
             payment_session.completed_at = datetime.datetime.now(datetime.UTC)
-            add_credits_to_user(db, payment_session.user_id)
+            add_credits_to_user(db, payment_session.user_id, payment_session.id)
             return {"status": "success"}
         else:
             raise HTTPException(
