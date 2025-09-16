@@ -7,7 +7,7 @@ import * as Sentry from "@sentry/react";
 
 Sentry.init({
   dsn: sentryDSN,
-  environment: "development",
+  environment: import.meta.env.MODE,
   sendDefaultPii: true
 });
 
