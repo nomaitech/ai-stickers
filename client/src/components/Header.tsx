@@ -6,10 +6,9 @@ type Props = {
   credits: number | null;
   updateCredits: () => void;
   logout: () => void;
-  showRegister: () => void;
 };
 
-const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
+const Header = ({ credits, updateCredits, logout }: Props) => {
   const topUp = () => {
     const token = localStorage.getItem("jwt");
     if (typeof token === "string") {
@@ -65,7 +64,6 @@ const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
             </div>
           ) : (
             <Login
-              showRegister={() => showRegister()}
               updateCredits={() => updateCredits()}
             />
           )}

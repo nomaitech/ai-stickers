@@ -5,7 +5,16 @@ import ImageGenInput from "../components/ImageGenInput";
 import GenButton from "../components/GenButton";
 import ImageGenOutput from "../components/ImageGenOutput";
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Register from "../components/Register";
+import { Toaster } from "sonner";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
+
 const Index = () => {
+  const showRegister = useSelector((state: RootState) => state.ui.showRegister); 
+  const [credits, setCredits] = useState<number | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [enableButton, setEnableButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,8 +67,14 @@ const Index = () => {
   };
 
   return (
-    <div className="h-full w-full">
       <div className="h-full w-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
+      <Header
+        credits={credits}
+        updateCredits={updateCredits}
+        logout={logout}
+      />
+      <div className="h-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
         <ImageGenInput
           setImageFileHandler={setImageFileHandler}
         />
@@ -69,6 +84,10 @@ const Index = () => {
         />
         <ImageGenOutput isLoading={isLoading} stickerResult={stickerResult} />
       </div>
+      <Footer />
+      {showRegister && <Register />}
+      <Toaster />
+    </div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
-import { toast } from 'sonner';
-import { domainUrl } from "../../constants/env";
+import { toast } from "sonner";
+import { useLoginMutation } from "../store/auth/authApi";
+import { useDispatch } from "react-redux";
+import { openRegister } from "../store/UI/uiSlice.ts";
 
 type FormData = {
   email: string;
@@ -8,28 +10,22 @@ type FormData = {
 };
 
 type Props = {
-  showRegister: () => void;
-  updateCredits: () => void
+  updateCredits: () => void;
 };
 
-const Login = ({ showRegister, updateCredits }: Props) => {
-  const {
-    register,
-    handleSubmit
-  } = useForm<FormData>();
+const Login = ({ updateCredits }: Props) => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm<FormData>();
+  const [login, { isLoading, /* error */ }] = useLoginMutation();
 
   const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${domainUrl}/login`, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
-    if(response.ok){
-      const { token } = await response.json();
-      localStorage.setItem('jwt', token);
+    try {
+      const result = await login(data).unwrap();
+      localStorage.setItem("jwt", result.token);
       updateCredits();
-    }else{
-      toast.error('Login failed');
-      console.error('Login failed');
+    } catch {
+      toast.error("Authentication failed");
+      console.error("Login failed");
     }
   };
 
@@ -42,30 +38,25 @@ const Login = ({ showRegister, updateCredits }: Props) => {
         type="email"
         placeholder="Email"
         className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
-        {...register("email", {
-          required: true,
-          pattern: /^\S+@\S+$/i,
-        })}
+        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
       />
       <input
         type="password"
         placeholder="Password"
         className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
-        {...register("password", {
-          required: true,
-          minLength: 6,
-        })}
+        {...register("password", { required: true, minLength: 6 })}
       />
       <div className="flex gap-x-2 justify-between items-center">
         <button
           type="submit"
           className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-md hover:bg-primary/90 transition"
+          disabled={isLoading}
         >
           Login
         </button>
         <button
           type="button"
-          onClick={showRegister}
+          onClick={() => dispatch(openRegister())}
           className="text-sm text-muted-foreground underline cursor-pointer"
         >
           Register

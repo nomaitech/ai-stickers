@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { domainUrl } from "../../constants/env";
+import { useRegisterMutation } from "../store/auth/authApi";
+import { useDispatch } from "react-redux";
+import { closeRegister } from "../store/UI/uiSlice";
 
 type FormData = {
   email: string;
@@ -8,27 +10,18 @@ type FormData = {
   confirmPassword: string;
 };
 
-type Props = {
-  hideRegister: () => void;
-};
+const Register = () => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit, watch, formState: { errors }, } = useForm<FormData>();
+  const [ registerMutation, /*{ isLoading, error }*/] = useRegisterMutation();
 
-const Register = ({ hideRegister }: Props) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${domainUrl}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    if (response.ok) {
-      toast.success("User registered");
-      hideRegister();
-    }
+    const onSubmit = async (data: FormData) => {
+      try{
+        await registerMutation(data).unwrap();
+      } catch{
+        toast.error("Register failed");
+        console.error("Register failed");
+      }
   };
 
   const password = watch("password");
@@ -36,7 +29,7 @@ const Register = ({ hideRegister }: Props) => {
   return (
     <div
       className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center"
-      onClick={() => hideRegister()}
+      onClick={() => dispatch(closeRegister())}
     >
       <div className="w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
         <form
