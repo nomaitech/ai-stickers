@@ -7,7 +7,7 @@ kubectl create secret generic ai-sticker-api-secrets \
     --from-literal=DATABASE_URL="${PRODUCTION_DATABASE_URL}" \
     --from-literal=STRIPE_SECRET_KEY="${PRODUCTION_STRIPE_SECRET_KEY}" \
     --from-literal=STRIPE_WEBHOOK_SECRET="${PRODUCTION_STRIPE_WEBHOOK_SECRET}" \
-    --from-file=GOOGLE_APPLICATION_CREDENTIALS_JSON="$(cat ${PRODUCTION_GOOGLE_APPLICATION_CREDENTIALS})"
+    --from-file=GOOGLE_APPLICATION_CREDENTIALS_JSON="${PRODUCTION_GOOGLE_APPLICATION_CREDENTIALS}"
 
 kubectl create configmap ai-sticker-api-config \
     --from-literal=GCS_BUCKET_NAME="${PRODUCTION_GCS_BUCKET_NAME}" \
