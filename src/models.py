@@ -58,9 +58,11 @@ class Transactions(Base):
     amount = Column(Integer, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True)
     created_at = Column(DateTime, index=True, server_default=func.current_timestamp())
+    payment_session_id = Column(Integer, ForeignKey("payment_sessions.id"), index=True)
 
     user = relationship("Users", back_populates="transactions")
     images = relationship("Images", back_populates="transaction")
+    payment_session = relationship("PaymentSessions", back_populates="transactions")
 
 
 class PaymentSessions(Base):
