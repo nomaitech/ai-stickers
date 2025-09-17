@@ -30,7 +30,7 @@ def override_openapi_schema(app: FastAPI):
             "/generate-sticker",
             "/payments",
             "/payment-status/{session_id}",
-            "/user-details",
+            "/user-info",
         ]
         for endpoint in protected_endpoints:
             if endpoint in openapi_schema["paths"]:
