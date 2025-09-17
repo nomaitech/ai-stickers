@@ -47,9 +47,9 @@ jobs:
       - name: Run database migrations
         run: |
           sed -i "s|image: .*|image: $IMAGE_NAME:$IMAGE_TAG|" k8s/migration-job.yaml
+          kubectl delete job ai-sticker-api-migrate -n ai-stickers
           kubectl apply -f k8s/migration-job.yaml
           kubectl wait --for=condition=complete --timeout=300s job/ai-sticker-api-migrate -n ai-stickers
-          kubectl delete job ai-sticker-api-migrate -n ai-stickers
 
       - name: Update deployment with new image
         run: |
