@@ -77,6 +77,7 @@ class PaymentSessions(Base):
     completed_at = Column(DateTime, index=True, nullable=True)
 
     user = relationship("Users", back_populates="payment_sessions")
+    transactions = relationship("Transactions", back_populates="payment_session")
 
 
 class Images(Base):
