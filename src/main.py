@@ -44,7 +44,7 @@ from src.schemas import (
 )
 from src.sticker_factory import generate_sticker
 from src import billing
-from src.storage import upload_original_image, upload_generated_image
+from src.storage import upload_image_to_gcs
 
 
 class EndpointFilter(logging.Filter):
@@ -148,8 +148,8 @@ async def create_sticker(
     db.flush()
 
     new_img = Images(
-        original_img_url=upload_original_image(image_data),
-        generated_img_url=upload_generated_image(sticker_data),
+        original_img_url=upload_image_to_gcs(image_data, dest="original"),
+        generated_img_url=upload_image_to_gcs(sticker_data, dest="generated"),
         transaction_id=new_transaction.id,
     )
     db.add(new_img)
