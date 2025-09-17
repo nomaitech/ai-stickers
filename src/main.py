@@ -230,7 +230,7 @@ async def stripe_webhook(request: Request, db: db_dependency):
             return {"status": "success"}
         else:
             raise HTTPException(
-                status_code=400, detail="Payment session already completed"
+                status_code=200, detail="Payment session already completed"
             )
     else:
         raise HTTPException(status_code=400, detail="Invalid event type")
