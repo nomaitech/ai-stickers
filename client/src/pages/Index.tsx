@@ -10,8 +10,6 @@ const Index = () => {
   const [enableButton, setEnableButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState<string | null>(null);
   const { updateCredits, domainUrl } = useOutletContext<{
   updateCredits: () => void;
   domainUrl: string;
@@ -33,7 +31,7 @@ const Index = () => {
       if (imageFile instanceof Blob) {
         formData.append("file", imageFile);
       }
-      formData.append("emoji", selectedEmoji || "😃");
+      formData.append("emoji", "😃");
       const response = await fetch(`${domainUrl}/stickers`, {
         method: "POST",
         headers: {
