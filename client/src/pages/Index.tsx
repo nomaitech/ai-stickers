@@ -15,11 +15,6 @@ const Index = () => {
   domainUrl: string;
 }>();
 
-  const { updateCredits, domainUrl } = useOutletContext<{
-  updateCredits: () => void;
-  domainUrl: string;
-}>();
-
   useEffect(() => {
     setEnableButton(!!imageFile && !isLoading);
   }, [imageFile, isLoading]);
