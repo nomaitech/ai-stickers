@@ -1,0 +1,2 @@
+# Prevents Netlify from looking for other routes, enables client-side routing
+/*    /index.html   200
