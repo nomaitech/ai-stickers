@@ -18,11 +18,12 @@ const Login = ({ showRegister, updateCredits }: Props) => {
     handleSubmit
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
-    const response = await fetch(`${domainUrl}/login`, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
+const onSubmit = async (data: { email: string; password: string }) => {
+  const response = await fetch(`${domainUrl}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
     if(response.ok){
       const { token } = await response.json();
       localStorage.setItem('jwt', token);
