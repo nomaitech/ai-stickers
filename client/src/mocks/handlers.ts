@@ -16,6 +16,29 @@ const unauthorizedResponse = () => {
 }
 
 export const handlers = [
+    http.post("/auth/login", async ({ request }) => {
+    type LoginBody = { email: string; password: string };
+    const requestBody = (await request.json()) as LoginBody;
+    const { email, password } = requestBody;
+    if (email === "test@example.com" && password === "password") {
+      return new Response(JSON.stringify({ token: "mock-token" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
+
+  http.post("/auth/register", async () => {
+    return new Response(JSON.stringify({ message: "User registered" }), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
+
   http.get("/stickers", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
 
@@ -100,7 +123,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
 
     return new Response(
-      JSON.stringify({ email: "user@example.com", credits: 0 }),
+      JSON.stringify({ email: "user@example.com", credits: 50 }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
@@ -187,13 +210,13 @@ export const handlers = [
       JSON.stringify([
         {
           id: "6fa85f64-5717-4562-b3fc-2c963f66afa6",
-          image: "https://via.placeholder.com/150",
+          image: "https://picsum.photos/150",
           emoji: "🔥",
           createdAt: "2025-09-10T12:30:06.383Z",
         },
         {
           id: "7fa85f64-5717-4562-b3fc-2c963f66afa6",
-          image: "https://via.placeholder.com/150",
+          image: "https://picsum.photos/150",
           emoji: "🎉",
           createdAt: "2025-09-10T12:31:06.383Z",
         },
