@@ -65,7 +65,6 @@ export const handlers = [
 
   http.post("/stickers", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
     const formData = await request.formData();
     const image = formData.get("file");
     const emoji = formData.get("emoji") || "👍🏼";
@@ -84,7 +83,7 @@ export const handlers = [
       });
     }
 
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 2000));
 
     return new Response(
       JSON.stringify({
