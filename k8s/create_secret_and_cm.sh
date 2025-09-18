@@ -12,3 +12,8 @@ kubectl create secret generic ai-sticker-api-secrets \
 kubectl create configmap ai-sticker-api-config \
     --from-literal=GCS_BUCKET_NAME="${PRODUCTION_GCS_BUCKET_NAME}" \
     --from-literal=FRONTEND_URL="${PRODUCTION_FRONTEND_URL}"
+
+kubectl create secret generic sentry-bot-secrets \
+    --from-literal=TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN}" \
+    --from-literal=TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID}" \
+    --from-literal=WEBHOOK_SECRET="${WEBHOOK_SECRET}"
