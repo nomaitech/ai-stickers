@@ -20,8 +20,7 @@ const Login = ({ updateCredits }: Props) => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const result = await login(data).unwrap();
-      localStorage.setItem("jwt", result.token);
+      await login(data).unwrap();
       updateCredits();
     } catch {
       toast.error("Authentication failed");

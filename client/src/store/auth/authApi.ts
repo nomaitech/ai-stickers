@@ -1,5 +1,6 @@
 import { domainUrl } from "../../../constants/env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { setToken } from "./authSlice";
 
 interface RegisterResponse {
     message: string
@@ -15,6 +16,14 @@ export const authApi = createApi({
         method: "POST",
         body: credentials,
       }),
+      async onQueryStarted(_ , { dispatch, queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(setToken(result.data.token));
+        } catch {
+          throw new Error("Authentication failed");
+        }
+      }
     }),
     register: builder.mutation<RegisterResponse, { email: string; password: string}>({
       query: (newUser) => ({
