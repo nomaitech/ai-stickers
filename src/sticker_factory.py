@@ -5,6 +5,7 @@ import io
 
 client = OpenAI()
 
+
 def resize_image(image_data):
     img = Image.open(io.BytesIO(image_data))
     img = img.resize((512, 512), Image.LANCZOS)
@@ -15,19 +16,18 @@ def resize_image(image_data):
     return resized_image.getvalue()
 
 
-def generate_sticker(image_data, ref_path):
+def generate_sticker(image_data, filename, ref_path):
     prompt = """Using the style of the first image provided as reference for the art style, generate a Telegram-style sticker of the second image provided. Make sure the background is transparent and focus on the main subjects of the image.
     """
+    image_data = io.BytesIO(image_data)
+    image_data.name = filename
 
     result = client.images.edit(
         model="gpt-image-1",
-        image=[
-            open(ref_path, "rb"),
-            io.BytesIO(image_data)
-        ],
+        image=[open(ref_path, "rb"), image_data],
         prompt=prompt,
         background="transparent",
-        size="1024x1024"
+        size="1024x1024",
     )
     image_base64 = result.data[0].b64_json
     decoded_image_data = base64.b64decode(image_base64)

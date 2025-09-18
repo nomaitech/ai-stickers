@@ -26,6 +26,11 @@ spec:
         - containerPort: 8000
           name: http
           protocol: TCP
+        volumeMounts:
+        - name: google-credentials
+          mountPath: /app/secrets/google-credentials.json
+          subPath: GOOGLE_APPLICATION_CREDENTIALS_JSON
+          readOnly: true
         env:
         - name: OPENAI_API_KEY
           valueFrom:
@@ -47,6 +52,28 @@ spec:
             secretKeyRef:
               name: ai-sticker-api-secrets
               key: DATABASE_URL
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: STRIPE_SECRET_KEY
+        - name: STRIPE_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: STRIPE_WEBHOOK_SECRET
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /app/secrets/google-credentials.json
+        - name: GCS_BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: ai-sticker-api-config
+              key: GCS_BUCKET_NAME
+        - name: FRONTEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: ai-sticker-api-config
+              key: FRONTEND_URL
         resources:
           requests:
             memory: "256Mi"
@@ -70,6 +97,13 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 2
+      volumes:
+      - name: google-credentials
+        secret:
+          secretName: ai-sticker-api-secrets
+          items:
+          - key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+            path: GOOGLE_APPLICATION_CREDENTIALS_JSON
 ---
 apiVersion: apps/v1
 kind: Deployment

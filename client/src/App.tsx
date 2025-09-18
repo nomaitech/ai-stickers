@@ -1,9 +1,10 @@
-import Index from './pages/Index.tsx'
+import Route from './routes/Route';
+
 function App() {
 
   return (
     <>
-      <Index />
+      <Route />
     </>
   )
 }

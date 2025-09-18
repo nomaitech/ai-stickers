@@ -13,6 +13,7 @@ on:
 env:
   BRANCH_NAME: ${{ github.ref_name }}
   VITE_API_URL: ${{ vars.VITE_API_URL }}
+  VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
 
 permissions:
   pull-requests: write
@@ -72,14 +73,8 @@ jobs:
         with:
           script: |
             async function comment(){
-              const result = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                commit_sha: context.sha,
-              })
 
-              const issueNumber = result.data[0].number
-
+              const issueNumber = context.payload.pull_request.number;
               if(issueNumber){
                 await github.rest.issues.createComment({
                   issue_number: issueNumber,
