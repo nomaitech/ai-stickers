@@ -48,7 +48,6 @@ const Dashboard = () => {
       if(response.ok){
         const stickerPacks = await response.json();
         setStickerPacks(stickerPacks);
-        console.log(stickerPacks);
       }
     } catch{
       console.log("error");

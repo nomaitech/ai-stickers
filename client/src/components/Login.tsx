@@ -26,9 +26,7 @@ const onSubmit = async (data: { email: string; password: string }) => {
   });
     if(response.ok){
       const { token } = await response.json();
-      console.log("This the token", token);
       localStorage.setItem('jwt', token);
-      console.log(localStorage.getItem("jwt"));
       updateCredits();
     }else{
       toast.error('Login failed');
