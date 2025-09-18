@@ -4,7 +4,6 @@ const ErrorPage = () => {
     <button
       type="button"
       onClick={() => {
-    // @ts-expect-error test
     throw new Error("Sentry Test Error");
       }}
     >
