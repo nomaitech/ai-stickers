@@ -5,15 +5,12 @@ import Header from "./components/Header";
 import Register from "./components/Register";
 import { Toaster } from "sonner";
 import { domainUrl } from "../constants/env";
+import { useSelector } from "react-redux";
+import type { RootState } from "../src/store";
 
 const Layout = () => {
-  const [showRegister, setShowRegister] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
-
-    const logout = () => {
-    localStorage.removeItem("jwt");
-    setCredits(null);
-  };
+  const showRegister = useSelector((state: RootState) => state.ui.showRegister);
 
   const updateCredits = async () => {
     const token = localStorage.getItem("jwt");
@@ -43,14 +40,12 @@ const Layout = () => {
       <Header
         credits={credits}
         updateCredits={updateCredits}
-        logout={logout}
-        showRegister={() => setShowRegister(true)}
       />
       <main className="flex-1 flex bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
         <Outlet context={{ credits, setCredits, updateCredits, domainUrl }}/>
       </main>
       <Footer />
-      {showRegister && <Register hideRegister={() => setShowRegister(false)} />}
+      {showRegister && <Register />}
       <Toaster />
     </div>
   );

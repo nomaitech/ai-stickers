@@ -9,11 +9,7 @@ type FormData = {
   password: string;
 };
 
-type Props = {
-  updateCredits: () => void;
-};
-
-const Login = ({ updateCredits }: Props) => {
+const Login = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm<FormData>();
   const [login, { isLoading, /* error */ }] = useLoginMutation();
@@ -21,7 +17,6 @@ const Login = ({ updateCredits }: Props) => {
   const onSubmit = async (data: FormData) => {
     try {
       await login(data).unwrap();
-      updateCredits();
     } catch {
       toast.error("Authentication failed");
       console.error("Login failed");

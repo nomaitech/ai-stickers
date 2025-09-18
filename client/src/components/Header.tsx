@@ -1,13 +1,21 @@
 import { Brush, ArrowBigUpDash } from "lucide-react";
 import { toast } from "sonner";
 import Login from "./Login";
+import { useDispatch, useSelector } from "react-redux";
+import { removeToken } from "../store/auth/authSlice";
+import { updateCredits } from "../store/UI/uiSlice";
+import type { RootState } from "../store/index";
+import { userApi } from "../store/userInfo/userApi";
 
-type Props = {
-  credits: number | null;
-  updateCredits: () => void;
-};
-
-const Header = ({ credits, updateCredits, logout }: Props) => {
+const Header = () => {
+  const dispatch = useDispatch();
+  const credits = useSelector((state: RootState) => state.ui.credits);
+  const logout = () =>{
+    dispatch(removeToken());
+    dispatch(updateCredits(null));
+    dispatch(userApi.util.resetApiState());
+  }
+  
   const topUp = () => {
     const token = localStorage.getItem("jwt");
     if (typeof token === "string") {
@@ -62,9 +70,7 @@ const Header = ({ credits, updateCredits, logout }: Props) => {
               </button>
             </div>
           ) : (
-            <Login
-              updateCredits={() => updateCredits()}
-            />
+            <Login />
           )}
         </div>
       </div>
