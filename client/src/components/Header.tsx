@@ -5,7 +5,6 @@ import Login from "./Login";
 type Props = {
   credits: number | null;
   updateCredits: () => void;
-  logout: () => void;
 };
 
 const Header = ({ credits, updateCredits, logout }: Props) => {

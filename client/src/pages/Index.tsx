@@ -72,7 +72,6 @@ const Index = () => {
       <Header
         credits={credits}
         updateCredits={updateCredits}
-        logout={logout}
       />
       <div className="h-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
         <ImageGenInput
