@@ -1,4 +1,5 @@
-const Error = () => {
+
+const ErrorPage = () => {
   return (
     <button
       type="button"
@@ -12,4 +13,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default ErrorPage;
