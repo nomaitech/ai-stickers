@@ -6,7 +6,7 @@ ph = PasswordHasher()
 
 def hash_password(password: str):
     return ph.hash(password)
-     
+
 
 def verify_password(password: str, hashed: str):
     try:

@@ -18,9 +18,8 @@ const Layout = () => {
   const updateCredits = async () => {
     const token = localStorage.getItem("jwt");
     if (!token) return;
-
     try {
-      const response = await fetch(`${domainUrl}/credits`, {
+      const response = await fetch(`${domainUrl}/user-info`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
