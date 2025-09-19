@@ -1,7 +1,7 @@
 import { domainUrl } from "../../../constants/env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../index";
-import { updateCredits } from "../UI/uiSlice";
+import { updateCredits, updateEmail } from "../UI/uiSlice";
 
 interface UserInfo {
   email: string;
@@ -20,11 +20,11 @@ export const userApi = createApi({
   }),
   endpoints: (builder) => ({
     getUserInfo: builder.query<UserInfo, void>({
-      query: () => "user-info",
+      query: () => "/user-info",
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          console.log(result);
+          dispatch(updateEmail(result.data.email));
           dispatch(updateCredits(result.data.credits));
         } catch {
           throw new Error("Authentication failed in userApi");

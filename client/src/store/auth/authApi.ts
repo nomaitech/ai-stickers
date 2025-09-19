@@ -16,7 +16,7 @@ export const authApi = createApi({
       { email: string; password: string }
     >({
       query: (credentials) => ({
-        url: "login",
+        url: "/login",
         method: "POST",
         body: credentials,
       }),
@@ -31,7 +31,7 @@ export const authApi = createApi({
       { email: string; password: string }
     >({
       query: (newUser) => ({
-        url: "register",
+        url: "/register",
         method: "POST",
         body: newUser,
       }),

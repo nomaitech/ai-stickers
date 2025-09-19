@@ -19,7 +19,7 @@ export const genApi = createApi({
   endpoints: (builder) => ({
     generateSticker: builder.mutation<GenerationResponse, FormData>({
       query: (formData) => ({
-        url: "stickers",
+        url: "/stickers",
         method: "POST",
         body: formData,
       }),

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useModifyStickerMutation } from "../store/stickers/stickerApi";
 
 interface StickerPack {
   id: string;
@@ -18,19 +19,13 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
   const [editing, setEditing] = useState(false);
   const [emoji, setEmoji] = useState(sticker.emoji);
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
+  const [modifySticker] = useModifyStickerMutation();
 
   const handleSave = async () => {
-    const token = localStorage.getItem("jwt");
-    try {
-      const response = await fetch(`/stickers/${sticker.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ emoji, packId: selectedPack }),
-      });
-      if (!response.ok) throw new Error("Update failed");
+    try{
+      if(selectedPack) {
+        await modifySticker({ stickerId: sticker.id, emoji }).unwrap();
+      }
       setEditing(false);
     } catch (err) {
       console.error(err);

@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import Login from "./Login";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/auth/authSlice";
-import { updateCredits } from "../store/UI/uiSlice";
+import { updateCredits, updateEmail } from "../store/UI/uiSlice";
 import type { RootState } from "../store/index";
 import { userApi } from "../store/userInfo/userApi";
 
@@ -13,6 +13,7 @@ const Header = () => {
   const logout = () =>{
     dispatch(removeToken());
     dispatch(updateCredits(null));
+    dispatch(updateEmail(null));
     dispatch(userApi.util.resetApiState());
   }
   
