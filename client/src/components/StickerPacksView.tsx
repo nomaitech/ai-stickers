@@ -1,20 +1,27 @@
 import { useState } from "react";
 import StickerView from "./StickerView";
-import { useLazyListStickersFromPackQuery, useRenameStickerPackMutation } from "../store/stickers/stickerApi";
+import {
+  useLazyListStickersFromPackQuery,
+  useRenameStickerPackMutation,
+} from "../store/stickers/stickerApi";
 
-interface StickerPack {
+type StickerPack = {
   id: string;
   name: string;
   createdAt: string;
 }
 
-type Props = { pack: StickerPack; stickerPacks: StickerPack[] };
+type Props = {
+  pack: StickerPack;
+  stickerPacks: StickerPack[];
+};
 
 const StickerPackView = ({ pack, stickerPacks }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [name, setName] = useState(pack.name);
-  const [fetchStickers, { data: stickers, isFetching }] = useLazyListStickersFromPackQuery();
+  const [fetchStickers, { data: stickers, isFetching }] =
+    useLazyListStickersFromPackQuery();
   const [renameStickerPack] = useRenameStickerPackMutation();
 
   const handleClick = async () => {
@@ -31,7 +38,6 @@ const StickerPackView = ({ pack, stickerPacks }: Props) => {
     } catch (error) {
       console.error("Error renaming sticker pack:", error);
     }
-
   };
 
   return (

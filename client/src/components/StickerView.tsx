@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { useModifyStickerMutation } from "../store/stickers/stickerApi";
 
-interface StickerPack {
+type StickerPack = {
   id: string;
   name: string;
   createdAt: string;
-}
+};
 
-interface Sticker {
+type Sticker = {
   id: string;
   image: string;
   emoji: string;
-}
+};
 
-type Props = { sticker: Sticker, stickerPacks: StickerPack[] };
+type Props = {
+  sticker: Sticker;
+  stickerPacks: StickerPack[];
+};
 
 const StickerView = ({ sticker, stickerPacks }: Props) => {
   const [editing, setEditing] = useState(false);
@@ -22,8 +25,8 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
   const [modifySticker] = useModifyStickerMutation();
 
   const handleSave = async () => {
-    try{
-      if(selectedPack) {
+    try {
+      if (selectedPack) {
         await modifySticker({ stickerId: sticker.id, emoji }).unwrap();
       }
       setEditing(false);
@@ -34,7 +37,10 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
 
   return (
     <div className="flex flex-col p-2 border rounded">
-      <div onClick={() => setEditing(!editing)} className="cursor-pointer flex items-center space-x-2">
+      <div
+        onClick={() => setEditing(!editing)}
+        className="cursor-pointer flex items-center space-x-2"
+      >
         <img src={sticker.image} alt={emoji} className="w-10 h-10" />
         <span>{emoji}</span>
       </div>
@@ -42,7 +48,7 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
       {editing && (
         <div className="mt-2 p-2 border-t flex flex-col space-y-2">
           <img src={sticker.image} alt={emoji} className="w-32 h-32 mx-auto" />
-          
+
           <label>
             Emoji:
             <input
@@ -62,17 +68,23 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
             >
               <option value="">Select pack</option>
               {stickerPacks.map((pack) => (
-                  <option key={pack.id} value={pack.id}>
-                    {pack.name}
-                  </option>
+                <option key={pack.id} value={pack.id}>
+                  {pack.name}
+                </option>
               ))}
             </select>
           </label>
 
-          <button onClick={handleSave} className="bg-blue-500 text-white p-1 rounded">
+          <button
+            onClick={handleSave}
+            className="bg-blue-500 text-white p-1 rounded"
+          >
             Save
           </button>
-          <button onClick={() => setEditing(false)} className="bg-gray-300 p-1 rounded">
+          <button
+            onClick={() => setEditing(false)}
+            className="bg-gray-300 p-1 rounded"
+          >
             Cancel
           </button>
         </div>

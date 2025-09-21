@@ -2,7 +2,7 @@ import { domainUrl } from "../../../constants/env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../index";
 
-interface GenerationResponse {
+type GenerationResponse = {
     image: string;
 }
 

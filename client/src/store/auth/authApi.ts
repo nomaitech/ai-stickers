@@ -3,18 +3,24 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken } from "./authSlice";
 import { userApi } from "../userInfo/userApi";
 
-interface RegisterResponse {
+type RegisterResponse = {
   message: string;
+}
+
+type Token = {
+  token: string;
+}
+
+type Credentials = {
+  email: string;
+  password: string;
 }
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: `${domainUrl}/auth` }),
   endpoints: (builder) => ({
-    login: builder.mutation<
-      { token: string },
-      { email: string; password: string }
-    >({
+    login: builder.mutation<Token, Credentials>({
       query: (credentials) => ({
         url: "/login",
         method: "POST",
@@ -26,10 +32,7 @@ export const authApi = createApi({
           dispatch(userApi.endpoints.getUserInfo.initiate());
       },
     }),
-    register: builder.mutation<
-      RegisterResponse,
-      { email: string; password: string }
-    >({
+    register: builder.mutation<RegisterResponse, Credentials>({
       query: (newUser) => ({
         url: "/register",
         method: "POST",

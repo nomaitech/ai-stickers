@@ -6,8 +6,8 @@ const Dashboard = () => {
   const [email, setEmail] = useState("");
 
   const { domainUrl, credits } = useOutletContext<{
-    updateCredits: () => void;
     domainUrl: string;
+    updateCredits: () => void;
     credits: number;
     setCredits: (credits: number) => void;
   }>();
@@ -22,7 +22,7 @@ const Dashboard = () => {
       });
 
       if (response.ok) {
-        const { name, email} = await response.json();
+        const { name, email } = await response.json();
         setName(name);
         setEmail(email);
       } else {

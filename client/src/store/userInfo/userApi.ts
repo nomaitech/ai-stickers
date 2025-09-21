@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../index";
 import { updateCredits, updateEmail } from "../UI/uiSlice";
 
-interface UserInfo {
+type UserInfo = {
   email: string;
   credits: number;
 }

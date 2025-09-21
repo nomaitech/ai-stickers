@@ -138,7 +138,6 @@ export const handlers = [
 
   http.get("/sticker-packs", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    console.log("yeha");
     return new Response(
       JSON.stringify([
         {
