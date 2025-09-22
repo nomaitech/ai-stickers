@@ -44,7 +44,7 @@ export const stickerApi = createApi({
         method: "PATCH",
         body: { name },
       }),
-      invalidatesTags: (result, error, { packId }) => [{ type: "StickerPack", id: packId }],
+      invalidatesTags: (_result, _error, { packId }) => [{ type: "StickerPack", id: packId }],
     }),
     modifySticker: builder.mutation<Sticker, { stickerId: string; emoji?: string; packId?: string }>({
     query: ({ stickerId, emoji, packId }) => ({
@@ -52,7 +52,7 @@ export const stickerApi = createApi({
         method: "PATCH",
         body: { ...(emoji !== undefined && { emoji }), ...(packId !== undefined && { packId }) },
     }),
-    invalidatesTags: (result, error, { stickerId, packId }) => [
+    invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
         ...(packId ? [{ type: "StickerPack" as const, id: packId }] : []),
     ],
