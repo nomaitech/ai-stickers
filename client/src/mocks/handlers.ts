@@ -68,7 +68,7 @@ export const handlers = [
     const formData = await request.formData();
     const image = formData.get("file");
     const emoji = formData.get("emoji") || "👍🏼";
-    const prompt = formData.get("prompt");
+    const prompt = formData.get("prompt") || "potato";
 
     if (!prompt) {
       return new Response(JSON.stringify({ message: "Missing prompt" }), {

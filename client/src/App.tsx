@@ -15,9 +15,7 @@ function App() {
   }, [token, triggerGetUserInfo]);
 
   return (
-    <>
       <Route />
-    </>
   );
 }
 

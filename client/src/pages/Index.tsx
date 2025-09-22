@@ -11,7 +11,7 @@ const Index = () => {
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   const [generateSticker, { isLoading, data }] = useGenerateStickerMutation();
-  
+
   useEffect(() => {
     setEnableButton(!!imageFile && !isLoading);
   }, [imageFile, isLoading]);
@@ -20,29 +20,27 @@ const Index = () => {
     if (data) {
       setStickerResult(data.image);
     }
-  }, [data])
+  }, [data]);
 
-    const startGeneration = async () => {
-      try{
-        const formData = new FormData();
-        if ( imageFile instanceof Blob) {
-          formData.append("file", imageFile);
-        }
-        formData.append("emoji", "😃");
-        formData.append("prompt", "Potato");
-        generateSticker(formData);
-      } catch (err) {
-        console.log(err);
-        toast("Generation failed");
+  const startGeneration = async () => {
+    try {
+      const formData = new FormData();
+      if (imageFile instanceof Blob) {
+        formData.append("file", imageFile);
       }
+      formData.append("emoji", "😃");
+      formData.append("prompt", "");
+      generateSticker(formData);
+    } catch (err) {
+      console.log(err);
+      toast("Generation failed");
     }
+  };
 
   return (
     <div className="h-full w-full">
       <div className="h-full w-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
-        <ImageGenInput
-          setImageFileHandler={setImageFile}
-        />
+        <ImageGenInput setImageFileHandler={setImageFile} />
         <GenButton
           enableButton={enableButton}
           startGeneration={startGeneration}
