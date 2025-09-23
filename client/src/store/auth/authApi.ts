@@ -8,7 +8,7 @@ type RegisterResponse = {
 }
 
 type Token = {
-  token: string;
+  access_token: string;
 }
 
 type Credentials = {
@@ -28,7 +28,7 @@ export const authApi = createApi({
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
           const result = await queryFulfilled;
-          dispatch(setToken(result.data.token));
+          dispatch(setToken(result.data.access_token));
           dispatch(userApi.endpoints.getUserInfo.initiate());
       },
     }),
