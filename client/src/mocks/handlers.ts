@@ -21,7 +21,7 @@ export const handlers = [
     const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
-      return new Response(JSON.stringify({ token: "mock-token" }), {
+      return new Response(JSON.stringify({ access_token: "mock-token" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });

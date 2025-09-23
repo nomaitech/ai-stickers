@@ -1,7 +1,7 @@
 import { domainUrl } from "../../../constants/env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { RootState } from "../index";
 import { updateCredits, updateEmail } from "../UI/uiSlice";
+import { prepareAuthHeaders } from "../utils";
 
 type UserInfo = {
   email: string;
@@ -12,11 +12,7 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: domainUrl,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.access_token;
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
+    prepareHeaders: prepareAuthHeaders,
   }),
   endpoints: (builder) => ({
     getUserInfo: builder.query<UserInfo, void>({
