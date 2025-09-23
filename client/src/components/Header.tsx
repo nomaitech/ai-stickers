@@ -6,8 +6,10 @@ import { removeToken } from "../store/auth/authSlice";
 import { updateCredits, updateEmail } from "../store/UI/uiSlice";
 import type { RootState } from "../store/index";
 import { userApi } from "../store/userInfo/userApi";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const credits = useSelector((state: RootState) => state.ui.credits);
   const logout = () =>{
@@ -37,7 +39,7 @@ const Header = () => {
   return (
     <div className="border-b-1 border-border bg-white/50 backdrop-blur-sm">
       <div className="relative container mx-auto px-6 py-6">
-        <div className="flex items-center gap-3 max-w-[100px] sm:max-w-[300px]">
+      <div className="flex items-center gap-3 max-w-[100px] sm:max-w-[300px] cursor-pointer" onClick={() => navigate("/")}>
           <div className="p-2 bg-primary/10 rounded-lg">
             <Brush className="h-6 w-6 text-primary" />
           </div>
@@ -69,6 +71,7 @@ const Header = () => {
                 Top up
                 <ArrowBigUpDash className="w-5 h-5" />
               </button>
+              <span className="cursor-pointer" onClick={() => navigate("/dashboard")}>D A S H B O A R D</span>
             </div>
           ) : (
             <Login />
