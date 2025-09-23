@@ -5,7 +5,7 @@ import { userApi } from "./store/userInfo/userApi";
 import { useEffect } from "react";
 
 function App() {
-  const token = useSelector((state: RootState) => state.auth.token);
+  const token = useSelector((state: RootState) => state.auth.access_token);
   const [triggerGetUserInfo] = userApi.useLazyGetUserInfoQuery();
 
   useEffect(() => {
