@@ -1,15 +1,24 @@
 import { Brush, ArrowBigUpDash } from "lucide-react";
 import { toast } from "sonner";
 import Login from "./Login";
+import { useDispatch, useSelector } from "react-redux";
+import { removeToken } from "../store/auth/authSlice";
+import { updateCredits, updateEmail } from "../store/UI/uiSlice";
+import type { RootState } from "../store/index";
+import { userApi } from "../store/userInfo/userApi";
+import { useNavigate } from "react-router-dom";
 
-type Props = {
-  credits: number | null;
-  updateCredits: () => void;
-  logout: () => void;
-  showRegister: () => void;
-};
-
-const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
+const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const credits = useSelector((state: RootState) => state.ui.credits);
+  const logout = () =>{
+    dispatch(removeToken());
+    dispatch(updateCredits(null));
+    dispatch(updateEmail(null));
+    dispatch(userApi.util.resetApiState());
+  }
+  
   const topUp = () => {
     const token = localStorage.getItem("jwt");
     if (typeof token === "string") {
@@ -30,7 +39,7 @@ const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
   return (
     <div className="border-b-1 border-border bg-white/50 backdrop-blur-sm">
       <div className="relative container mx-auto px-6 py-6">
-        <div className="flex items-center gap-3 max-w-[100px] sm:max-w-[300px]">
+      <div className="flex items-center gap-3 max-w-[100px] sm:max-w-[300px] cursor-pointer" onClick={() => navigate("/")}>
           <div className="p-2 bg-primary/10 rounded-lg">
             <Brush className="h-6 w-6 text-primary" />
           </div>
@@ -62,12 +71,10 @@ const Header = ({ credits, updateCredits, logout, showRegister }: Props) => {
                 Top up
                 <ArrowBigUpDash className="w-5 h-5" />
               </button>
+              <span className="cursor-pointer" onClick={() => navigate("/dashboard")}>D A S H B O A R D</span>
             </div>
           ) : (
-            <Login
-              showRegister={() => showRegister()}
-              updateCredits={() => updateCredits()}
-            />
+            <Login />
           )}
         </div>
       </div>
