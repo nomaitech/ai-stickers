@@ -26,7 +26,7 @@ def override_openapi_schema(app: FastAPI):
 
         openapi_schema.pop("security", None)
 
-        protected_routes = ["/stickers", "/stickers/{sticker_id}", "/user-info", "/topup", "/sticker-packs", "/sticker-packs/{pack_id}", "/sticker-packs/{pack_id}/stickers", "/payments", "/payment-status/{session_id}",]
+        protected_routes = ["/stickers", "/stickers/{id}", "/user-info", "/topup", "/sticker-packs", "/sticker-packs/{id}", "/sticker-packs/{id}/stickers", "/payments", "/payment-status/{session_id}",]
 
         for path in openapi_schema["paths"]:
             if path in protected_routes:
