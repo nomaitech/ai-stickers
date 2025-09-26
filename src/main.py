@@ -24,7 +24,9 @@ from src.db_operations import (
     get_payment_session_by_stripe_session_id,
     add_credits_to_user,
     get_user_credits,
+    get_sticker_by_id as get_sticker_by_id_db,
 )
+from src import telegram_bot
 from src.auth import create_access_token, verify_token
 from src.hashed_pwd import hash_password, verify_password
 from src.models import (
@@ -248,9 +250,33 @@ async def create_sticker_pack(
 ):
     new_sticker_pack = StickerPacks(name=sticker_pack_data.name, user_id=user.id)
     db.add(new_sticker_pack)
+    db.flush()
+
+    input_stickers_list = []
+    for sticker_id in sticker_pack_data.stickers:
+        sticker = get_sticker_by_id_db(db, sticker_id, user.id)
+        if not sticker:
+            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} not found")
+        if sticker.sticker_pack_id:
+            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} already in a sticker pack")
+
+        sticker.sticker_pack_id = new_sticker_pack.id
+        db.add(sticker)
+
+        input_stickers_list.append(
+            telegram_bot.InputSticker(
+                sticker.generated_img_url, 
+                emoji_list=[sticker.emoji], 
+                format=telegram_bot.StickerFormat.STATIC
+            )
+        )
+    sticker_pack_schema = StickerPackSchema.model_validate(new_sticker_pack)
+    res = await telegram_bot.create_sticker_pack(sticker_pack_schema.sticker_pack_name, sticker_pack_schema.name, input_stickers_list)
+    if not res:
+        raise HTTPException(status_code=500, detail="Failed to create sticker pack")
+
     db.commit()
     db.refresh(new_sticker_pack)
-
     return new_sticker_pack
 
 
@@ -280,7 +306,8 @@ async def get_sticker_pack_by_id(db: db_dependency, id: int, user: Users = Depen
     sticker_pack = db.query(StickerPacks).filter(StickerPacks.user_id == user.id, StickerPacks.id == id).first()
     if not sticker_pack:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
-        
+    sticker_pack_schema = StickerPackSchema.model_validate(sticker_pack)
+    await telegram_bot.delete_sticker_pack(sticker_pack_schema.sticker_pack_name)
     db.delete(sticker_pack)
     db.commit()
 
