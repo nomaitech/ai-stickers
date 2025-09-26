@@ -1,7 +1,7 @@
 """Add user_id to images table
 
 Revision ID: c3afac8a5896
-Revises: a6f195fe346b
+Revises: 79dedccc6231
 Create Date: 2025-09-10 09:28:42.448061
 
 """
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = 'c3afac8a5896'
-down_revision: Union[str, Sequence[str], None] = 'a6f195fe346b'
+down_revision: Union[str, Sequence[str], None] = '79dedccc6231'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

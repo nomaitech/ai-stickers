@@ -1,7 +1,7 @@
 """Create payment sessions table
 
 Revision ID: 961e166462cd
-Revises: a6f195fe346b
+Revises: 2229649d48c0
 Create Date: 2025-09-11 20:43:16.621660
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "961e166462cd"
-down_revision: Union[str, Sequence[str], None] = "a6f195fe346b"
+down_revision: Union[str, Sequence[str], None] = "2229649d48c0"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

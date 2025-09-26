@@ -16,7 +16,7 @@ class UserSchema(BaseModel):
    
 class UserOut(BaseModel):
     email: str = Field(description="User email address")
-    credits: Optional[int] = Field(description="User credits", default=0)
+    credits: Optional[int] = Field(description="User credits")
 
     class Config:
         from_attributes = True

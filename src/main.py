@@ -117,6 +117,7 @@ async def register_new_user(db: db_dependency, user: UserSchema):
         db.add(new_transaction)
         db.commit()
 
+        new_user.credits = get_user_credits(db, new_user.id)
         new_user_response = UserOut.model_validate(new_user)
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Email already registered")
