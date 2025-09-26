@@ -27,7 +27,7 @@ def main():
     db = next(db_generator)
 
     try:
-        add_credit(db, "test@test.com")
+        add_credit(db, "test@example.com")
     finally:
         db.close()
 

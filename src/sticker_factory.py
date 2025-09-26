@@ -16,9 +16,12 @@ def resize_image(image_data):
     return resized_image.getvalue()
 
 
-def generate_sticker(image_data, filename, ref_path):
+def generate_sticker(image_data, filename, ref_path, user_prompt):
     prompt = """Using the style of the first image provided as reference for the art style, generate a Telegram-style sticker of the second image provided. Make sure the background is transparent and focus on the main subjects of the image.
     """
+    if user_prompt:
+        prompt += f" Additionally, follow these instructions: {user_prompt}"
+
     image_data = io.BytesIO(image_data)
     image_data.name = filename
 
