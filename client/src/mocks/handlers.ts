@@ -21,7 +21,7 @@ export const handlers = [
     const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
     if (email === "test@example.com" && password === "password") {
-      return new Response(JSON.stringify({ token: "mock-token" }), {
+      return new Response(JSON.stringify({ access_token: "mock-token" }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
@@ -65,11 +65,10 @@ export const handlers = [
 
   http.post("/stickers", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
     const formData = await request.formData();
     const image = formData.get("file");
     const emoji = formData.get("emoji") || "👍🏼";
-    const prompt = formData.get("prompt");
+    const prompt = formData.get("prompt") || "potato";
 
     if (!prompt) {
       return new Response(JSON.stringify({ message: "Missing prompt" }), {
@@ -84,7 +83,7 @@ export const handlers = [
       });
     }
 
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 2000));
 
     return new Response(
       JSON.stringify({
@@ -139,7 +138,6 @@ export const handlers = [
 
   http.get("/sticker-packs", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
     return new Response(
       JSON.stringify([
         {

@@ -3,10 +3,10 @@ import { ArrowRight, ArrowDown } from "lucide-react";
 
 type Props = {
   enableButton: boolean;
-  generateSticker: () => void;
+  startGeneration: () => void;
 };
 
-const GenButton = ({ enableButton, generateSticker }: Props) => {
+const GenButton = ({ enableButton, startGeneration }: Props) => {
   return (
     <div
       className={clsx("flex items-center justify-center", {
@@ -15,7 +15,7 @@ const GenButton = ({ enableButton, generateSticker }: Props) => {
     >
       <button
         className="min-w-[160px] rounded-lg cursor-pointer bg-primary hover:bg-primary/90 h12 text-lg text-input px-8 flex items-center gap-2 pt-4 pb-4"
-        onClick={generateSticker}
+        onClick={startGeneration}
       >
         Generate Sticker
         <ArrowDown className="w-5 h-5 lg:hidden" />
