@@ -19,7 +19,8 @@ const prepareMocks = async () => {
     await worker.start({
       serviceWorker: {
         url: '/mockServiceWorker.js',
-      }
+      },
+      onUnhandledRequest: "bypass"
     });
   }
 }
