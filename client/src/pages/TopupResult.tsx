@@ -20,12 +20,16 @@ const TopupResult = () => {
   }, [data]);
 
   if (isFetching) {
-    return <p>Pending...</p>;
+    return <p>Retrieving info...</p>;
   }
 
   if (!data) {
     return <p>Unknown payment state</p>;
   }
+
+    if (data.status === "pending") {
+      return <p>Payment pending</p>;
+    }
 
   if (data.status === "cancel") {
     return (
