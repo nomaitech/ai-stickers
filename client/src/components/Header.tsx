@@ -1,5 +1,4 @@
 import { Brush, ArrowBigUpDash } from "lucide-react";
-// import { toast } from "sonner";
 import Login from "./Login";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/auth/authSlice";
@@ -25,7 +24,7 @@ const Header = () => {
   const topUp = async () => {
     dispatch(billingApi.util.resetApiState());
     const result = await getPaymentSession().unwrap();
-    window.open(result.checkout_url, "_blank");
+    window.location.replace(result.checkout_url)
   };
 
   return (
