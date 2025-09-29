@@ -28,7 +28,7 @@ const TopupResult = () => {
   }
 
     if (data.status === "pending") {
-      return <p>Payment pending</p>;
+      return <p>Processing payment</p>;
     }
 
   if (data.status === "cancel") {
