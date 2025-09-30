@@ -1,15 +1,17 @@
 import { Brush, ArrowBigUpDash } from "lucide-react";
-import { toast } from "sonner";
 import Login from "./Login";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/auth/authSlice";
 import { updateCredits, updateEmail } from "../store/UI/uiSlice";
 import type { RootState } from "../store/index";
 import { userApi } from "../store/userInfo/userApi";
+import { billingApi } from "../store/billing/billingApi";
+import { useGetPaymentSessionMutation } from "../store/billing/billingApi";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [getPaymentSession] = useGetPaymentSessionMutation();
   const dispatch = useDispatch();
   const credits = useSelector((state: RootState) => state.ui.credits);
   const logout = () =>{
@@ -19,21 +21,10 @@ const Header = () => {
     dispatch(userApi.util.resetApiState());
   }
   
-  const topUp = () => {
-    const token = localStorage.getItem("jwt");
-    if (typeof token === "string") {
-      try {
-        fetch("/topup", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-        toast.error("Authentication on topup failed");
-      }
-    }
+  const topUp = async () => {
+    dispatch(billingApi.util.resetApiState());
+    const result = await getPaymentSession().unwrap();
+    window.location.replace(result.checkout_url)
   };
 
   return (

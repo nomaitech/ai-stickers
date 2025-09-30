@@ -6,17 +6,17 @@ const validateAuth = (request: Request): boolean => {
   const authHeader = request.headers.get("Authorization") || "";
   const token = authHeader.replace("Bearer ", "");
   return token === "mock-token";
-}
+};
 
 const unauthorizedResponse = () => {
   return new Response(JSON.stringify({ message: "Invalid credentials" }), {
     status: 401,
     headers: { "Content-Type": "application/json" },
   });
-}
+};
 
 export const handlers = [
-    http.post("/auth/login", async ({ request }) => {
+  http.post("/auth/login", async ({ request }) => {
     type LoginBody = { email: string; password: string };
     const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
@@ -158,7 +158,7 @@ export const handlers = [
   http.post("/sticker-packs", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
     type stickerName = { name: string };
-    const body = await request.json() as stickerName;
+    const body = (await request.json()) as stickerName;
     return new Response(
       JSON.stringify({
         id: "5fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -185,7 +185,7 @@ export const handlers = [
   http.patch("/sticker-packs/:packId", async ({ params, request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
     type stickerPackName = { name: string };
-    const body = await request.json() as stickerPackName;
+    const body = (await request.json()) as stickerPackName;
     return new Response(
       JSON.stringify({
         id: params.packId,
@@ -228,8 +228,38 @@ export const handlers = [
     return new Response(null, { status: 202 });
   }),
 
-  http.delete("/sticker-packs/:packId/stickers/:stickerId", async ({ request }) => {
+  http.delete(
+    "/sticker-packs/:packId/stickers/:stickerId",
+    async ({ request }) => {
+      if (!validateAuth(request)) return unauthorizedResponse();
+      return new Response(null, { status: 204 });
+    }
+  ),
+
+  http.post("/payments", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    return new Response(null, { status: 204 });
+    type stripeProductId = { price: string };
+    const body = (await request.json()) as stripeProductId;
+    if (body.price == "price_1RtrY9AttlqijaIVwcdBO5M5") {
+      return new Response(
+        JSON.stringify({
+          checkout_url:
+            "https://checkout.stripe.com/c/pay/cs_test_a1sMgOitlqmL0OvhPSvGN77nEWeibNgAhVlNFAke3ASNqZcZphTxpFKAyw#fidkdWxOYHwnPyd1blpxYHZxWjA0V3F3UjNEcXFpdGxvZExTfzduYGo3RkpkV0JNYFNRX2BiNFFGUGh9bmZKcHAwS3dGUWN2dzZkU2dGYEJrbFR9VHNKQkBOdFxhUVFDYDY9T1NhVWJnNlZnNTU1MjY0YTZXbCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl",
+        }),
+        { status: 200 }
+      );
+    }
+    return new Response(null, { status: 202 });
+  }),
+  http.get("/payment-status/:sessionId", async ({ request, params }) => {
+    if (!validateAuth(request)) return unauthorizedResponse();
+    if (!params.sessionId) return new Response(null, { status: 404 });
+    return new Response(
+      JSON.stringify({
+      session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
+      status: "completed",
+      created_at: "2025-09-28T21:33:52.375329Z",
+      completed_at: "2025-09-28T21:34:28.800049Z"
+    }))
   }),
 ];
