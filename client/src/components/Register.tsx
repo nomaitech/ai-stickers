@@ -10,14 +10,23 @@ type FormData = {
   confirmPassword: string;
 };
 
+type RequestData = {
+  email: string;
+  password: string;
+}
+
 const Register = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, watch, formState: { errors }, } = useForm<FormData>();
   const [ registerMutation, /*{ isLoading, error }*/] = useRegisterMutation();
 
     const onSubmit = async (formData: FormData) => {
+      if(formData.password !== formData.confirmPassword){
+        toast.error("Passwords do not match");
+        return
+      }
       try{
-        const result = await registerMutation(formData);
+        const result = await registerMutation({email: formData.email, password: formData.password} as RequestData);
         //@ts-expect-error expect meta not to correspond with the api query
         const status = result.meta?.response?.status;
         if(status===201){
