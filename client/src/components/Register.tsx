@@ -13,26 +13,39 @@ type FormData = {
 type RequestData = {
   email: string;
   password: string;
-}
+};
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, watch, formState: { errors }, } = useForm<FormData>();
-  const [ registerMutation, /*{ isLoading, error }*/] = useRegisterMutation();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [registerMutation /*{ isLoading, error }*/] = useRegisterMutation();
 
-    const onSubmit = async (formData: FormData) => {
-      if(formData.password !== formData.confirmPassword){
-        toast.error("Passwords do not match");
-        return
-      }
-      try{
-        await registerMutation({ email: formData.email, password: formData.password } as RequestData).unwrap();
-        toast.success("Register successful");
-        dispatch(closeRegister());
-      } catch{
+  const onSubmit = async (formData: FormData) => {
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    try {
+      await registerMutation({
+        email: formData.email,
+        password: formData.password,
+      } as RequestData).unwrap();
+      toast.success("Register successful");
+      dispatch(closeRegister());
+    } catch (err:unknown) {
+      //@ts-expect-error errors of unknown type
+      if (err.status === 400 && "data" in err && err.data?.detail === "Email already registered") {
+        toast.error("Email already registered");
+      } else {
         toast.error("Register failed");
         console.error("Register failed");
       }
+    }
   };
 
   const password = watch("password");
