@@ -5,6 +5,7 @@ import { userApi } from "../userInfo/userApi";
 
 type RegisterResponse = {
   message: string;
+  code: number;
 }
 
 type Token = {
