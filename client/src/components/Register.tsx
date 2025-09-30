@@ -26,19 +26,9 @@ const Register = () => {
         return
       }
       try{
-        const result = await registerMutation({ email: formData.email, password: formData.password } as RequestData);
-        if ('data' in result) {
-          //@ts-expect-error expect meta not to correspond with the api query
-          const requestStatus = result.meta?.response?.status;
-          console.log(requestStatus);
-        if(requestStatus===201){
-          toast.success("Register successful");
-          dispatch(closeRegister());
-        }else if (requestStatus===402){
-          toast.error("Register failed");
-          console.error("Register failed");
-        }
-      }
+        await registerMutation({ email: formData.email, password: formData.password } as RequestData).unwrap();
+        toast.success("Register successful");
+        dispatch(closeRegister());
       } catch{
         toast.error("Register failed");
         console.error("Register failed");
