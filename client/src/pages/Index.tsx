@@ -4,6 +4,7 @@ import ImageGenInput from "../components/ImageGenInput";
 import GenButton from "../components/GenButton";
 import ImageGenOutput from "../components/ImageGenOutput";
 import { useGenerateStickerMutation } from "../store/generation/genApi";
+import { useGetUserInfoQuery } from "../store/userInfo/userApi";
 
 const Index = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -11,7 +12,7 @@ const Index = () => {
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
   const [generateSticker, { isLoading, data }] = useGenerateStickerMutation();
-
+  const { refetch } = useGetUserInfoQuery();
   useEffect(() => {
     setEnableButton(!!imageFile && !isLoading);
   }, [imageFile, isLoading]);
@@ -19,8 +20,9 @@ const Index = () => {
   useEffect(() => {
     if (data) {
       setStickerResult(data.image);
+      refetch();
     }
-  }, [data]);
+  }, [data, refetch]);
 
   const startGeneration = async () => {
     try {

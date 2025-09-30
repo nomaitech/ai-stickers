@@ -120,9 +120,9 @@ export const handlers = [
 
   http.get("/user-info", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
+    const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
-      JSON.stringify({ email: "user@example.com", credits: 50 }),
+      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
