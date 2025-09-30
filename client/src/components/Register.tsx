@@ -15,9 +15,18 @@ const Register = () => {
   const { register, handleSubmit, watch, formState: { errors }, } = useForm<FormData>();
   const [ registerMutation, /*{ isLoading, error }*/] = useRegisterMutation();
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async (formData: FormData) => {
       try{
-        await registerMutation(data).unwrap();
+        const result = await registerMutation(formData);
+        //@ts-expect-error expect meta not to correspond with the api query
+        const status = result.meta?.response?.status;
+        if(status===201){
+          toast.success("Register successful");
+          dispatch(closeRegister());
+        }else if (status===402){
+          toast.error("Register failed");
+          console.error("Register failed");
+        }
       } catch{
         toast.error("Register failed");
         console.error("Register failed");
