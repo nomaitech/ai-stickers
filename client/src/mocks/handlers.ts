@@ -88,7 +88,7 @@ export const handlers = [
     return new Response(
       JSON.stringify({
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        image: imageRawData,
+        generated_img_url: imageRawData,
         emoji,
         prompt,
         createdAt: "2025-09-10T12:11:06.383Z",

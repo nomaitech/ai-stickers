@@ -19,7 +19,7 @@ const Index = () => {
 
   useEffect(() => {
     if (data) {
-      setStickerResult(data.image);
+      setStickerResult(data.generated_img_url);
       refetch();
     }
   }, [data, refetch]);
