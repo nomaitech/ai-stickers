@@ -37,7 +37,7 @@ const ImageGenOutput = ({ isLoading, stickerResult }: Props) => {
           Receive your sticker
         </h3>
         <p className="text-sm text-muted-foreground">
-          Render personalized sticker
+          Rendering personalized sticker
         </p>
       <div className="flex flex-col justify-center items-center h-full gap-2">
         {isLoading ? (
