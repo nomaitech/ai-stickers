@@ -51,8 +51,7 @@ export const stickerApi = createApi({
         method: "PATCH",
         body: {
           ...(emoji !== undefined && { emoji }),
-          ...(packId !== undefined && { packId }),
-          ...(packId !== undefined && { packId }),
+          ...(packId !== undefined && { sticker_pack_id:packId }),
         },
       }),
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
