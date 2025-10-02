@@ -95,6 +95,9 @@ const StickerPackView = ({ pack, stickerPacks }: Props) => {
           {isFetching ? (
             <p>Loading stickers...</p>
           ) : (
+            !stickers ? (
+              <p>No stickers in this pack</p> 
+            ) :
             stickers?.map((sticker) => (
               <StickerView
                 key={sticker.id}

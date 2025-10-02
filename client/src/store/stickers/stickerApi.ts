@@ -45,12 +45,13 @@ export const stickerApi = createApi({
       },
       invalidatesTags: [{ type: "Sticker", id: "LIST" }],
     }),
-    modifySticker: builder.mutation< Sticker, { stickerId: string; emoji?: string; packId?: string }>({
+    modifySticker: builder.mutation< Sticker, { stickerId: string; emoji?: string; packId?: string | null }>({
       query: ({ stickerId, emoji, packId }) => ({
         url: `/stickers/${stickerId}`,
         method: "PATCH",
         body: {
           ...(emoji !== undefined && { emoji }),
+          ...(packId !== undefined && { packId }),
           ...(packId !== undefined && { packId }),
         },
       }),

@@ -26,7 +26,7 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
 
   const handleSave = async () => {
     try {
-        await modifySticker({ stickerId: sticker.id, emoji }).unwrap();
+      await modifySticker({ stickerId: sticker.id, emoji, packId: selectedPack }).unwrap();
       setEditing(false);
     } catch (err) {
       console.error(err);
