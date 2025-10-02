@@ -29,11 +29,13 @@ const Index = () => {
       setStickerResult(result.generated_img_url);
       refetch();
     } catch (err) {
-      if (err?.status === 402) {
-        toast("Not enough credits");
-      } else {
-        console.log(err);
-        toast("Generation failed");
+      if (err && typeof err === "object" && "status" in err) {
+        if ((err as { status: number }).status === 402) {
+          toast("Not enough credits");
+        } else {
+          console.log(err);
+          toast("Generation failed");
+        }
       }
     }
   };
