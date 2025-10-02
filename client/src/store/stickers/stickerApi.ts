@@ -80,7 +80,7 @@ export const stickerApi = createApi({
         method: "POST",
         body: JSON.stringify({ name }),
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
             },
       }),
       invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
