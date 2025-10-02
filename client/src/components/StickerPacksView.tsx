@@ -41,7 +41,7 @@ const StickerPackView = ({ pack, stickerPacks }: Props) => {
   };
 
   return (
-    <div className="p-3 border rounded">
+    <div className="p-3 m-2 border rounded">
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={handleClick}

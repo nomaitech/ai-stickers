@@ -34,19 +34,18 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
   };
 
   return (
-    <div className="flex flex-col p-2 border rounded">
+    <div className="flex flex-col p-2 m-2 border rounded">
       <div
         onClick={() => setEditing(!editing)}
-        className="cursor-pointer flex items-center space-x-2"
+        className="cursor-pointer flex items-center justify-center space-x-2"
       >
-        <img src={sticker.generated_img_url} alt={emoji} className="w-10 h-10" />
-        <span>{emoji}</span>
+        <span>Image: </span><img src={sticker.generated_img_url} alt={emoji} className="w-10 h-10" />
+        <span>Associated emoji: </span><span>{emoji}</span>
       </div>
 
       {editing && (
-        <div className="mt-2 p-2 border-t flex flex-col space-y-2">
+        <div className="mt-2 p-2 border-t flex flex-col justify-center items-center space-y-2">
           <img src={sticker.generated_img_url} alt={emoji} className="w-32 h-32 mx-auto" />
-
           <label>
             Emoji:
             <input
@@ -76,13 +75,13 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
           }
           <button
             onClick={handleSave}
-            className="bg-blue-500 text-white p-1 rounded"
+            className="bg-blue-500 text-white p-1 rounded w-full"
           >
             Save
           </button>
           <button
             onClick={() => setEditing(false)}
-            className="bg-gray-300 p-1 rounded"
+            className="bg-gray-300 p-1 rounded w-full"
           >
             Cancel
           </button>
