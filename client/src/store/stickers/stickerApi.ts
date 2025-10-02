@@ -25,13 +25,17 @@ export const stickerApi = createApi({
     getStickers: builder.query<Sticker[], void>({
       query: () => "/stickers",
       providesTags: (result) =>
-        result ? [
+        result
+          ? [
               ...result.map(({ id }) => ({ type: "Sticker" as const, id })),
               { type: "Sticker", id: "LIST" },
-            ] : [
-              { type: "Sticker", id: "LIST" }],
+            ]
+          : [{ type: "Sticker", id: "LIST" }],
     }),
-    createSticker: builder.mutation<Sticker, { original_image: File; emoji?: string; prompt?: string }>({
+    createSticker: builder.mutation<
+      Sticker,
+      { original_image: File; emoji?: string; prompt?: string }
+    >({
       query: ({ original_image, emoji, prompt }) => {
         const formData = new FormData();
         formData.append("original_image", original_image);
@@ -45,7 +49,10 @@ export const stickerApi = createApi({
       },
       invalidatesTags: [{ type: "Sticker", id: "LIST" }],
     }),
-    modifySticker: builder.mutation< Sticker, { stickerId: string; emoji?: string; packId?: string }>({
+    modifySticker: builder.mutation<
+      Sticker,
+      { stickerId: string; emoji?: string; packId?: string }
+    >({
       query: ({ stickerId, emoji, packId }) => ({
         url: `/stickers/${stickerId}`,
         method: "PATCH",
@@ -79,6 +86,9 @@ export const stickerApi = createApi({
         url: "/sticker-packs",
         method: "POST",
         body: { name },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }),
       invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
     }),
@@ -88,7 +98,10 @@ export const stickerApi = createApi({
         method: "GET",
       }),
     }),
-    renameStickerPack: builder.mutation<StickerPack, { packId: string; name: string }>({
+    renameStickerPack: builder.mutation<
+      StickerPack,
+      { packId: string; name: string }
+    >({
       query: ({ packId, name }) => ({
         url: `/sticker-packs/${packId}`,
         method: "PATCH",
@@ -113,7 +126,10 @@ export const stickerApi = createApi({
         method: "GET",
       }),
     }),
-    addStickerToPack: builder.mutation<void, { packId: string; stickerId: string } >({
+    addStickerToPack: builder.mutation<
+      void,
+      { packId: string; stickerId: string }
+    >({
       query: ({ packId, stickerId }) => ({
         url: `/sticker-packs/${packId}/stickers`,
         method: "POST",
@@ -123,7 +139,10 @@ export const stickerApi = createApi({
         { type: "StickerPack", id: packId },
       ],
     }),
-    removeStickerFromPack: builder.mutation< void, { packId: string; stickerId: string }>({
+    removeStickerFromPack: builder.mutation<
+      void,
+      { packId: string; stickerId: string }
+    >({
       query: ({ packId, stickerId }) => ({
         url: `/sticker-packs/${packId}/stickers/${stickerId}`,
         method: "DELETE",
