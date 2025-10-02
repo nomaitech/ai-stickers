@@ -73,6 +73,13 @@ export const stickerApi = createApi({
         url: "/sticker-packs",
         method: "GET",
       }),
+        providesTags: (result) =>
+    result
+      ? [
+          ...result.map(({ id }) => ({ type: "StickerPack" as const, id })),
+          { type: "StickerPack", id: "LIST" },
+        ]
+      : [{ type: "StickerPack", id: "LIST" }],
     }),
     createPack: builder.mutation<StickerPack, { name: string }>({
       query: ({ name }) => ({
