@@ -10,7 +10,7 @@ interface StickerPack {
 
 interface Sticker {
   id: string;
-  image: string;
+  generated_img_url: string;
   emoji: string;
 }
 

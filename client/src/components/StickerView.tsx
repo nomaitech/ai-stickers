@@ -9,7 +9,7 @@ type StickerPack = {
 
 type Sticker = {
   id: string;
-  image: string;
+  generated_img_url: string;
   emoji: string;
 };
 
@@ -41,13 +41,13 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
         onClick={() => setEditing(!editing)}
         className="cursor-pointer flex items-center space-x-2"
       >
-        <img src={sticker.image} alt={emoji} className="w-10 h-10" />
+        <img src={sticker.generated_img_url} alt={emoji} className="w-10 h-10" />
         <span>{emoji}</span>
       </div>
 
       {editing && (
         <div className="mt-2 p-2 border-t flex flex-col space-y-2">
-          <img src={sticker.image} alt={emoji} className="w-32 h-32 mx-auto" />
+          <img src={sticker.generated_img_url} alt={emoji} className="w-32 h-32 mx-auto" />
 
           <label>
             Emoji:
