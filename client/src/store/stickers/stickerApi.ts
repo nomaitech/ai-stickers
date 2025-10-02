@@ -142,4 +142,5 @@ export const {
   useLazyListStickersFromPackQuery,
   useRenameStickerPackMutation,
   useModifyStickerMutation,
+  useGetStickersQuery,
 } = stickerApi;

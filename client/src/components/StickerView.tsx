@@ -15,7 +15,7 @@ type Sticker = {
 
 type Props = {
   sticker: Sticker;
-  stickerPacks: StickerPack[];
+  stickerPacks?: StickerPack[];
 };
 
 const StickerView = ({ sticker, stickerPacks }: Props) => {
@@ -59,6 +59,7 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
             />
           </label>
 
+        {stickerPacks && 
           <label>
             Sticker Pack:
             <select
@@ -74,7 +75,7 @@ const StickerView = ({ sticker, stickerPacks }: Props) => {
               ))}
             </select>
           </label>
-
+          }
           <button
             onClick={handleSave}
             className="bg-blue-500 text-white p-1 rounded"
