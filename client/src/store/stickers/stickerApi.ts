@@ -56,6 +56,7 @@ export const stickerApi = createApi({
       }),
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
+        { type: "Sticker", id: "LIST" }, 
         ...(packId ? [{ type: "StickerPack" as const, id: packId }] : []),
       ],
     }),
