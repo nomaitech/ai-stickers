@@ -143,4 +143,5 @@ export const {
   useRenameStickerPackMutation,
   useModifyStickerMutation,
   useGetStickersQuery,
+  useCreatePackMutation,
 } = stickerApi;
