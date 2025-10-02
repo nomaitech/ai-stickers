@@ -11,18 +11,11 @@ const Index = () => {
   const [enableButton, setEnableButton] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
-  const [generateSticker, { isLoading, data }] = useGenerateStickerMutation();
+  const [generateSticker, { isLoading }] = useGenerateStickerMutation();
   const { refetch } = useGetUserInfoQuery();
   useEffect(() => {
     setEnableButton(!!imageFile && !isLoading);
   }, [imageFile, isLoading]);
-
-  useEffect(() => {
-    if (data) {
-      setStickerResult(data.generated_img_url);
-      refetch();
-    }
-  }, [data, refetch]);
 
   const startGeneration = async () => {
     try {
@@ -32,10 +25,16 @@ const Index = () => {
       }
       formData.append("emoji", "😃");
       formData.append("prompt", "");
-      generateSticker(formData);
+      const result = await generateSticker(formData).unwrap();
+      setStickerResult(result.generated_img_url);
+      refetch();
     } catch (err) {
-      console.log(err);
-      toast("Generation failed");
+      if (err?.status === 402) {
+        toast("Not enough credits");
+      } else {
+        console.log(err);
+        toast("Generation failed");
+      }
     }
   };
 
