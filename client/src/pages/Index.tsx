@@ -4,23 +4,18 @@ import ImageGenInput from "../components/ImageGenInput";
 import GenButton from "../components/GenButton";
 import ImageGenOutput from "../components/ImageGenOutput";
 import { useGenerateStickerMutation } from "../store/generation/genApi";
+import { useGetUserInfoQuery } from "../store/userInfo/userApi";
 
 const Index = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [enableButton, setEnableButton] = useState(false);
   const [stickerResult, setStickerResult] = useState<string | null>(null);
 
-  const [generateSticker, { isLoading, data }] = useGenerateStickerMutation();
-
+  const [generateSticker, { isLoading }] = useGenerateStickerMutation();
+  const { refetch } = useGetUserInfoQuery();
   useEffect(() => {
     setEnableButton(!!imageFile && !isLoading);
   }, [imageFile, isLoading]);
-
-  useEffect(() => {
-    if (data) {
-      setStickerResult(data.image);
-    }
-  }, [data]);
 
   const startGeneration = async () => {
     try {
@@ -30,10 +25,18 @@ const Index = () => {
       }
       formData.append("emoji", "😃");
       formData.append("prompt", "");
-      generateSticker(formData);
+      const result = await generateSticker(formData).unwrap();
+      setStickerResult(result.generated_img_url);
+      refetch();
     } catch (err) {
-      console.log(err);
-      toast("Generation failed");
+      if (err && typeof err === "object" && "status" in err) {
+        if ((err as { status: number }).status === 402) {
+          toast("Not enough credits");
+        } else {
+          console.log(err);
+          toast("Generation failed");
+        }
+      }
     }
   };
 

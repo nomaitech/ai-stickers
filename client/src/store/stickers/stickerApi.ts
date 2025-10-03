@@ -10,7 +10,7 @@ interface StickerPack {
 
 interface Sticker {
   id: string;
-  image: string;
+  generated_img_url: string;
   emoji: string;
 }
 
@@ -45,17 +45,18 @@ export const stickerApi = createApi({
       },
       invalidatesTags: [{ type: "Sticker", id: "LIST" }],
     }),
-    modifySticker: builder.mutation< Sticker, { stickerId: string; emoji?: string; packId?: string }>({
+    modifySticker: builder.mutation< Sticker, { stickerId: string; emoji?: string; packId?: string | null }>({
       query: ({ stickerId, emoji, packId }) => ({
         url: `/stickers/${stickerId}`,
         method: "PATCH",
         body: {
           ...(emoji !== undefined && { emoji }),
-          ...(packId !== undefined && { packId }),
+          ...(packId !== undefined && { sticker_pack_id:packId }),
         },
       }),
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
+        { type: "Sticker", id: "LIST" }, 
         ...(packId ? [{ type: "StickerPack" as const, id: packId }] : []),
       ],
     }),
@@ -73,12 +74,22 @@ export const stickerApi = createApi({
         url: "/sticker-packs",
         method: "GET",
       }),
+        providesTags: (result) =>
+    result
+      ? [
+          ...result.map(({ id }) => ({ type: "StickerPack" as const, id })),
+          { type: "StickerPack", id: "LIST" },
+        ]
+      : [{ type: "StickerPack", id: "LIST" }],
     }),
     createPack: builder.mutation<StickerPack, { name: string }>({
       query: ({ name }) => ({
         url: "/sticker-packs",
         method: "POST",
-        body: { name },
+        body: new URLSearchParams({ name }),
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
       }),
       invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
     }),
@@ -142,4 +153,6 @@ export const {
   useLazyListStickersFromPackQuery,
   useRenameStickerPackMutation,
   useModifyStickerMutation,
+  useGetStickersQuery,
+  useCreatePackMutation,
 } = stickerApi;
