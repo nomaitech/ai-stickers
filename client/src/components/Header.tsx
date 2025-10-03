@@ -1,4 +1,4 @@
-import { Brush, ArrowBigUpDash } from "lucide-react";
+import { Brush, ArrowBigUpDash, Folder } from "lucide-react";
 import Login from "./Login";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/auth/authSlice";
@@ -55,14 +55,22 @@ const Header = () => {
                 </span>
                 )
               </p>
+              <div className="flex gap-2">
               <button
-                className="min-w-[20px] flex rounded-lg cursor-pointer bg-primary hover:bg-primary/90 h12 text-lg text-input px-4  items-center pt-1 pb-1"
+                className="min-w-[20px] flex rounded-lg cursor-pointer bg-primary hover:bg-primary/90 h12 text-lg text-input px-4 items-center pt-1 pb-1"
                 onClick={topUp}
               >
                 Top up
                 <ArrowBigUpDash className="w-5 h-5" />
               </button>
-              <span className="cursor-pointer" onClick={() => navigate("/dashboard")}>D A S H B O A R D</span>
+                            <button
+                className="min-w-[20px] flex rounded-lg cursor-pointer bg-primary hover:bg-primary/90 h12 text-lg text-input px-4 items-center pt-1 pb-1 mr-1"
+                onClick={() => navigate("/dashboard")}
+              >
+                Dashboard
+                <Folder className="w-5 h-5" />
+              </button>
+              </div>
             </div>
           ) : (
             <Login />

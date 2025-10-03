@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareAuthHeaders } from "../utils";
 
 type GenerationResponse = {
-    image: string;
+    generated_img_url: string;
 }
 
 export const genApi = createApi({

@@ -13,7 +13,7 @@ const router = createBrowserRouter([
       { path: "/error", element: <ErrorPage /> },
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/payments/success", element: <TopupResult /> },
-      { path: "/payments/cancel", element: <TopupResult /> },
+      { path: "/payments/cancelled", element: <TopupResult /> },
     ],
   },
 ]);

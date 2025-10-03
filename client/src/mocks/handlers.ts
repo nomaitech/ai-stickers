@@ -41,24 +41,23 @@ export const handlers = [
 
   http.get("/stickers", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
+    console.log("It does try to get em I dont know man");
     return new Response(
-      JSON.stringify({
-        stickers: [
+      JSON.stringify([
           {
             id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            image: "https://via.placeholder.com/150",
+            generated_img_url: "https://picsum.photos/150",
             emoji: "👍",
             createdAt: "2025-09-10T12:11:06.383Z",
           },
           {
-            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            image: "https://via.placeholder.com/150",
+            id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+            generated_img_url: "https://picsum.photos/150",
             emoji: "🤪",
             createdAt: "2025-09-10T12:11:06.383Z",
           },
         ],
-      }),
+      ),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
@@ -88,7 +87,7 @@ export const handlers = [
     return new Response(
       JSON.stringify({
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        image: imageRawData,
+        generated_img_url: imageRawData,
         emoji,
         prompt,
         createdAt: "2025-09-10T12:11:06.383Z",
@@ -120,9 +119,9 @@ export const handlers = [
 
   http.get("/user-info", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
+    const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
-      JSON.stringify({ email: "user@example.com", credits: 50 }),
+      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
@@ -208,13 +207,13 @@ export const handlers = [
       JSON.stringify([
         {
           id: "6fa85f64-5717-4562-b3fc-2c963f66afa6",
-          image: "https://picsum.photos/150",
+          generated_img_url: "https://picsum.photos/150",
           emoji: "🔥",
           createdAt: "2025-09-10T12:30:06.383Z",
         },
         {
           id: "7fa85f64-5717-4562-b3fc-2c963f66afa6",
-          image: "https://picsum.photos/150",
+          generated_img_url: "https://picsum.photos/150",
           emoji: "🎉",
           createdAt: "2025-09-10T12:31:06.383Z",
         },
