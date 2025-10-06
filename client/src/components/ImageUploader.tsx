@@ -12,22 +12,24 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
     setPreviewUrl(url);
   };
 
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      const item = e.clipboardData?.items[0];
-      if (!item) return;
-      if (item.type.indexOf("image") !== -1) {
-        const file = item.getAsFile();
-        if (!file) return;
-        const url = URL.createObjectURL(file);
-        setImageFileHandler(file);
-        setPreviewUrl(url);
-      }
-    };
+const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
-    window.addEventListener("paste", handlePaste);
-    return () => window.removeEventListener("paste", handlePaste);
-  }, []);
+useEffect(() => {
+  const handlePaste = (e: ClipboardEvent) => {
+    const item = e.clipboardData?.items[0];
+    if (!item) return;
+    const file = item.getAsFile();
+    if (!file) return;
+    if (!allowedTypes.includes(file.type)) return;
+    const url = URL.createObjectURL(file);
+    setImageFileHandler(file);
+    setPreviewUrl(url);
+  };
+
+  window.addEventListener("paste", handlePaste);
+  return () => window.removeEventListener("paste", handlePaste);
+}, []);
+
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
