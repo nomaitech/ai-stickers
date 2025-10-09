@@ -225,7 +225,7 @@ async def list_sticker_packs(db: db_dependency, user: Users = Depends(get_curren
     
 
 @app.post("/sticker-packs", response_model=StickerPackSchema,tags=["Sticker Packs"])
-async def create_sticker_pack(db: db_dependency, name: str = Form(...), user: Users = Depends(get_current_user)):
+async def create_sticker_pack(db: db_dependency, name: str, user: Users = Depends(get_current_user)):
     new_sticker_pack = StickerPacks(name=name, user_id=user.id)
     db.add(new_sticker_pack)
     db.commit()
