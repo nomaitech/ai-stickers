@@ -2,22 +2,25 @@ import { Brush, ArrowBigUpDash, Folder } from "lucide-react";
 import Login from "./Login";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../store/auth/authSlice";
-import { updateCredits, updateEmail } from "../store/UI/uiSlice";
-import type { RootState } from "../store/index";
+import { resetUserInfo } from "../store/UI/uiSlice";
 import { userApi } from "../store/userInfo/userApi";
 import { billingApi } from "../store/billing/billingApi";
 import { useGetPaymentSessionMutation } from "../store/billing/billingApi";
 import { useNavigate } from "react-router-dom";
+import type { RootState } from "../store";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [getPaymentSession] = useGetPaymentSessionMutation();
   const dispatch = useDispatch();
-  const credits = useSelector((state: RootState) => state.ui.credits);
+  const userInfo = useSelector((state: RootState) => state.ui.userInfo);
+
+  const [getPaymentSession] = useGetPaymentSessionMutation();
+    
+  const credits = userInfo?.credits;
+
   const logout = () =>{
     dispatch(removeToken());
-    dispatch(updateCredits(null));
-    dispatch(updateEmail(null));
+    dispatch(resetUserInfo());
     dispatch(userApi.util.resetApiState());
   }
   
@@ -42,7 +45,7 @@ const Header = () => {
           </div>
         </div>
         <div className="absolute top-1/2 right-6 lg:block transform -translate-y-1/2">
-          {credits !== null ? (
+          {credits != undefined ? (
             <div className="flex flex-col items-center gap-2">
               <p className="text-sm font-semibold text-muted-foreground">
                 You have <span className="text-primary">{credits}</span> credits

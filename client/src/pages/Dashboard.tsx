@@ -13,8 +13,7 @@ import Card from "../components/Card";
 const Dashboard = () => {
   const [creating, setCreating] = useState(false);
   const [packName, setPackName] = useState("");
-  const userEmail = useSelector((state: RootState) => state.ui.email);
-  const userCredits = useSelector((state: RootState) => state.ui.credits);
+  const userInfo = useSelector((state: RootState) => state.ui.userInfo);
   const [createPack] = useCreatePackMutation();
   const { data: stickerPacks /* isLoading, error */ } = useListPacksQuery();
   const { data: stickers } = useGetStickersQuery();
@@ -25,7 +24,7 @@ const Dashboard = () => {
   };
 
   return (
-    userEmail && (
+    userInfo && (
       <div className="w-full flex items-center justify-center ">
         <Card>
           <div className="w-xl">
@@ -33,11 +32,11 @@ const Dashboard = () => {
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <span>Email:</span>
-                <span>{userEmail}</span>
+                <span>{userInfo.email}</span>
               </div>
               <div className="flex justify-between">
                 <span>Credits:</span>
-                <span>{userCredits}</span>
+                <span>{userInfo.credits}</span>
               </div>
             </div>
             <div>

@@ -1,12 +1,8 @@
-import { domainUrl } from "../../../constants/env";
+import { domainUrl } from "../../env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { updateCredits, updateEmail } from "../UI/uiSlice";
+import { updateUserInfo } from "../UI/uiSlice";
 import { prepareAuthHeaders } from "../utils";
-
-type UserInfo = {
-  email: string;
-  credits: number;
-}
+import type { UserInfo } from "../../types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -20,8 +16,7 @@ export const userApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const result = await queryFulfilled;
-          dispatch(updateEmail(result.data.email));
-          dispatch(updateCredits(result.data.credits));
+          dispatch(updateUserInfo(result.data));  
         } catch {
           throw new Error("Authentication failed in userApi");
         }

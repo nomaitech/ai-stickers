@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { UserInfo } from "../../types";
 
 type UIState = {
   showRegister: boolean;
-  credits: number | null;
-  email: string;
+  userInfo: UserInfo | undefined;
 };
 
 const uiSlice = createSlice({
   name: "ui",
-  initialState: { showRegister: false, credits: null } as UIState,
+  initialState: { showRegister: false } as UIState,
   reducers: {
     openRegister: (state) => {
       state.showRegister = true;
@@ -16,15 +16,15 @@ const uiSlice = createSlice({
     closeRegister: (state) => {
       state.showRegister = false;
     },
-    updateCredits: (state, action) => {
-      state.credits = action.payload;
+    updateUserInfo: (state, action) => {
+      state.userInfo = action.payload;
     },
-    updateEmail: (state, action) => {
-      state.email = action.payload;
+    resetUserInfo: (state) => {
+      state.userInfo = undefined;
     },
   },
 });
 
-export const { openRegister, closeRegister, updateCredits, updateEmail } =
+export const { openRegister, closeRegister, updateUserInfo, resetUserInfo } =
   uiSlice.actions;
 export default uiSlice.reducer;

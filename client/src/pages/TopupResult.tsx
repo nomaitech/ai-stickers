@@ -10,8 +10,8 @@ const TopupResult = () => {
   const sessionId = searchParams.get("session_id");
   const [polling, setPolling] = useState(true);
   const { data, isFetching } = useGetPaymentStatusQuery(sessionId ?? "", {
-    pollingInterval: polling ? 3000 : 0,
-    skip: !sessionId,
+    pollingInterval: 3000,
+    skip: !sessionId || !polling,
   });
   const navigate = useNavigate();
 
@@ -21,28 +21,13 @@ const TopupResult = () => {
     }
   }, [data]);
 
-  if (isFetching) {
-    return (
-      <div className="w-full flex items-center justify-center">
-        <div className="h-[200px]">
-          <Card>
-            <h4 className="font-bold text-center">Retrieving info...</h4>
-            <div className="h-full flex items-center justify-center">
-              <LoaderCircle className="animate-spin w-8 h-8 text-primary" />
-            </div>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   if (!data) {
     return (
       <div className="w-full flex items-center justify-center">
         <div className="h-[200px]">
           <Card>
-            <h4 className="font-bold text-center">Status:</h4>
-            <h4 className="font-bold text-center">Unknown Payment State</h4>
+            <h4 className="font-bold text-center">There was an error</h4>
+            <h4 className="font-bold text-center">Please try again</h4>
             <div className="h-full flex items-center justify-center">
               <LoaderCircle className="animate-spin w-8 h-8 text-primary" />
             </div>
@@ -52,7 +37,7 @@ const TopupResult = () => {
     );
   }
 
-  if (data.status === "pending") {
+  if (isFetching || data.status === "pending") {
     return (
       <div className="w-full flex items-center justify-center">
         <div className="h-[200px]">
@@ -73,7 +58,6 @@ const TopupResult = () => {
       <div className="w-full flex items-center justify-center">
         <div className="h-[200px]">
           <Card>
-            <h4 className="font-bold text-center">Status:</h4>
             <h4 className="font-bold text-center">Payment cancelled</h4>
             <div className="h-full flex items-center justify-center">
               <button
@@ -94,7 +78,6 @@ const TopupResult = () => {
       <div className="w-full flex items-center justify-center">
         <div className="h-[200px]">
           <Card>
-            <h4 className="font-bold text-center">Status:</h4>
             <h4 className="font-bold text-center">Payment successful</h4>
             <div className="h-full flex items-center justify-center">
               <button
@@ -110,7 +93,7 @@ const TopupResult = () => {
     );
   }
 
-  return <p>Unknown payment state</p>;
+  return <p>There was an error</p>;
 };
 
 export default TopupResult;

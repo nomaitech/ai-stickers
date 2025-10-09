@@ -1,4 +1,4 @@
-import { domainUrl } from "../../../constants/env";
+import { domainUrl } from "../../env";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken } from "./authSlice";
 import { userApi } from "../userInfo/userApi";

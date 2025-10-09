@@ -3,7 +3,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Register from "./components/Register";
 import { Toaster } from "sonner";
-import { domainUrl } from "../constants/env";
+import { domainUrl } from "./env";
 import { useSelector } from "react-redux";
 import type { RootState } from "../src/store";
 

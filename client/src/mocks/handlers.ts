@@ -117,13 +117,22 @@ export const handlers = [
     return new Response(null, { status: 204 });
   }),
 
-  http.get("/user-info", async ({ request }) => {
+  http.get("/user-info", ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    const creditAmount = Math.floor(Math.random() * 100);
-    return new Response(
-      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+
+    // Simulate a delay using a Promise that resolves after a random timeout
+    return new Promise((resolve) => {
+      const delay = Math.random() * 2000 + 500;
+      setTimeout(() => {
+        const creditAmount = Math.floor(Math.random() * 100);
+        resolve(
+          new Response(
+            JSON.stringify({ email: "user@example.com", credits: creditAmount }),
+            { status: 200, headers: { "Content-Type": "application/json" } }
+          )
+        );
+      }, delay);
+    });
   }),
 
   http.post("/topup", async ({ request }) => {
