@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useLoginMutation } from "../store/auth/authApi";
 import { useDispatch } from "react-redux";
@@ -11,12 +11,18 @@ type FormData = {
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm<FormData>();
-  const [login, { isLoading, /* error */ }] = useLoginMutation();
+  const [form, setForm] = useState<FormData>({ email: "", password: "" });
+  const [login, { isLoading /* , error */ }] = useLoginMutation();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const emailValid = /^\S+@\S+$/i.test(form.email);
+    if (!emailValid || form.password.length < 6) {
+      toast.error("Please enter a valid email and a password with 6+ chars");
+      return;
+    }
     try {
-      await login(data).unwrap();
+      await login(form).unwrap();
     } catch {
       toast.error("Authentication failed");
       console.error("Login failed");
@@ -24,21 +30,20 @@ const Login = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex p-2 flex-col items-center gap-0"
-    >
+    <form onSubmit={onSubmit} className="flex p-2 flex-col items-center gap-0">
       <input
         type="email"
         placeholder="Email"
+        value={form.email}
+        onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
         className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
-        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
       />
       <input
         type="password"
         placeholder="Password"
+        value={form.password}
+        onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
         className="px-2 py-1 text-sm border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
-        {...register("password", { required: true, minLength: 6 })}
       />
       <div className="flex gap-x-2 justify-between items-center">
         <button
