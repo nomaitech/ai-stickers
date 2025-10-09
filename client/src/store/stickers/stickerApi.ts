@@ -86,10 +86,10 @@ export const stickerApi = createApi({
       query: ({ name }) => ({
         url: "/sticker-packs",
         method: "POST",
-        body: new URLSearchParams({ name }),
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
+        body: { name },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }),
       invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
     }),
