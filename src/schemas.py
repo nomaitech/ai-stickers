@@ -66,6 +66,13 @@ class StickerPackSchema(BaseModel):
     user_id: int = Field(description="User ID")
     created_at: datetime = Field(description="Sticker pack creation timestamp")
 
+class StickerPackCreate(BaseModel):
+    name: str = Field(description="Sticker pack name")
+    
+    class Config:
+        from_attributes = True
+        json_schema_extra = {"examples": [{"name": "My Awesome Stickers"}]}
+
 class PaymentSessionCreate(BaseModel):
     price: str = Field(description="Stripe price ID")
 

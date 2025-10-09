@@ -45,6 +45,7 @@ from src.schemas import (
     StickersResponse,
     UpdateSticker,
     StickerPackSchema,
+    StickerPackCreate,
 )
 from src.sticker_factory import generate_sticker
 from src import billing
@@ -224,9 +225,13 @@ async def list_sticker_packs(db: db_dependency, user: Users = Depends(get_curren
     return sticker_pack_list
     
 
-@app.post("/sticker-packs", response_model=StickerPackSchema,tags=["Sticker Packs"])
-async def create_sticker_pack(db: db_dependency, name: str, user: Users = Depends(get_current_user)):
-    new_sticker_pack = StickerPacks(name=name, user_id=user.id)
+@app.post("/sticker-packs", response_model=StickerPackSchema, tags=["Sticker Packs"])
+async def create_sticker_pack(
+    sticker_pack_data: StickerPackCreate, 
+    db: db_dependency, 
+    user: Users = Depends(get_current_user)
+):
+    new_sticker_pack = StickerPacks(name=sticker_pack_data.name, user_id=user.id)
     db.add(new_sticker_pack)
     db.commit()
     db.refresh(new_sticker_pack)
