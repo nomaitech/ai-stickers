@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import Gallery from "../components/Gallery";
 import Reviews from "../components/Reviews";
 import FAQ from "../components/FAQ";
+import Features from "../components/Features";
 
 const LandingPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -55,6 +56,7 @@ const LandingPage = () => {
         />
         <ImageGenOutput isLoading={isLoading} stickerResult={stickerResult} />
       </div>
+      <Features />
       <FAQ />
       <Reviews />
       <Gallery />
