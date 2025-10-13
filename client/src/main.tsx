@@ -6,7 +6,8 @@ import './global.css'
 import App from './App.tsx'
 import { enableMocks, sentryDSN } from './env.ts';
 import * as Sentry from "@sentry/react";
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as ChakraProvider } from "@/components/ui/provider"
+
 
 Sentry.init({
   dsn: sentryDSN,
