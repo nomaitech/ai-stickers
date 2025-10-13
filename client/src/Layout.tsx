@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Register from "./components/Register";
 import { Toaster } from "sonner";
@@ -16,7 +15,6 @@ const Layout = () => {
       <main className="flex-1 flex bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
         <Outlet context={{ domainUrl }}/>
       </main>
-      <Footer />
       {showRegister && <Register />}
       <Toaster />
     </div>

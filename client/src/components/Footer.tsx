@@ -1,10 +1,15 @@
+import { Flex, Link } from "@chakra-ui/react";
+
 const Footer = () => {
   return (
-    <div className="flex-1 p-12 text-center">
-      <p className="text-sm text-muted-foreground">
-        Input an image with some description, get a cool sticker
-      </p>
-    </div>
+    <Flex p={4} height={20} justify="space-between" alignItems="center">
+      <div>
+        <Link variant="underline" href="/terms">Terms and conditions</Link>
+      </div>
+      <div>
+        <Link variant="underline" href="mailto:contact@gensticker.com">Contact Us</Link>
+      </div>
+    </Flex>
   );
 };
 

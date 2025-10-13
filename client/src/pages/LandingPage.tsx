@@ -6,6 +6,11 @@ import ImageGenOutput from "../components/ImageGenOutput";
 import { useGenerateStickerMutation } from "../store/generation/genApi";
 import { userApi } from "../store/userInfo/userApi";
 
+import Footer from "../components/Footer";
+import Gallery from "../components/Gallery";
+import Reviews from "../components/Reviews";
+import FAQ from "../components/FAQ";
+
 const LandingPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [enableButton, setEnableButton] = useState(false);
@@ -50,6 +55,10 @@ const LandingPage = () => {
         />
         <ImageGenOutput isLoading={isLoading} stickerResult={stickerResult} />
       </div>
+      <FAQ />
+      <Reviews />
+      <Gallery />
+      <Footer />
     </div>
   );
 };

@@ -27,7 +27,7 @@ prepareMocks().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <Provider store={store}>
-        <ChakraProvider>
+        <ChakraProvider forcedTheme="light">
           <App />
         </ChakraProvider>
       </Provider>
