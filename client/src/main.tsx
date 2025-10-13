@@ -6,6 +6,7 @@ import './global.css'
 import App from './App.tsx'
 import { enableMocks, sentryDSN } from './env.ts';
 import * as Sentry from "@sentry/react";
+import { ChakraProvider } from '@chakra-ui/react';
 
 Sentry.init({
   dsn: sentryDSN,
@@ -25,7 +26,9 @@ prepareMocks().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <Provider store={store}>
-        <App />
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
       </Provider>
     </StrictMode>,
   );
