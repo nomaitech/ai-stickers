@@ -12,7 +12,7 @@ const galleryImages = [{id: 1, image: gallery1, backgroundColor: "pink.50"}, {id
 const Gallery = () => {  
   return (
     <Flex flexDirection="column">
-      <Text lineHeight="38px" fontFamily="body" fontSize="3xl" fontWeight="semibold">Endless ways to turn your <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400"  bgClip='text' fontWeight="semibold">photos into stickers</Text></Text>
+      <Text mt={8} lineHeight="38px" fontFamily="body" fontSize="3xl" fontWeight="semibold">Endless ways to turn your <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400"  bgClip='text' fontWeight="semibold">photos into stickers</Text></Text>
       <Grid my={4} gap={4} templateColumns="repeat(2, 1fr)">
         {galleryImages.map((image, index) => (
           <Flex borderRadius={10} backgroundColor={image.backgroundColor} key={index} alignItems="center" justifyContent="center">
