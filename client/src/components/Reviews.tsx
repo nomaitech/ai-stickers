@@ -1,41 +1,43 @@
-import { Avatar, Flex, HStack, VStack, Text } from "@chakra-ui/react";
+import { Avatar, Flex, VStack, Text, Card } from "@chakra-ui/react";
 
 const users = [
   {
-    name: "John Doe",
+    name: "Arom Kim",
     avatar: "https://randomuser.me/api/portraits/men/74.jpg",
     review: "This user has something really nice to say about our amazing product!",
   },
   {
-    name: "Jane Doe",
+    name: "Theo Papadopoulos",
     avatar: "https://randomuser.me/api/portraits/women/28.jpg",
+    review: "This user has something really nice to say about our amazing product!",
+  },
+  {
+    name: "Lewis Carrot",
+    avatar: "https://randomuser.me/api/portraits/men/78.jpg",
     review: "This user has something really nice to say about our amazing product!",
   },
 ];
 
 const Reviews = () => {
   return (
-    <Flex p={4} w="full"flexDirection="column">
+    <Flex w="full" flexDirection="column">
       <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">Reviews</Text>
       <VStack w="full" flexDirection="column" alignItems="center" gap={8}>
         {users.map((user) => (
-          <Flex w="full" gap={2} flexDirection="column" alignItems="center" key={user.name}>
-            <Flex flexDirection="row" gap={4}>
-              <Avatar.Root size="2xl">
-                <Avatar.Fallback name={user.name} />
+          <Card.Root key={user.name} size="md" variant="elevated">
+            <Card.Body gap="2" flexDirection="row">
+              <Avatar.Root size="lg" shape="rounded">
                 <Avatar.Image src={user.avatar} />
+                <Avatar.Fallback name="Nue Camp" />
               </Avatar.Root>
-              <Text alignSelf="center" fontWeight="medium">{user.name}</Text>
-              
-          <Flex/>
-          </Flex>
-          <Flex/>
-              <Text color="fg.muted" textStyle="sm">
-              {user.review}
-            </Text>
-          <HStack/>
-          
-          </Flex>
+              <Flex ml={4} flexDirection="column">
+                <Card.Title>{user.name}</Card.Title>
+                <Card.Description mt={4}>
+                  {user.review}
+                </Card.Description>
+              </Flex>
+            </Card.Body>
+        </Card.Root>
         ))}
       </VStack>
     </Flex>

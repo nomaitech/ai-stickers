@@ -25,9 +25,9 @@ const items = [
 
 const FAQ = () => {
   return (
-    <Flex p={4} w="full"flexDirection="column">
+    <Flex w="full"flexDirection="column">
       <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">FAQ</Text>
-      <Accordion.Root collapsible defaultValue={["b"]}>
+      <Accordion.Root variant={"enclosed"} size={"lg"} collapsible defaultValue={["b"]}>
       {items.map((item, index) => (
         <Accordion.Item key={index} value={item.value}>
           <Accordion.ItemTrigger>

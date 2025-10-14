@@ -2,7 +2,7 @@ import { Flex, Link } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <Flex p={4} height={20} justify="space-between" alignItems="center">
+    <Flex height={20} justify="space-between" alignItems="center">
       <div>
         <Link variant="underline" href="/terms">Terms and conditions</Link>
       </div>

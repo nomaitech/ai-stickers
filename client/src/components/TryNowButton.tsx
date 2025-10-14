@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 type TryNowButtonProps = {
@@ -8,8 +8,8 @@ type TryNowButtonProps = {
 const TryNowButton = ({ text = "Try Now" }: TryNowButtonProps) => {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate("/generate-sticker")} w="full" size="2xl" variant="solid" colorPalette="gray">
-      {text}
+    <Button backgroundColor="orange.200" onClick={() => navigate("/generate-sticker")} w="full" size="xl" variant="solid" colorPalette="gray">
+      <Text color="orange.800">{text}</Text>
     </Button>
     )
 };

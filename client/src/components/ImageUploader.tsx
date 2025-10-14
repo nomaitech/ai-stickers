@@ -27,7 +27,7 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
 
     window.addEventListener("paste", handlePaste);
     return () => window.removeEventListener("paste", handlePaste);
-  }, []);
+  }, [setImageFileHandler]);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { getRootProps, getInputProps } = useDropzone({

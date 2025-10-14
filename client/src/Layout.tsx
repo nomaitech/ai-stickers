@@ -12,7 +12,7 @@ const Layout = () => {
   return (
   <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
+      <main className="flex-1 flex">
         <Outlet context={{ domainUrl }}/>
       </main>
       {showRegister && <Register />}
