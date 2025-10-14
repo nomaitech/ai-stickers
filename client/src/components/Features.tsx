@@ -13,7 +13,7 @@ const Features = () => {
       <Flex my={4} flexDirection="column" gap={4}>
         <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="pink.400" bgClip='text' fontSize="lg" fontWeight="semibold">Turn Photos into Stickers</Text>
         <Text fontSize="sm" color="fg.muted">Upload any photo and get a clean, high-quality sticker with transparent background, ready to download.</Text>
-        <Box className="flex flex-row">
+        <Flex flexDirection="row">
           <Box p={2}>
           <Image borderRadius={8} my={4} alignSelf="center" width={200} src={DogReal} alt="Dog Real" />
           </Box>
@@ -23,7 +23,7 @@ const Features = () => {
             </Box>
             <Image alignSelf="center" width={250} src={DogSticker} alt="Dog Sticker" />
           </Box>
-        </Box>
+        </Flex>
         <TryNowButton text="Create Your Own Stickers" />
       </Flex>
       <Flex my={4} flexDirection="column" gap={4}>

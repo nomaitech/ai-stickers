@@ -48,7 +48,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="h-full w-full">
+    <>
       <div className="h-full w-full container mx-auto px-6 py-6 flex flex-col lg:flex-row gap-6 items-stretch sm:py-3">
         <ImageGenInput setImageFileHandler={setImageFile} />
         <GenButton
@@ -72,7 +72,7 @@ const LandingPage = () => {
       <LandingSection>
         <Footer />
       </LandingSection>
-    </div>
+    </>
   );
 };
 
