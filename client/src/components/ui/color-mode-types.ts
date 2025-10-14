@@ -1,6 +1,8 @@
 import { useTheme } from "next-themes"
+import type { ThemeProviderProps } from "next-themes"
 
 export type ColorMode = "light" | "dark"
+export type { ThemeProviderProps }
 
 export interface UseColorModeReturn {
   colorMode: ColorMode
