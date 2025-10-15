@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
+import HeaderChakra from "./components/HeaderChakra";
 import Register from "./components/Register";
 import { Toaster } from "sonner";
 import { domainUrl } from "./env";
@@ -11,7 +12,7 @@ const Layout = () => {
 
   return (
   <div className="min-h-screen flex flex-col">
-      <Header />
+      <HeaderChakra />
       <main className="flex-1 flex">
         <Outlet context={{ domainUrl }}/>
       </main>

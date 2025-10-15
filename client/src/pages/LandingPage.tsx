@@ -12,6 +12,7 @@ import Reviews from "../components/Reviews";
 import FAQ from "../components/FAQ";
 import Features from "../components/Features";
 import LandingSection from "../components/LandingSection";
+import Proposal from "../components/Proposal";
 
 const LandingPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -57,6 +58,7 @@ const LandingPage = () => {
         />
         <ImageGenOutput isLoading={isLoading} stickerResult={stickerResult} />
       </div>
+      <Proposal/>
       <LandingSection>
         <Features />
       </LandingSection>
