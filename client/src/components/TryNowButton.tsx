@@ -8,7 +8,7 @@ type TryNowButtonProps = {
 const TryNowButton = ({ text = "Try Now" }: TryNowButtonProps) => {
   const navigate = useNavigate();
   return (
-    <Button backgroundColor="orange.200" onClick={() => navigate("/generate-sticker")} w="full" size="xl" variant="solid" colorPalette="gray">
+    <Button backgroundColor="orange.300" onClick={() => navigate("/generate-sticker")} w="full" size="xl" variant="solid" colorPalette="gray">
       <Text color="orange.800">{text}</Text>
     </Button>
     )
