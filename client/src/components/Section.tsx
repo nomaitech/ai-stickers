@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-const LandingSection = ({ children }: { children: React.ReactNode }) => {
+const Section = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box p={4}>
       {children}
@@ -8,4 +8,4 @@ const LandingSection = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default LandingSection;
+export default Section;

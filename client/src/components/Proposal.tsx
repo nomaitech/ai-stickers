@@ -1,10 +1,10 @@
 import { Heading, Image, Flex, Box, Text } from '@chakra-ui/react';
-import LandingSection from './LandingSection';
+import Section from './Section';
 import TryNowButton from './TryNowButton';
 import dogSticker from '../assets/dog-sticker.png';
 const Proposal = () => {
     return (
-        <LandingSection>
+        <Section>
             <Flex my={8} flexDirection="column" align="center">
                 <Heading size="4xl">Turn Your Photos Into</Heading>
                 <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Personalized Stickers</Heading>
@@ -14,7 +14,7 @@ const Proposal = () => {
                 </Box>
                 <TryNowButton text="Try for free" />
             </Flex>
-        </LandingSection>
+        </Section>
     )
 }
 

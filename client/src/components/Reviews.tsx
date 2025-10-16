@@ -1,5 +1,5 @@
 import { Avatar, Flex, VStack, Text, Card } from "@chakra-ui/react";
-import LandingSection from "./LandingSection";
+import Section from "./Section";
 const users = [
   {
     name: "Arom Kim",
@@ -20,7 +20,7 @@ const users = [
 
 const Reviews = () => {
   return (
-    <LandingSection>
+    <Section>
       <Flex w="full" flexDirection="column">
         <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">Reviews</Text>
         <VStack w="full" flexDirection="column" alignItems="center" gap={8}>
@@ -42,7 +42,7 @@ const Reviews = () => {
           ))}
         </VStack>
       </Flex>
-    </LandingSection>
+    </Section>
   );
 };
 

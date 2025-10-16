@@ -1,5 +1,5 @@
 import { Accordion, Flex, Span, Text } from "@chakra-ui/react"
-import LandingSection from "./LandingSection"
+import Section from "./Section"
 const items = [
   {
     value: "b",
@@ -25,7 +25,7 @@ const items = [
 
 const FAQ = () => {
   return (
-    <LandingSection>
+    <Section>
       <Flex w="full" flexDirection="column">
         <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">FAQ</Text>
         <Accordion.Root variant={"enclosed"} size={"lg"} collapsible defaultValue={["b"]}>
@@ -42,7 +42,7 @@ const FAQ = () => {
           ))}
         </Accordion.Root>
       </Flex>
-    </LandingSection>
+    </Section>
   );
 };
 

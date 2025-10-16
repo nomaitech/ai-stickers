@@ -4,11 +4,11 @@ import telegramIntegration from "../assets/telegram.png";
 import DogReal from "../assets/dog-real.png";
 import DogSticker from "../assets/dog-sticker.png";
 import Arrow from "./Arrow";
-import LandingSection from "./LandingSection";
+import Section from "./Section";
 
 const Features = () => {
   return (
-    <LandingSection>
+    <Section>
       <Flex flexDirection="column">
         <Text fontSize="3xl" textAlign="center" fontWeight="semibold">Features</Text>
         <Flex my={4} flexDirection="column" gap={4}>
@@ -40,7 +40,7 @@ const Features = () => {
           <TryNowButton />
         </Flex>
       </Flex>
-    </LandingSection>
+    </Section>
   );
 };
 
