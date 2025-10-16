@@ -11,7 +11,6 @@ const ImageUploader = ({ setImageFileHandler }: Props) => {
     setImageFileHandler(file);
     setPreviewUrl(url);
   };
-
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       const item = e.clipboardData?.items[0];
