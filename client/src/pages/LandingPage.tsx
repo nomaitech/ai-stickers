@@ -71,9 +71,7 @@ const LandingPage = () => {
       <LandingSection>
         <Gallery />
       </LandingSection>
-      <LandingSection>
         <Footer />
-      </LandingSection>
     </>
   );
 };

@@ -22,7 +22,7 @@ const Gallery = () => {
       </Grid>
   
       <Flex justify="center" my={4}>
-        <TryNowButton />
+        <TryNowButton text="Try for free" />
       </Flex>
     </Flex>
   );

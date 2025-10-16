@@ -6,14 +6,14 @@ const HeaderChakra = () => {
   const [authOpen, setAuthOpen] = useState(false);
 
   return (
-    <Box bg="white" px={6} py={4} boxShadow="sm">
+    <Box bg="white" px={6} py={4} boxShadow="md">
       <Flex align="center" justify="space-between">
         <Link>
           <Box h="38px" w="175px" backgroundColor="blue.200">
             <Text>StickerSquirrel</Text>
           </Box>
         </Link>
-        <Button backgroundColor="orange.200" onClick={() => setAuthOpen(true)} fontWeight="semibold" color="orange.800">
+        <Button backgroundColor="orange.300" onClick={() => setAuthOpen(true)} fontWeight="semibold" color="orange.800">
           Login
         </Button>
       </Flex>

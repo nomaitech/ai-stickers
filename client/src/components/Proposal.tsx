@@ -9,7 +9,7 @@ const Proposal = () => {
                 <Heading size="4xl">Turn Your Photos Into</Heading>
                 <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400"  bgClip='text' fontWeight="semibold">Personalized Stickers</Heading>
                 <Image src={dogSticker} borderRadius="full" my={4}/>
-                <TryNowButton />
+                <TryNowButton text="Try for free"/>
             </Flex>
         </LandingSection>
     )
