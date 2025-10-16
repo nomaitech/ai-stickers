@@ -41,7 +41,6 @@ export const handlers = [
 
   http.get("/stickers", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    console.log("It does try to get em I dont know man");
     return new Response(
       JSON.stringify([
           {

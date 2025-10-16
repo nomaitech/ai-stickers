@@ -1,38 +1,100 @@
-import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link, Alert } from "@chakra-ui/react";
 import { PasswordInput } from "./ui/password-input";
-const LoginPrompt = () => {
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLoginMutation, useRegisterMutation } from "../store/auth/authApi";
+import type { FormData } from "../types";
+const LoginPrompt = (props: { onClose: () => void }) => {
+    const [formOption, setFormOption] = useState("Login");
+    const [error, setError] = useState("");
+    const [login] = useLoginMutation();
+    const [register] = useRegisterMutation();
+
+    const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
+
+    const onSubmit = async (data: FormData) => {
+        if (formOption === "Login") {
+            try {
+                await login(data).unwrap();
+            } catch {
+                setError("Login failed")
+                console.error("Login failed");
+            }
+        } else {
+            try {
+                await register(data).unwrap();
+            } catch {
+                setError("Register failed")
+                console.error("Register failed");
+            }
+        }
+    }
+
     return (
-        <Box w="full" h="800px" backgroundColor="blue.200">
+        <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={props.onClose}>
             <AbsoluteCenter>
-                <Box w="412px" h="682px" borderRadius="2xl" backgroundColor="white">
-                    <Box position="absolute" top={1} right={1}>
-                        <CloseButton size="2xl" borderRadius={"full"}/>
+                <Box w="412px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
+                    <Box position="absolute" top={8} right={0}>
+                        <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
                     </Box>
-                    <Box mx={4} mt={28}>
-                        <Tabs.Root size="lg" defaultValue="Login">
+                    <Tabs.Root size="lg" defaultValue="Login">
+                        <Tabs.Content value="Sign Up">
+                            <Text mt={16} mx={10} mb={-16} fontWeight="semibold" fontSize={"xl"}>Sign up now to get <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientTo="orange.400" bgClip='text'>2 free credits</Text> to start generating your stickers</Text>
+                        </Tabs.Content>
+                        <Box mx={4} mt={28}>
                             <Tabs.List>
-                                <Tabs.Trigger value="Login" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Login" onClick={() => setFormOption("Login")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Login
                                 </Tabs.Trigger>
-                                <Tabs.Trigger value="Sign Up" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Sign Up" onClick={() => setFormOption("Sign Up")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Sign Up
                                 </Tabs.Trigger>
                                 <Tabs.Indicator height="2px" bottom="-1px" position="absolute" bg="black" transition="all 0.25s ease" />
                             </Tabs.List>
-                            <Field.Root>
-                                <Input placeholder="Enter email" css={{ "--focus-color": "colors.orange.300", "--error-color": "red" }} size="lg" mt={5} mb={2} />
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <Field.Root invalid={!!errors.email}>
+                                    <Input
+                                        placeholder="Enter email"
+                                        size="lg"
+                                        mt={5}
+                                        mb={2}
+                                        autoFocus
+                                        css={{ "--focus-color": "colors.orange.300" }}
+                                        {...registerForm("email", {
+                                            required: "Email is required",
+                                            pattern: {
+                                                value: /^\S+@\S+\.\S+$/,
+                                                message: "Invalid email",
+                                            },
+                                        })}
+                                    />
+                                    <Field.ErrorText mt={-2}>{errors.email?.message}</Field.ErrorText>
+                                </Field.Root>
                                 <Box w="full" mt={1} mb={3}>
-                                <PasswordInput placeholder="Enter password" css={{ "--focus-color": "colors.orange.300", "--error-color": "red" }} size="lg"/>
+                                    <Field.Root invalid={!!errors.password}>
+                                        <PasswordInput
+                                            placeholder="Enter password"
+                                            size="lg"
+                                            css={{ "--focus-color": "colors.orange.300" }}
+                                            {...registerForm("password", {
+                                                required: "Password is required",
+                                                minLength: {
+                                                    value: 6,
+                                                    message: "Password must be at least 6 characters",
+                                                },
+                                            })}
+                                        />
+                                        <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
+                                    </Field.Root>
                                 </Box>
-                                <Field.ErrorText>Invalid Email or Password</Field.ErrorText>
                                 <Tabs.Content value="Login">
-                                    <Button backgroundColor="orange.300" onClick={() => console.log("Login")} w="full" size="xl" variant="solid" colorPalette="gray">
+                                    <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
                                         <Text color="orange.800" fontWeight="semibold">Login</Text>
                                     </Button>
                                 </Tabs.Content>
                                 <Tabs.Content value="Sign Up">
-                                    <Button backgroundColor="orange.300" onClick={() => console.log("Creation")} w="full" size="xl" variant="solid" colorPalette="gray">
-                                        <Text color="orange.800" fontWeight="semibold">Sign Up</Text>
+                                    <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
+                                        <Text color="orange.800" fontWeight="semibold">Create Account</Text>
                                     </Button>
                                 </Tabs.Content>
                                 <Flex direction={"row"} align={"center"} w="full">
@@ -40,7 +102,7 @@ const LoginPrompt = () => {
                                     <Text flexShrink="0" mr={8} ml={8} my={6} fontWeight="semibold">or</Text>
                                     <Separator flex="1" />
                                 </Flex>
-                                <Button backgroundColor="blue.300" onClick={() => console.log("Login")} w="full" size="xl" variant="solid" colorPalette="gray">
+                                <Button backgroundColor="blue.300" onClick={() => console.log("Login Google")} w="full" size="xl" variant="solid" colorPalette="gray">
                                     <Text color="blue.800" fontWeight="semibold">Sign in with Google</Text>
                                 </Button>
                                 <Text fontSize="xs" color="fg.subtle" my={8}>
@@ -49,9 +111,9 @@ const LoginPrompt = () => {
                                         Terms and Conditions, and Privacy Policy.
                                     </Link>
                                 </Text>
-                            </Field.Root>
-                        </Tabs.Root>
-                    </Box>
+                            </form>
+                        </Box>
+                    </Tabs.Root>
                 </Box>
             </AbsoluteCenter>
         </Box>
