@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link, Alert } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link } from "@chakra-ui/react";
 import { PasswordInput } from "./ui/password-input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { useLoginMutation, useRegisterMutation } from "../store/auth/authApi";
 import type { FormData } from "../types";
 const LoginPrompt = (props: { onClose: () => void }) => {
     const [formOption, setFormOption] = useState("Login");
-    const [error, setError] = useState("");
+    const [_, setError] = useState("");
     const [login] = useLoginMutation();
     const [register] = useRegisterMutation();
 
