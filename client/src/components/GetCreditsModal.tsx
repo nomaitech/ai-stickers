@@ -10,7 +10,7 @@ const GetCreditsModal = () => {
             <AbsoluteCenter>
                 <Box w="412px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Flex direction="column" align="center">
-                        <Icon color="orange.300" mt={12}><Ghost /></Icon>
+                        <Icon color="orange.300" w={8} h={8} mt={12}><Ghost /></Icon>
                         <Text fontWeight="semibold" my={6}>Whoops! You've run out of credits</Text>
                         <Text color="grey">Add more credits to keep creating</Text>
                         <Text color="grey">more amazing stickers</Text>
