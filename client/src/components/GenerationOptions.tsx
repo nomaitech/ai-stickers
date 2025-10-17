@@ -5,9 +5,9 @@ const GenerationOptions = () => {
 
     return (
         <Section>
-            <Accordion.Root collapsible multiple px={2}>
+            <Accordion.Root collapsible multiple>
                 <Accordion.Item value={"Emoji"}>
-                    <Accordion.ItemTrigger display="flex" justifyContent="space-between" alignItems="center" px={4}>
+                    <Accordion.ItemTrigger display="flex" justifyContent="space-between" alignItems="center">
                         <Flex>
                             <Text color="text/fg" fontWeight="semibold" mr={2}>Emoji</Text>
                             <Badge colorScheme='gray' borderRadius="md" fontSize="xs">optional</Badge>
@@ -22,7 +22,7 @@ const GenerationOptions = () => {
                     </Accordion.ItemContent>
                 </Accordion.Item>
                 <Accordion.Item value={"Prompt"}>
-                    <Accordion.ItemTrigger display="flex" justifyContent="space-between" alignItems="center" px={4}>
+                    <Accordion.ItemTrigger display="flex" justifyContent="space-between" alignItems="center">
                         <Flex>
                             <Text color="text/fg" fontWeight="semibold" mr={2}>Add a prompt</Text>
                             <Badge colorScheme='gray' borderRadius="md" fontSize="xs">optional</Badge>

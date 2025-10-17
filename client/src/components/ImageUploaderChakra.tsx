@@ -6,8 +6,8 @@ const ImageUploaderChakra = () => {
 
     return (
         <Section>
-            <Text px={2} color="text/fg" fontWeight="semibold">Upload your image *</Text>
-            <FileUpload.Root px={2} my={5} alignItems="stretch">
+            <Text color="text/fg" fontWeight="semibold">Upload your image *</Text>
+            <FileUpload.Root my={5} alignItems="stretch">
                 <FileUpload.HiddenInput />
                 <FileUpload.Dropzone>
                     <Icon size="md" color="orange.300">
