@@ -1,4 +1,4 @@
-import { Accordion, Text, Badge, Flex, Textarea } from "@chakra-ui/react"
+import { Accordion, Text, Badge, Flex, Textarea, Input } from "@chakra-ui/react"
 import Section from "./Section"
 import EmojiDrawer from "./EmojiDrawer"
 const GenerationOptions = () => {
@@ -16,6 +16,7 @@ const GenerationOptions = () => {
                     </Accordion.ItemTrigger>
                     <Accordion.ItemContent>
                         <Accordion.ItemBody>
+                            <Input placeholder="Select an emoji..." fontSize={"xl"} pl={5} ml={2}/>
                             <EmojiDrawer />
                         </Accordion.ItemBody>
                     </Accordion.ItemContent>

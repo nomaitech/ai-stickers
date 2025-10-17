@@ -33,7 +33,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
     return (
         <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={props.onClose}>
             <AbsoluteCenter>
-                <Box w="412px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
+                <Box w="412px" h="682px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Box position="absolute" top={8} right={0}>
                         <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
                     </Box>

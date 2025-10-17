@@ -6,17 +6,19 @@ import Dashboard from "../pages/Dashboard";
 import TopupResult from "../pages/TopupResult";
 import GetCreditsModal from "../components/GetCreditsModal";
 import Generator from "../pages/Generator";
+import LoginPrompt from "../components/LoginPrompt";
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       { path: "/", element: <LandingPage /> },
-      { path: "/generator", element: <Generator />},
+      { path: "/generate-sticker", element: <Generator />},
       { path: "/error", element: <ErrorPage /> },
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/payments/success", element: <TopupResult /> },
       { path: "/payments/cancelled", element: <TopupResult /> },
       { path: "/testing", element: <GetCreditsModal /> },
+      { path: "/testing2", element: <LoginPrompt onClose={() => console.log("closed")}/> },
     ],
   },
 ]);
