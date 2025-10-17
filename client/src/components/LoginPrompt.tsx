@@ -33,7 +33,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
     return (
         <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={props.onClose}>
             <AbsoluteCenter>
-                <Box w="412px" h="682px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
+                <Box w={{ base: "90vw", md: "412px" }} maxW="412px" h="682px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Box position="absolute" top={8} right={0}>
                         <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
                     </Box>
@@ -59,7 +59,6 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                                         mt={5}
                                         mb={2}
                                         autoFocus
-                                        css={{ "--focus-color": "colors.orange.300" }}
                                         {...registerForm("email", {
                                             required: "Email is required",
                                             pattern: {
@@ -75,7 +74,6 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                                         <PasswordInput
                                             placeholder="Enter password"
                                             size="lg"
-                                            css={{ "--focus-color": "colors.orange.300" }}
                                             {...registerForm("password", {
                                                 required: "Password is required",
                                                 minLength: {

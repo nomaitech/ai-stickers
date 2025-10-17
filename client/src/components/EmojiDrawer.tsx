@@ -1,13 +1,17 @@
 import { EmojiPicker } from "frimousse"
 
-const EmojiDrawer = () => {
+const EmojiDrawer = ({ onSelect }) => {
     return (
         <EmojiPicker.Root>
             <EmojiPicker.Search />
             <EmojiPicker.Viewport>
                 <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
                 <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
-                <EmojiPicker.List />
+                <EmojiPicker.List>
+                    <EmojiPicker.Emoji
+                        onSelect={(emoji) => onSelect?.(emoji.native)}
+                    />
+                </EmojiPicker.List>
             </EmojiPicker.Viewport>
             <style>{`
                 [frimousse-root] {
@@ -77,8 +81,12 @@ const EmojiDrawer = () => {
                     font-size: 18px;
 
                 &[data-active] {
-                    background: light-dark(#f5f5f5, #262626);
+                    background: var(--chakra-colors-orange-300);
                 }
+                }
+                [frimousse-search]:focus-visible {
+                    outline: 3px solid var(--chakra-colors-orange-300);
+                    outline-offset: 2px;
                 }
             `}</style>
         </EmojiPicker.Root>

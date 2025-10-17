@@ -4,9 +4,8 @@ import LandingPage from "../pages/LandingPage";
 import ErrorPage from "../pages/ErrorPage";
 import Dashboard from "../pages/Dashboard";
 import TopupResult from "../pages/TopupResult";
-import GetCreditsModal from "../components/GetCreditsModal";
 import Generator from "../pages/Generator";
-import LoginPrompt from "../components/LoginPrompt";
+import Billing from "../pages/Billing";
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -17,8 +16,7 @@ const router = createBrowserRouter([
       { path: "/dashboard", element: <Dashboard /> },
       { path: "/payments/success", element: <TopupResult /> },
       { path: "/payments/cancelled", element: <TopupResult /> },
-      { path: "/testing", element: <GetCreditsModal /> },
-      { path: "/testing2", element: <LoginPrompt onClose={() => console.log("closed")}/> },
+      { path: "/billing", element: <Billing /> }
     ],
   },
 ]);
