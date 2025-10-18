@@ -22,31 +22,31 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
     ]
 
     return (
-<Box
-  h="100vh"
-  w="100vw"
-  bg="rgba(0,0,0,0.5)"
-  position="fixed"
-  top={0}
-  left={0}
-  zIndex={100}
-  onClick={onClose}
-  opacity={sidebarOpen ? 1 : 0}
-  pointerEvents={sidebarOpen ? "auto" : "none"}
-  transition="opacity 0.3s ease"
->
-  <Box
-    h="100vh"
-    w="80vw"
-    bg="white"
-    position="fixed"
-    top={0}
-    left={0}
-    zIndex={1000}
-    transform={sidebarOpen ? "translateX(0)" : "translateX(-100%)"}
-    transition="transform 0.3s ease"
-    onClick={(e) => e.stopPropagation()}
-  >                <Box>
+        <Box
+            h="100vh"
+            w="100vw"
+            bg="rgba(0,0,0,0.5)"
+            position="fixed"
+            top={0}
+            left={0}
+            zIndex={100}
+            onClick={onClose}
+            opacity={sidebarOpen ? 1 : 0}
+            pointerEvents={sidebarOpen ? "auto" : "none"}
+            transition="opacity 0.3s ease"
+        >
+            <Box
+                h="100vh"
+                w="80vw"
+                bg="white"
+                position="fixed"
+                top={0}
+                left={0}
+                zIndex={1000}
+                transform={sidebarOpen ? "translateX(0)" : "translateX(-100%)"}
+                transition="transform 0.3s ease"
+                onClick={(e) => e.stopPropagation()}
+            >                <Box>
                     <Link mt={4} ml={4}>
                         <Box h="38px" w="175px" backgroundColor="blue.200">
                             <Text>StickerSquirrel</Text>
@@ -63,6 +63,7 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                                 key={to}
                                 as={RouterLink}
                                 to={to}
+                                onClick={onClose}
                                 bg={isActive ? "orange.100" : "white"}
                                 color="gray.800"
                                 fontWeight="bold"
@@ -77,7 +78,7 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                     })}
                 </Flex>
                 <Separator position="absolute" bottom="93px" left={0} width="100%" height="1px" />
-                <Button bg="white" position="absolute" left={3} bottom={8} onClick={() => { logout() }} color="gray.800" fontWeight="bold" justifyContent="flex-start" textAlign="left" _hover={{ backgroundColor: "gray.100" }}>
+                <Button bg="white" position="absolute" left={3} bottom={8} onClick={() => { logout(); onClose() }} color="gray.800" fontWeight="bold" justifyContent="flex-start" textAlign="left" _hover={{ backgroundColor: "gray.100" }}>
                     <LogOut /> Logout
                 </Button>
             </Box>
