@@ -1,16 +1,16 @@
 import { Box, Flex, Button, Link, Text, Icon, Separator} from "@chakra-ui/react";
 import { Coins, Plus } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
-import useTopUp from "../hooks/useTopUp";
 import type { RootState } from "../store";
 import { useSelector } from "react-redux";
 
 const HeaderChakra = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const userInfo = useSelector((state: RootState) => state.ui.userInfo);
+  const navigate = useNavigate();
   const credits = userInfo?.credits;
-  const topUp = useTopUp();
   return (
     <Box bg="white" px={6} py={4} boxShadow="md">
       <Flex align="center" justify="space-between">
@@ -24,7 +24,7 @@ const HeaderChakra = () => {
             Login
           </Button>
         ) : (
-          <Box h="38px" w="112px" position="relative" onClick={topUp} borderRadius="md" borderStyle={"solid"} borderColor="gray.200" borderWidth="1px" _hover={{ cursor: "pointer" }}>
+          <Box h="38px" w="112px" position="relative" onClick={() => {navigate("/billing")}} borderRadius="md" borderStyle={"solid"} borderColor="gray.200" borderWidth="1px" _hover={{ cursor: "pointer" }}>
             <Icon position="absolute" color="grey" left={2} top={1.5}><Coins /></Icon>
             <Text color="grey" position="absolute" fontWeight="semibold" left={11} top={1.5}>{credits}</Text>
             <Separator orientation={"vertical"} position="absolute"  top={1.5} right={11} width="1px" height="26px" />
