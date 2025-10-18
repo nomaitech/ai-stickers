@@ -2,11 +2,11 @@ import { AbsoluteCenter, Box, Icon, Text, Button, Flex } from "@chakra-ui/react"
 import { Ghost } from "lucide-react"
 import useTopUp from "../hooks/useTopUp"
 
-const GetCreditsModal = () => {
+const GetCreditsModal = ({onClose}: {onClose: () => void}) => {
     const topUp = useTopUp();
 
     return (
-        <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={() => console.log("Close")}>
+        <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={() => onClose()}>
             <AbsoluteCenter>
                 <Box w="412px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Flex direction="column" align="center">
@@ -16,7 +16,7 @@ const GetCreditsModal = () => {
                         <Text color="grey">more amazing stickers</Text>
                         <Box mt={6} mb={12}>
                             <Button mx={2} background="orange.300" onClick={topUp} fontWeight="semibold" color="orange.950">Add Credits</Button>
-                            <Button mx={2} background="white" onClick={() => console.log("Close")} fontWeight="semibold" color="gray.700" border="1px" borderColor="gray.200" borderStyle="solid">Not Now</Button>
+                            <Button mx={2} background="white" onClick={() =>onClose()} fontWeight="semibold" color="gray.700" border="1px" borderColor="gray.200" borderStyle="solid">Not Now</Button>
                         </Box>
                     </Flex>
                 </Box>

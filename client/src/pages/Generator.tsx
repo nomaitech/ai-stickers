@@ -3,6 +3,7 @@ import ImageUploaderChakra from "../components/ImageUploaderChakra";
 import GenerationOptions from "../components/GenerationOptions";
 import Output from "../components/Output";
 import History from "../components/History";
+import GetCreditsModal from "@/components/GetCreditsModal";
 import { useGenerateStickerMutation } from "../store/generation/genApi";
 import { useGetUserInfoQuery } from "../store/userInfo/userApi";
 import { useState, useEffect } from "react";
@@ -13,6 +14,7 @@ const Generator = () => {
     const [emoji, setEmoji] = useState<string>("");
     const [prompt, setPrompt] = useState<string>("");
     const [enableButton, setEnableButton] = useState<boolean>(false);
+    const [displayTopUpPrompt, setDisplayTopUpPrompt] = useState<boolean>(false);
     const [generateSticker, { isLoading }] = useGenerateStickerMutation();
     const { refetch } = useGetUserInfoQuery();
     const [stickerResult, setStickerResult] = useState<string | null>(null);
@@ -28,6 +30,7 @@ const Generator = () => {
             }
             formData.append("emoji", "😃");
             formData.append("prompt", "");
+            //TODO: consider possibility of user not having enough credits
             const result = await generateSticker(formData).unwrap();
             setStickerResult(result.generated_img_url);
             setImage(null);
@@ -37,7 +40,7 @@ const Generator = () => {
         } catch (err) {
             if (err && typeof err === "object" && "status" in err) {
                 if ((err as { status: number }).status === 402) {
-                    alert("Not enough credits");
+                    setDisplayTopUpPrompt(true);
                 } else {
                     console.log(err);
                     alert("Not enough credits");
@@ -53,6 +56,7 @@ const Generator = () => {
             <GenerationOptions onEmojiChange={setEmoji} onPromptChange={setPrompt} emoji={emoji} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
             <History />
+            {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} />}
         </>
     )
 }
