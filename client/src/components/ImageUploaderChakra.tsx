@@ -30,11 +30,11 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
                 Upload your image *
             </Text>
             <FileUpload.Root my={5} alignItems="stretch" capture="environment">
-<FileUpload.HiddenInput
-  accept="image/*"
-  capture="environment"
-  onChange={handleFileChange}
-/>
+                <FileUpload.HiddenInput
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleFileChange}
+                />
                 <FileUpload.Dropzone>
                     {preview ? (
                         <Box mt={4} pointerEvents="none">

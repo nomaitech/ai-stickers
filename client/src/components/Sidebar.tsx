@@ -47,7 +47,7 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                 transition="transform 0.3s ease"
                 onClick={(e) => e.stopPropagation()}
             >                <Box>
-                    <Link mt={4} ml={4}>
+                    <Link href="/generate-sticker" mt={4} ml={4}>
                         <Box h="38px" w="175px" backgroundColor="blue.200">
                             <Text>StickerSquirrel</Text>
                         </Box>
