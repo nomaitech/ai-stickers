@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toast } from "sonner";
 import { useLoginMutation } from "../store/auth/authApi";
 import { useDispatch } from "react-redux";
 import { openRegister } from "../store/UI/uiSlice.ts";
@@ -18,13 +17,11 @@ const Login = () => {
     e.preventDefault();
     const emailValid = /^\S+@\S+$/i.test(form.email);
     if (!emailValid || form.password.length < 6) {
-      toast.error("Please enter a valid email and a password with 6+ chars");
       return;
     }
     try {
       await login(form).unwrap();
     } catch {
-      toast.error("Authentication failed");
       console.error("Login failed");
     }
   };

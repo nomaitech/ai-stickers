@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toast } from "sonner";
 import { useRegisterMutation } from "../store/auth/authApi";
 import { useDispatch } from "react-redux";
 import { closeRegister } from "../store/UI/uiSlice";
@@ -46,14 +45,11 @@ const Register = () => {
         email: form.email,
         password: form.password,
       } as RequestData).unwrap();
-      toast.success("Register successful");
       dispatch(closeRegister());
     } catch (err: unknown) {
       const anyErr = err as { status?: number; data?: { detail?: string } } | undefined;
       if (anyErr?.status === 400 && anyErr?.data?.detail === "Email already registered") {
-        toast.error("Email already registered");
       } else {
-        toast.error("Register failed");
         console.error("Register failed");
       }
     }
