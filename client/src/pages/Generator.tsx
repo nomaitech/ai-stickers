@@ -15,9 +15,9 @@ const Generator = () => {
     const [prompt, setPrompt] = useState<string>("");
     const [enableButton, setEnableButton] = useState<boolean>(false);
     const [displayTopUpPrompt, setDisplayTopUpPrompt] = useState<boolean>(false);
+    const [stickerResult, setStickerResult] = useState<string | null>(null);
     const [generateSticker, { isLoading }] = useGenerateStickerMutation();
     const { refetch } = useGetUserInfoQuery();
-    const [stickerResult, setStickerResult] = useState<string | null>(null);
     useEffect(() => {
         setEnableButton(!!image && !isLoading);
     }, [image, isLoading]);
@@ -30,7 +30,6 @@ const Generator = () => {
             }
             formData.append("emoji", "😃");
             formData.append("prompt", "");
-            //TODO: consider possibility of user not having enough credits
             const result = await generateSticker(formData).unwrap();
             setStickerResult(result.generated_img_url);
             setImage(null);
