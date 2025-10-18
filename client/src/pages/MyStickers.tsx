@@ -1,28 +1,23 @@
-import { Flex, Text, Icon, Button, Image, Box, Grid } from "@chakra-ui/react"
-import { ArrowRight, History as Clock } from "lucide-react"
-import Section from "./Section"
+import Section from "@/components/Section";
+import { Flex, Heading, Grid, Box, Text, Image } from "@chakra-ui/react";
 import { useGetStickersQuery } from "../store/stickers/stickerApi"
-const History = () => {
+import TryNowButton from "@/components/TryNowButton";
+const MyStickers = () => {
     const { data: stickers } = useGetStickersQuery();
     return (
         <Section>
-            <Flex justifyContent="space-between" mt={14} mb={5}>
-                <Text color="text/fg" fontWeight="semibold" fontSize="xl">History</Text>
-                <Button color="gray.700" bgColor={"white"} fontWeight="semibold" fontSize="sm">View All
-                    <Icon>
-                        <ArrowRight />
-                    </Icon>
-                </Button>
+            <Flex my={8} flexDirection="row" align="left">
+                <Heading size="4xl" mr={2}>My</Heading>
+                <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Stickers</Heading>
             </Flex>
-            
+            {stickers?.length == 0 ? (
+                <TryNowButton text="Generate your first sticker" />
+            ) : (
+                <TryNowButton text="Generate more stickers" />
+            )}
+
             {stickers?.length == 0 ? (
                 <Flex h={"162px"} bg={"gray.100"} direction={"column"} align={"center"} borderRadius={"2xl"}>
-                    <Icon mt={6} w="32px" h="32px" color="orange.300">
-                        <Clock />
-                    </Icon>
-                    <Text my={4} fontWeight="semibold">
-                        No History yet
-                    </Text>
                     <Text color="fg.muted">
                         Generated images will appear here
                     </Text>
@@ -42,4 +37,4 @@ const History = () => {
     )
 }
 
-export default History;
+export default MyStickers;

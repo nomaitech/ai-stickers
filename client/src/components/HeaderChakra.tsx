@@ -26,7 +26,7 @@ const HeaderChakra = () => {
           </Link>
         </Flex>
         {credits == undefined ? (
-          <Button backgroundColor="orange.300" onClick={() => setAuthOpen(true)} fontWeight="semibold" color="orange.800">
+          <Button backgroundColor="orange.300" h="38px" onClick={() => setAuthOpen(true)} fontWeight="semibold" color="orange.800">
             Login
           </Button>
         ) : (
