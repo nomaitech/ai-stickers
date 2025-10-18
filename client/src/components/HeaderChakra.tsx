@@ -16,9 +16,9 @@ const HeaderChakra = () => {
     <Box bg="white" px={6} py={4} boxShadow="md">
       <Flex align="center" justify="space-between">
         <Flex alignItems="center">
-          <Icon onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
+          { credits != undefined && <Icon onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
             <Menu />
-          </Icon>
+          </Icon>}
           <Link>
             <Box h="38px" w="175px" backgroundColor="blue.200">
               <Text>StickerSquirrel</Text>

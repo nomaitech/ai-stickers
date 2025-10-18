@@ -16,6 +16,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
         if (formOption === "Login") {
             try {
                 await login(data).unwrap();
+                props.onClose();
             } catch {
                 setError("Login failed")
                 console.error("Login failed");
@@ -23,6 +24,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
         } else {
             try {
                 await register(data).unwrap();
+                setFormOption("Login");
             } catch {
                 setError("Register failed")
                 console.error("Register failed");
@@ -37,16 +39,16 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                     <Box position="absolute" top={8} right={0}>
                         <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
                     </Box>
-                    <Tabs.Root size="lg" defaultValue="Login">
+                    <Tabs.Root size="lg" defaultValue="Login" value={formOption} onValueChange={(details) => setFormOption(details.value)}>
                         <Tabs.Content value="Sign Up">
                             <Text mt={16} mx={10} mb={-16} fontWeight="semibold" fontSize={"xl"}>Sign up now to get <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientTo="orange.400" bgClip='text'>2 free credits</Text> to start generating your stickers</Text>
                         </Tabs.Content>
                         <Box mx={4} mt={28}>
                             <Tabs.List>
-                                <Tabs.Trigger value="Login" onClick={() => setFormOption("Login")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Login" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Login
                                 </Tabs.Trigger>
-                                <Tabs.Trigger value="Sign Up" onClick={() => setFormOption("Sign Up")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Sign Up" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Sign Up
                                 </Tabs.Trigger>
                                 <Tabs.Indicator height="2px" bottom="-1px" position="absolute" bg="black" transition="all 0.25s ease" />

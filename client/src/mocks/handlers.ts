@@ -1,4 +1,4 @@
-import { http } from "msw";
+import { delay, http } from "msw";
 
 import imageRawData from "../assets/stickerOutputMock.png";
 
@@ -17,6 +17,7 @@ const unauthorizedResponse = () => {
 
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
+    await delay(2000);
     type LoginBody = { email: string; password: string };
     const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
@@ -43,31 +44,31 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
       JSON.stringify([
-          {
-            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "👍",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-          {
-            id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "🤪",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-                    {
-            id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "🤪",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-                    {
-            id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "🤪",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-        ],
+        {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "👍",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+      ],
       ),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
@@ -92,7 +93,7 @@ export const handlers = [
         headers: { "Content-Type": "application/json" },
       });
     }
-    await new Promise((r) => setTimeout(r, 5000));
+    delay(5000);
 
     return new Response(
       JSON.stringify({
@@ -129,20 +130,12 @@ export const handlers = [
 
   http.get("/user-info", ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-
-    // Simulate a delay using a Promise that resolves after a random timeout
-    return new Promise((resolve) => {
-      const delay = Math.random() * 2000 + 500;
-      setTimeout(() => {
-        const creditAmount = Math.floor(Math.random() * 100);
-        resolve(
-          new Response(
-            JSON.stringify({ email: "user@example.com", credits: creditAmount }),
-            { status: 200, headers: { "Content-Type": "application/json" } }
-          )
-        );
-      }, delay);
-    });
+    delay(2000);
+    const creditAmount = Math.floor(Math.random() * 100);
+    return new Response(
+      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   }),
 
   http.post("/topup", async ({ request }) => {
@@ -274,10 +267,10 @@ export const handlers = [
     if (!params.sessionId) return new Response(null, { status: 404 });
     return new Response(
       JSON.stringify({
-      session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
-      status: "completed",
-      created_at: "2025-09-28T21:33:52.375329Z",
-      completed_at: "2025-09-28T21:34:28.800049Z"
-    }))
+        session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
+        status: "completed",
+        created_at: "2025-09-28T21:33:52.375329Z",
+        completed_at: "2025-09-28T21:34:28.800049Z"
+      }))
   }),
 ];
