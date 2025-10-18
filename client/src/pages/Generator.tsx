@@ -28,8 +28,8 @@ const Generator = () => {
             if (image instanceof Blob) {
                 formData.append("file", image);
             }
-            formData.append("emoji", "😃");
-            formData.append("prompt", "");
+            formData.append("emoji", emoji);
+            formData.append("prompt", prompt);
             const result = await generateSticker(formData).unwrap();
             setStickerResult(result.generated_img_url);
             setImage(null);
