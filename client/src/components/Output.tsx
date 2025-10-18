@@ -1,5 +1,4 @@
-import { Button, Text, Box, Image, AbsoluteCenter } from '@chakra-ui/react'
-import { LoaderCircle } from 'lucide-react'
+import { Button, Text, Box, Image, AbsoluteCenter, Spinner } from '@chakra-ui/react'
 import Section from './Section'
 import { Line } from '@rc-component/progress';
 import { useState, useEffect } from 'react'
@@ -10,6 +9,7 @@ type OutputProps = {
     isLoading: boolean
     startGeneration: () => void
 }
+
 const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: OutputProps) => {
     const [loadingProgress, setLoadingProgress] = useState(0);
 
@@ -35,16 +35,20 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
             <Button backgroundColor="orange.300" disabled={!enableButton} my={8} w="full" onClick={() => startGeneration()} size="xl" fontWeight="600" colorPalette="gray">
                 <Text color="orange.800">Generate (-1 Credit)</Text>
             </Button>
-            <Box borderStyle={"dotted"} borderColor={"orange.300"} h={"200px"} borderWidth={"2px"} borderRadius={"2xl"} overflow={"hidden"}>
+            <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="200px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
                 {isLoading ? (
-                    <AbsoluteCenter>
-                        <Line percent={loadingProgress} />
-                        <LoaderCircle className="animate-spin w-8 h-8 text-primary" />
+                    <AbsoluteCenter flexDirection="column">
+                        <Box w="150px">
+                            <Line percent={loadingProgress} strokeWidth={4} strokeColor="#F6AD55" />
+                        </Box>
+                        <Spinner size="md" color="orange.300" mt={2}/>
                     </AbsoluteCenter>
                 ) : stickerResult ? (
-                    <Image src={stickerResult} />
+                    <AbsoluteCenter>
+                        <Image src={stickerResult} />
+                    </AbsoluteCenter>
                 ) : (
-                    <p>Placeholder</p>
+                    <Text>Placeholder</Text>
                 )}
             </Box>
         </Section>

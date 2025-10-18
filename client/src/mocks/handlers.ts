@@ -92,8 +92,7 @@ export const handlers = [
         headers: { "Content-Type": "application/json" },
       });
     }
-    console.log(image, emoji, prompt);
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 5000));
 
     return new Response(
       JSON.stringify({
