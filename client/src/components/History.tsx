@@ -1,7 +1,7 @@
 import { Flex, Text, Icon, Button, Image, Box, Grid } from "@chakra-ui/react"
 import { ArrowRight, History as Clock } from "lucide-react"
 import Section from "./Section"
-import { useGetStickersQuery } from "../store/stickers/stickerApi"
+import { useGetStickersQuery } from "@/store/mainApi";
 const History = () => {
     const { data: stickers } = useGetStickersQuery();
     return (

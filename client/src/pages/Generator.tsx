@@ -4,8 +4,8 @@ import GenerationOptions from "@/components/GenerationOptions";
 import Output from "@/components/Output";
 import History from "@/components/History";
 import GetCreditsModal from "@/components/GetCreditsModal";
-import { useGenerateStickerMutation } from "../store/generation/genApi";
-import { useGetUserInfoQuery } from "../store/userInfo/userApi";
+import { useGenerateStickerMutation } from "@/store/mainApi";
+import { useGetUserInfoQuery } from "@/store/mainApi";
 import { useState, useEffect } from "react";
 
 

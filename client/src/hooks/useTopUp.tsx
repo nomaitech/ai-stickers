@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
-import { billingApi } from "../store/billing/billingApi";
-import { useGetPaymentSessionMutation } from "../store/billing/billingApi";
+import { mainApi } from "@/store/mainApi";
+import { useGetPaymentSessionMutation } from "@/store/mainApi";
 
 const useTopUp = () => {
   const dispatch = useDispatch();
   const [getPaymentSession] = useGetPaymentSessionMutation();
 
   const topUp = async () => {
-    dispatch(billingApi.util.resetApiState());
+dispatch(mainApi.util.invalidateTags(['PaymentStatus']))
     const result = await getPaymentSession().unwrap();
     window.location.replace(result.checkout_url);
   };

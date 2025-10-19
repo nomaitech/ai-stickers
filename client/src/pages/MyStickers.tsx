@@ -1,6 +1,6 @@
 import Section from "@/components/Section";
 import { Flex, Heading, Grid, Box, Text, Image } from "@chakra-ui/react";
-import { useGetStickersQuery } from "../store/stickers/stickerApi"
+import { useGetStickersQuery } from "@/store/mainApi";
 import TryNowButton from "@/components/TryNowButton";
 const MyStickers = () => {
     const { data: stickers } = useGetStickersQuery();

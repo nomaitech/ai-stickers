@@ -2,7 +2,7 @@ import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Sep
 import { PasswordInput } from "./ui/password-input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLoginMutation, useRegisterMutation } from "../store/auth/authApi";
+import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
 const LoginPrompt = (props: { onClose: () => void }) => {
     const [formOption, setFormOption] = useState("Login");
