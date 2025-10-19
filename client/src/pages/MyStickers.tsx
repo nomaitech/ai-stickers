@@ -2,8 +2,13 @@ import Section from "@/components/Section";
 import { Flex, Heading, Grid, Box, Text, Image, Spinner, AbsoluteCenter } from "@chakra-ui/react";
 import { useGetStickersQuery } from "@/store/mainApi";
 import TryNowButton from "@/components/TryNowButton";
+import { useEffect } from "react";
 const MyStickers = () => {
     const { data: stickers, isLoading } = useGetStickersQuery();
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (
         <Section>
             <Flex my={8} flexDirection="row" align="left">
