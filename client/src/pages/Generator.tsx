@@ -42,7 +42,6 @@ const Generator = () => {
                     setDisplayTopUpPrompt(true);
                 } else {
                     console.log(err);
-                    alert("Not enough credits");
                 }
             }
         }
