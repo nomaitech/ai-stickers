@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
+import { useNavigate } from "react-router-dom";
 const LoginPrompt = (props: { onClose: () => void }) => {
     const [formOption, setFormOption] = useState("Login");
     const [_, setError] = useState("");
     const [login] = useLoginMutation();
     const [register] = useRegisterMutation();
-
+    const navigate = useNavigate();
     const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
 
     const onSubmit = async (data: FormData) => {
@@ -17,6 +18,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
             try {
                 await login(data).unwrap();
                 props.onClose();
+                navigate("/generate-sticker");
             } catch {
                 setError("Login failed")
                 console.error("Login failed");

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Section from "./Section";
 import { Upload } from "lucide-react";
-import { FileUpload, Icon, Text, Image, Box } from "@chakra-ui/react";
+import { FileUpload, Icon, Text, Image, Box} from "@chakra-ui/react";
 
 type ImageUploaderProps = {
     onImageUpload: (file: File) => void
