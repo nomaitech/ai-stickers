@@ -28,7 +28,7 @@ const MyStickers = () => {
                     </Flex>
                 ) : (
                     <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={8}>
-                        {stickers?.map(sticker => (
+                        {stickers?.slice(0, 6).map(sticker => (
                             <Box key={sticker.id} bg="gray.50" borderRadius="xl" borderWidth="1px" borderStyle="solid" borderColor="gray.200" p={2}>
                                 <Image src={sticker.generated_img_url} w="full" h="full" />
                             </Box>
