@@ -41,6 +41,7 @@ export const handlers = [
   }),
 
   http.get("/stickers", async ({ request }) => {
+    await delay(3000);
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
       JSON.stringify([
@@ -93,7 +94,7 @@ export const handlers = [
         headers: { "Content-Type": "application/json" },
       });
     }
-    delay(5000);
+    await delay(5000);
 
     return new Response(
       JSON.stringify({
@@ -128,9 +129,9 @@ export const handlers = [
     return new Response(null, { status: 204 });
   }),
 
-  http.get("/user-info", ({ request }) => {
+  http.get("/user-info", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    delay(2000);
+    await delay(2000);
     const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
       JSON.stringify({ email: "user@example.com", credits: creditAmount }),
