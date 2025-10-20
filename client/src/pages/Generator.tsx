@@ -1,11 +1,11 @@
-import GeneratorHeader from "../components/GeneratorHeader";
-import ImageUploaderChakra from "../components/ImageUploaderChakra";
-import GenerationOptions from "../components/GenerationOptions";
-import Output from "../components/Output";
-import History from "../components/History";
+import GeneratorHeader from "@/components/GeneratorHeader";
+import ImageUploaderChakra from "@/components/ImageUploaderChakra";
+import GenerationOptions from "@/components/GenerationOptions";
+import Output from "@/components/Output";
+import History from "@/components/History";
 import GetCreditsModal from "@/components/GetCreditsModal";
-import { useGenerateStickerMutation } from "../store/generation/genApi";
-import { useGetUserInfoQuery } from "../store/userInfo/userApi";
+import { useGenerateStickerMutation } from "@/store/mainApi";
+import { useGetUserInfoQuery } from "@/store/mainApi";
 import { useState, useEffect } from "react";
 
 
@@ -42,7 +42,6 @@ const Generator = () => {
                     setDisplayTopUpPrompt(true);
                 } else {
                     console.log(err);
-                    alert("Not enough credits");
                 }
             }
         }

@@ -41,10 +41,59 @@ export const handlers = [
   }),
 
   http.get("/stickers", async ({ request }) => {
+    await delay(3000);
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
       JSON.stringify([
         {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "👍",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+                {
+          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "👍",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+        {
+          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
+          generated_img_url: "https://picsum.photos/150",
+          emoji: "🤪",
+          createdAt: "2025-09-10T12:11:06.383Z",
+        },
+                {
           id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
           generated_img_url: "https://picsum.photos/150",
           emoji: "👍",
@@ -93,7 +142,7 @@ export const handlers = [
         headers: { "Content-Type": "application/json" },
       });
     }
-    delay(5000);
+    await delay(5000);
 
     return new Response(
       JSON.stringify({
@@ -128,9 +177,9 @@ export const handlers = [
     return new Response(null, { status: 204 });
   }),
 
-  http.get("/user-info", ({ request }) => {
+  http.get("/user-info", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    delay(2000);
+    await delay(2000);
     const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
       JSON.stringify({ email: "user@example.com", credits: creditAmount }),

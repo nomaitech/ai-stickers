@@ -5,14 +5,14 @@ import { useLocation, Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeToken } from "@/store/auth/authSlice";
 import { resetUserInfo } from "@/store/UI/uiSlice";
-import { userApi } from "@/store/userInfo/userApi";
+import { mainApi } from "@/store/mainApi";
 const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: boolean }) => {
     const dispatch = useDispatch();
     const location = useLocation()
     const logout = () => {
         dispatch(removeToken());
         dispatch(resetUserInfo());
-        dispatch(userApi.util.resetApiState());
+        dispatch(mainApi.util.resetApiState());
     }
 
     const links = [

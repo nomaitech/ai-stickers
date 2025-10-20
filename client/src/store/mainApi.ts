@@ -2,73 +2,32 @@ import { domainUrl } from "../env"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareAuthHeaders } from "./utils";
 import { setToken } from "./auth/authSlice";
-import { userApi } from "./userInfo/userApi";
 import { updateUserInfo } from "./UI/uiSlice"
-
-type UserInfo = {
-  email: string;
-  credits: number;
-}
-interface StickerPack {
-  id: string;
-  name: string;
-  createdAt: string;
-}
-
-type GenerationResponse = {
-    generated_img_url: string;
-}
-
-type PaymentStatusResponse = {
-  completed_at: string;
-  created_at: string;
-  session_id: string;
-  status: string;
-};
-
-interface Sticker {
-  id: string;
-  generated_img_url: string;
-  emoji: string;
-}
-
-type RegisterResponse = {
-  message: string;
-}
-
-type Token = {
-  access_token: string;
-}
-
-type Credentials = {
-  email: string;
-  password: string;
-}
-
+import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse } from "../types";
 export const mainApi = createApi({
   reducerPath: "mainApi",
   baseQuery: fetchBaseQuery({
     baseUrl: domainUrl,
     prepareHeaders: prepareAuthHeaders,
   }),
-  tagTypes: ["Sticker", "StickerPack"],
+  tagTypes: ["Sticker", "StickerPack", "PaymentStatus"],
   endpoints: (builder) => ({
     login: builder.mutation<Token, Credentials>({
       query: (credentials) => ({
-        url: "/login",
+        url: "/auth/login",
         method: "POST",
         body: credentials,
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const result = await queryFulfilled;
         dispatch(setToken(result.data.access_token));
-        dispatch(userApi.endpoints.getUserInfo.initiate());
+        dispatch(mainApi.endpoints.getUserInfo.initiate());
         //Fix this, this doublecall is actually correct
       },
     }),
     register: builder.mutation<RegisterResponse, Credentials>({
       query: (newUser) => ({
-        url: "/register",
+        url: "/auth/register",
         method: "POST",
         body: newUser,
       }),
@@ -85,6 +44,7 @@ export const mainApi = createApi({
         url: `/payment-status/${session_id}`,
         method: "GET",
       }),
+      providesTags: ["PaymentStatus"],
     }),
     generateSticker: builder.mutation<GenerationResponse, FormData>({
       query: (formData) => ({
@@ -230,6 +190,10 @@ export const mainApi = createApi({
 });
 
 export const {
-
-
+  useGenerateStickerMutation,
+  useGetUserInfoQuery,
+  useGetStickersQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useGetPaymentSessionMutation,
 } = mainApi;
