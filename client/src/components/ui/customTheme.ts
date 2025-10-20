@@ -1,6 +1,12 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react"
 
 const config = defineConfig({
+    globalCss: {
+        '::selection': {
+            bg: 'orange.300',
+            color: 'white',
+        },
+    },
     theme: {
         recipes: {
             input: {
@@ -37,6 +43,18 @@ const config = defineConfig({
                     },
                 },
             },
+            link: {
+                base: {
+                    _focusVisible: {
+                        borderColor: "orange.300",
+                        boxShadow: "0 0 0 1px {colors.orange.300}",
+                        focusRingColor: "orange.300",
+                    },
+                    _focus: {
+                        focusRingColor: "orange.300",
+                    }
+                },
+            }
         },
     },
 })

@@ -1,9 +1,15 @@
 import { Accordion, Text, Badge, Flex, Textarea, Input } from "@chakra-ui/react"
-import { useState } from "react"
 import Section from "./Section"
 import EmojiDrawer from "./EmojiDrawer"
-const GenerationOptions = () => {
-    const [emoji, setEmoji] = useState("");
+
+type GenerationOptionsProps = {
+    onEmojiChange: (emoji: string) => void;
+    onPromptChange: (prompt: string) => void;
+    emoji: string;
+    prompt: string;
+} 
+const GenerationOptions = ({onEmojiChange, onPromptChange, emoji, prompt}: GenerationOptionsProps) => {
+
     return (
         <Section>
             <Accordion.Root collapsible multiple>
@@ -18,7 +24,7 @@ const GenerationOptions = () => {
                     <Accordion.ItemContent>
                         <Accordion.ItemBody>
                             <Input mb={2} placeholder="Select an emoji..." value={emoji} fontSize={"xl"}/>
-                            <EmojiDrawer onSelect={()=>{setEmoji}} />
+                            <EmojiDrawer onSelect={(selection:string)=>{onEmojiChange(selection)}} />
                         </Accordion.ItemBody>
                     </Accordion.ItemContent>
                 </Accordion.Item>
@@ -32,7 +38,7 @@ const GenerationOptions = () => {
                     </Accordion.ItemTrigger>
                     <Accordion.ItemContent>
                         <Accordion.ItemBody>
-                            <Textarea placeholder="Add instructions to personalize your sticker." h="100px" color="fd/subtle" size="md" />
+                            <Textarea placeholder="Add instructions to personalize your sticker." value={prompt} onChange={(e) => onPromptChange(e.target.value)} h="100px" color="fd/subtle" size="md" />
                         </Accordion.ItemBody>
                     </Accordion.ItemContent>
                 </Accordion.Item>

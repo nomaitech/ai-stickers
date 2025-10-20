@@ -1,18 +1,14 @@
 import { EmojiPicker } from "frimousse"
 
-const EmojiDrawer = ({ onSelect }) => {
+const EmojiDrawer = ({ onSelect }: { onSelect?: (emoji: string) => void }) => {
     return (
-        <EmojiPicker.Root>
+        <EmojiPicker.Root onEmojiSelect={(emoji) => onSelect?.(emoji.emoji)}>
             <EmojiPicker.Search />
             <EmojiPicker.Viewport>
                 <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
                 <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
-                <EmojiPicker.List>
-                    <EmojiPicker.Emoji
-                        onSelect={(emoji) => onSelect?.(emoji.native)}
-                    />
-                </EmojiPicker.List>
-            </EmojiPicker.Viewport>
+                <EmojiPicker.List/>
+               </EmojiPicker.Viewport>
             <style>{`
                 [frimousse-root] {
                     display: flex;

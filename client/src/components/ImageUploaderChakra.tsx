@@ -1,25 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Section from "./Section";
 import { Upload } from "lucide-react";
-import { FileUpload, Icon, Text, Image, Box } from "@chakra-ui/react";
+import { FileUpload, Icon, Text, Image, Box} from "@chakra-ui/react";
 
-const ImageUploaderChakra = () => {
-    const [preview, setPreview] = useState(null);
+type ImageUploaderProps = {
+    onImageUpload: (file: File) => void
+    image: File | null
+}
+const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
+    const [preview, setPreview] = useState<string | null>(null);
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);
+        onImageUpload(file);
     };
 
+    useEffect(() => {
+        if (image) {
+            const objectUrl = URL.createObjectURL(image);
+            setPreview(objectUrl);
+        } else {
+            setPreview(null);
+        }
+    }, [image]);
     return (
         <Section>
             <Text color="text/fg" fontWeight="semibold">
                 Upload your image *
             </Text>
             <FileUpload.Root my={5} alignItems="stretch">
-                <FileUpload.HiddenInput onChange={handleFileChange} />
+                <FileUpload.HiddenInput
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
                 <FileUpload.Dropzone>
                     {preview ? (
                         <Box mt={4} pointerEvents="none">
@@ -33,10 +47,10 @@ const ImageUploaderChakra = () => {
                         </Box>
                     ) : (
                         <>
-                            <Icon size="md" color="orange.300">
+                            <Icon size="md" color="orange.300" pointerEvents="none">
                                 <Upload />
                             </Icon>
-                            <FileUpload.DropzoneContent>
+                            <FileUpload.DropzoneContent pointerEvents="none">
                                 <Text fontWeight="semibold" fontSize="md">
                                     Drop your image here or click to upload
                                 </Text>
