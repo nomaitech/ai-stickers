@@ -1,0 +1,92 @@
+import { EmojiPicker } from "frimousse"
+
+const EmojiDrawer = ({ onSelect }: { onSelect?: (emoji: string) => void }) => {
+    return (
+        <EmojiPicker.Root onEmojiSelect={(emoji) => onSelect?.(emoji.emoji)}>
+            <EmojiPicker.Search />
+            <EmojiPicker.Viewport>
+                <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+                <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+                <EmojiPicker.List/>
+               </EmojiPicker.Viewport>
+            <style>{`
+                [frimousse-root] {
+                    display: flex;
+                    flex-direction: column;
+                    width: fit-content;
+                    height: 352px;
+                    background: light-dark(#fff, #171717);
+                    isolation: isolate;
+                }
+
+                [frimousse-search] {
+                    position: relative;
+                    z-index: 10;
+                    appearance: none;
+                    margin-block-start: 8px;
+                    margin-inline: 8px;
+                    padding: 8px 10px;
+                    background: light-dark(#f5f5f5, #262626);
+                    border-radius: 6px;
+                    font-size: 14px;
+                }
+
+                [frimousse-viewport] {
+                    position: relative;
+                    flex: 1;
+                    outline: none;
+                }
+
+                [frimousse-loading]
+                [frimousse-empty], {
+                    position: absolute;
+                    inset: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: light-dark(#a1a1a1, #737373);
+                    font-size: 14px;
+                }
+
+                [frimousse-list] {
+                    padding-block-end: 12px;
+                    user-select: none;
+                }
+
+                [frimousse-category-header] {
+                    padding: 12px 12px 6px;
+                    background: light-dark(#fff, #171717);
+                    color: light-dark(#525252, #a1a1a1);
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+
+                [frimousse-row] {
+                    padding-inline: 12px;
+                    scroll-margin-block: 12px;
+                }
+
+                [frimousse-emoji] {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 6px;
+                    background: transparent;
+                    font-size: 18px;
+
+                &[data-active] {
+                    background: var(--chakra-colors-orange-300);
+                }
+                }
+                [frimousse-search]:focus-visible {
+                    outline: 3px solid var(--chakra-colors-orange-300);
+                    outline-offset: 2px;
+                }
+            `}</style>
+        </EmojiPicker.Root>
+    )
+}
+
+export default EmojiDrawer;

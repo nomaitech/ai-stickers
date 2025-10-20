@@ -2,20 +2,23 @@ import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Sep
 import { PasswordInput } from "./ui/password-input";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLoginMutation, useRegisterMutation } from "../store/auth/authApi";
+import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
+import { useNavigate } from "react-router-dom";
 const LoginPrompt = (props: { onClose: () => void }) => {
     const [formOption, setFormOption] = useState("Login");
     const [_, setError] = useState("");
     const [login] = useLoginMutation();
     const [register] = useRegisterMutation();
-
+    const navigate = useNavigate();
     const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
 
     const onSubmit = async (data: FormData) => {
         if (formOption === "Login") {
             try {
                 await login(data).unwrap();
+                props.onClose();
+                navigate("/generate-sticker");
             } catch {
                 setError("Login failed")
                 console.error("Login failed");
@@ -23,6 +26,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
         } else {
             try {
                 await register(data).unwrap();
+                setFormOption("Login");
             } catch {
                 setError("Register failed")
                 console.error("Register failed");
@@ -33,20 +37,20 @@ const LoginPrompt = (props: { onClose: () => void }) => {
     return (
         <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={props.onClose}>
             <AbsoluteCenter>
-                <Box w="412px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
+                <Box w={{ base: "90vw", md: "412px" }} maxW="412px" h="682px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Box position="absolute" top={8} right={0}>
                         <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
                     </Box>
-                    <Tabs.Root size="lg" defaultValue="Login">
+                    <Tabs.Root size="lg" defaultValue="Login" value={formOption} onValueChange={(details) => setFormOption(details.value)}>
                         <Tabs.Content value="Sign Up">
                             <Text mt={16} mx={10} mb={-16} fontWeight="semibold" fontSize={"xl"}>Sign up now to get <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientTo="orange.400" bgClip='text'>2 free credits</Text> to start generating your stickers</Text>
                         </Tabs.Content>
                         <Box mx={4} mt={28}>
                             <Tabs.List>
-                                <Tabs.Trigger value="Login" onClick={() => setFormOption("Login")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Login" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Login
                                 </Tabs.Trigger>
-                                <Tabs.Trigger value="Sign Up" onClick={() => setFormOption("Sign Up")} _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
+                                <Tabs.Trigger value="Sign Up" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                     Sign Up
                                 </Tabs.Trigger>
                                 <Tabs.Indicator height="2px" bottom="-1px" position="absolute" bg="black" transition="all 0.25s ease" />
@@ -59,7 +63,6 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                                         mt={5}
                                         mb={2}
                                         autoFocus
-                                        css={{ "--focus-color": "colors.orange.300" }}
                                         {...registerForm("email", {
                                             required: "Email is required",
                                             pattern: {
@@ -75,7 +78,6 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                                         <PasswordInput
                                             placeholder="Enter password"
                                             size="lg"
-                                            css={{ "--focus-color": "colors.orange.300" }}
                                             {...registerForm("password", {
                                                 required: "Password is required",
                                                 minLength: {

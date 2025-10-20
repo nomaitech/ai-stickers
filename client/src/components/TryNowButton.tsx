@@ -1,17 +1,25 @@
-import { Button, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-
+import { Link as RouterLink } from "react-router-dom";
+import RouterButton from "./RouterButton";
 type TryNowButtonProps = {
   text?: string;
 };
 
 const TryNowButton = ({ text = "Try Now" }: TryNowButtonProps) => {
-  const navigate = useNavigate();
   return (
-    <Button backgroundColor="orange.300" onClick={() => navigate("/generate-sticker")} w="full" size="xl" variant="solid" colorPalette="gray">
-      <Text color="orange.800">{text}</Text>
-    </Button>
-    )
+    <RouterButton
+      as={RouterLink}
+      to="/generate-sticker"
+      backgroundColor="orange.300"
+      w="full"
+      size="xl"
+      variant="solid"
+      fontWeight="800"
+      colorPalette="gray"
+      color="orange.800"
+    >
+      {text}
+    </RouterButton>
+  );
 };
 
 export default TryNowButton;

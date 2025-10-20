@@ -1,5 +1,5 @@
 import { Avatar, Flex, VStack, Text, Card } from "@chakra-ui/react";
-
+import Section from "./Section";
 const users = [
   {
     name: "Arom Kim",
@@ -20,27 +20,29 @@ const users = [
 
 const Reviews = () => {
   return (
-    <Flex w="full" flexDirection="column">
-      <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">Reviews</Text>
-      <VStack w="full" flexDirection="column" alignItems="center" gap={8}>
-        {users.map((user) => (
-          <Card.Root key={user.name} size="md" variant="elevated">
-            <Card.Body gap="2" flexDirection="row">
-              <Avatar.Root size="lg" shape="rounded">
-                <Avatar.Image src={user.avatar} />
-                <Avatar.Fallback name="Nue Camp" />
-              </Avatar.Root>
-              <Flex ml={4} flexDirection="column">
-                <Card.Title>{user.name}</Card.Title>
-                <Card.Description mt={4}>
-                  {user.review}
-                </Card.Description>
-              </Flex>
-            </Card.Body>
-        </Card.Root>
-        ))}
-      </VStack>
-    </Flex>
+    <Section>
+      <Flex w="full" flexDirection="column">
+        <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">Reviews</Text>
+        <VStack w="full" flexDirection="column" alignItems="center" gap={8}>
+          {users.map((user) => (
+            <Card.Root key={user.name} size="md" variant="elevated">
+              <Card.Body gap="2" flexDirection="row">
+                <Avatar.Root size="lg" shape="rounded">
+                  <Avatar.Image src={user.avatar} />
+                  <Avatar.Fallback name="Nue Camp" />
+                </Avatar.Root>
+                <Flex ml={4} flexDirection="column">
+                  <Card.Title>{user.name}</Card.Title>
+                  <Card.Description mt={4}>
+                    {user.review}
+                  </Card.Description>
+                </Flex>
+              </Card.Body>
+            </Card.Root>
+          ))}
+        </VStack>
+      </Flex>
+    </Section>
   );
 };
 
