@@ -3,6 +3,7 @@ __all__ = ["Session", "IntegrityError"]
 from sqlalchemy import (
     Column,
     Integer,
+    Float,
     DateTime,
     String,
     Enum,
@@ -92,6 +93,7 @@ class Images(Base):
     emoji = Column(String, nullable=False, index=True)
     prompt = Column(String, nullable=True, index=True)
     sticker_pack_id = Column(Integer, ForeignKey("sticker_packs.id"), index=True)
+    generation_time = Column(Float, nullable=True)
 
     transaction = relationship("Transactions", back_populates="images")
     user = relationship("Users", back_populates="images")

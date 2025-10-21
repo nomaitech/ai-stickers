@@ -64,6 +64,7 @@ class StickersResponse(BaseModel):
     emoji: str = Field(description="Emoji")
     prompt: Optional[str] = Field(description="Prompt")
     sticker_pack_id: Optional[int] = Field(description="Sticker pack ID")
+    generation_time: float = Field(description="Image generation time")
     class Config:
         orm_mode = True
         from_attributes = True
