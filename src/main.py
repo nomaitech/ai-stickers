@@ -39,6 +39,7 @@ from src.models import (
 from src.schemas import (
     UserSchema,
     UserOut,
+    RegisterResponse,
     Token,
     PaymentSessionCreate,
     PaymentStatusResponse,
@@ -104,7 +105,7 @@ async def get_user_details(db: db_dependency, user: Users = Depends(get_current_
 
 @app.post(
     "/auth/register",
-    response_model=UserOut,
+    response_model=RegisterResponse,
     status_code=status.HTTP_201_CREATED,
     tags=["Users"],
 )
@@ -120,9 +121,17 @@ async def register_new_user(db: db_dependency, user: UserSchema):
 
         new_user.credits = get_user_credits(db, new_user.id)
         new_user_response = UserOut.model_validate(new_user)
+
+        token = create_access_token({"sub": str(new_user.id)})
+
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user": new_user_response,
+        }
     except IntegrityError:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return new_user_response
+    
 
 
 @app.post("/auth/login", response_model=Token, tags=["Users"])
