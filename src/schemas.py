@@ -23,6 +23,22 @@ class UserOut(BaseModel):
         json_schema_extra = {"examples": [{"email": "test@example.com", "credits": 10}]}
 
 
+class RegisterResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserOut
+
+    class Config:
+        json_schema_extra = {
+            "examples": [
+                {
+                    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "token_type": "bearer",
+                    "user": {"email": "test@example.com", "credits": 10},
+                }
+            ]
+        }
+
 class Token(BaseModel):
     access_token: str = Field(description="JWT access token")
     token_type: str = Field(default="bearer", description="Token type")
