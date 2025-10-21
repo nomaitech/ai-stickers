@@ -3,7 +3,7 @@ import jwt
 import os
 
 ALGORITHM = "RS256"
-ACCESS_TOKEN_EXPIRE = 60 * 60
+ACCESS_TOKEN_EXPIRE = 60 * 60 * 24
 
 JWT_PRIVATE_KEY = os.getenv("JWT_PRIVATE_KEY")
 JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")

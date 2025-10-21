@@ -2,6 +2,7 @@ import asyncio
 import os
 import logging
 import datetime
+import time
 from typing import Annotated
 from fastapi import (
     FastAPI,
@@ -155,9 +156,13 @@ async def create_sticker(file: UploadFile, db: db_dependency, emoji: str = Form(
 
     image_data = await file.read()
     loop = asyncio.get_running_loop()
+
+    start_time = time.time()
     sticker_data = await loop.run_in_executor(
         None, generate_sticker, image_data, file.filename, REF_IMAGE_PATH, prompt
     )
+    end_time = time.time()
+    generation_time = round(end_time - start_time, 2)
 
     new_transaction = Transactions(
         current_transaction=TransactionList.image_generation, amount=-1, user_id=user.id
@@ -171,7 +176,8 @@ async def create_sticker(file: UploadFile, db: db_dependency, emoji: str = Form(
         transaction_id=new_transaction.id,
         user_id=user.id, 
         emoji=emoji, 
-        prompt=prompt
+        prompt=prompt,
+        generation_time=generation_time,
     )
     db.add(new_img)
     db.commit()
