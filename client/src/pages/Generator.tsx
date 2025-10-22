@@ -11,7 +11,6 @@ import { useState, useEffect } from "react";
 
 const Generator = () => {
     const [image, setImage] = useState<File | null>(null);
-    const [emoji, setEmoji] = useState<string>("");
     const [prompt, setPrompt] = useState<string>("");
     const [enableButton, setEnableButton] = useState<boolean>(false);
     const [displayTopUpPrompt, setDisplayTopUpPrompt] = useState<boolean>(false);
@@ -28,12 +27,10 @@ const Generator = () => {
             if (image instanceof Blob) {
                 formData.append("file", image);
             }
-            formData.append("emoji", emoji);
             formData.append("prompt", prompt);
             const result = await generateSticker(formData).unwrap();
             setStickerResult(result.generated_img_url);
             setImage(null);
-            setEmoji("");
             setPrompt("");
             refetch();
         } catch (err) {
@@ -51,7 +48,7 @@ const Generator = () => {
         <>
             <GeneratorHeader />
             <ImageUploaderChakra onImageUpload={setImage} image={image}/>
-            <GenerationOptions onEmojiChange={setEmoji} onPromptChange={setPrompt} emoji={emoji} prompt={prompt} />
+            <GenerationOptions onPromptChange={setPrompt} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
             <History />
             {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} />}
