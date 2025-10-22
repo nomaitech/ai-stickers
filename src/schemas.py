@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, EmailStr
 from typing import Optional
 from datetime import datetime
 from src import telegram_bot
 
 class UserSchema(BaseModel):
-    email: str = Field(description="User email address")
+    email: EmailStr = Field(description="User email address")
     password: str = Field(description="User password")
 
     class Config:
