@@ -59,11 +59,6 @@ export const handlers = [
   }),
 
   http.post("/stickers", async ({ request }) => {
-    await delay(3000);
-          return new Response(JSON.stringify({ message: "Insufficient Balance" }), {
-        status: 402,
-        headers: { "Content-Type": "application/json" },
-      });
     if (!validateAuth(request)) return unauthorizedResponse();
     const formData = await request.formData();
     const image = formData.get("file");
