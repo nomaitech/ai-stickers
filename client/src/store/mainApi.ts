@@ -4,6 +4,7 @@ import { prepareAuthHeaders } from "./utils";
 import { setToken } from "./auth/authSlice";
 import { updateUserInfo } from "./UI/uiSlice"
 import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse } from "../types";
+
 export const mainApi = createApi({
   reducerPath: "mainApi",
   baseQuery: fetchBaseQuery({
@@ -52,6 +53,7 @@ export const mainApi = createApi({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["Sticker"],
     }),
     getStickers: builder.query<Sticker[], void>({
       query: () => "/stickers",

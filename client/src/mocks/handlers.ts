@@ -15,6 +15,15 @@ const unauthorizedResponse = () => {
   });
 };
 
+let stickers = [
+  {
+    id: "1",
+    generated_img_url: "https://picsum.photos/150?1",
+    emoji: "👍",
+    createdAt: new Date().toISOString(),
+  },
+];
+
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
     await delay(2000);
@@ -44,8 +53,7 @@ export const handlers = [
     await delay(3000);
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
-      JSON.stringify(undefined
-      ),
+      JSON.stringify(stickers),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
@@ -70,7 +78,13 @@ export const handlers = [
       });
     }
     await delay(5000);
-
+    const newSticker = {
+      id: crypto.randomUUID(),
+      generated_img_url: `https://picsum.photos/150?${Math.random()}`,
+      emoji: (formData.get("emoji") as string) || "👍🏼",
+      createdAt: new Date().toISOString(),
+    };
+    stickers.push(newSticker);
     return new Response(
       JSON.stringify({
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
