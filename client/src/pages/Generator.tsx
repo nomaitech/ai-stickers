@@ -26,9 +26,13 @@ const Generator = () => {
     }, [image, isLoading]);
 
     const startGeneration = async () => {
-        if (!credits){
+        if (credits==undefined){
             dispatch(authRegister());
             dispatch(openAuth());
+            return
+        }
+        if(credits==0){
+            setDisplayTopUpPrompt(true);
             return
         }
         try {
@@ -59,7 +63,7 @@ const Generator = () => {
             <ImageUploaderChakra onImageUpload={setImage} image={image} />
             <GenerationOptions onPromptChange={setPrompt} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
-            {credits && <History />}
+            {credits!=undefined && <History />}
             {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} />}
         </>
     )

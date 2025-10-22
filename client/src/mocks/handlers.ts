@@ -59,6 +59,11 @@ export const handlers = [
   }),
 
   http.post("/stickers", async ({ request }) => {
+    await delay(3000);
+          return new Response(JSON.stringify({ message: "Insufficient Balance" }), {
+        status: 402,
+        headers: { "Content-Type": "application/json" },
+      });
     if (!validateAuth(request)) return unauthorizedResponse();
     const formData = await request.formData();
     const image = formData.get("file");
@@ -123,7 +128,7 @@ export const handlers = [
     await delay(2000);
     const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
-      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
+      JSON.stringify({ email: "user@example.com", credits: 0 }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     )
   }),
