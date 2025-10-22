@@ -45,78 +45,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
       JSON.stringify([
-        {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "👍",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-                {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "👍",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-                {
-          id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "👍",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "8fa85f64-5717-4512-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
-        {
-          id: "6as85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🤪",
-          createdAt: "2025-09-10T12:11:06.383Z",
-        },
+       
       ],
       ),
       { status: 200, headers: { "Content-Type": "application/json" } }
