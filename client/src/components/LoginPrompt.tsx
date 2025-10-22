@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const LoginPrompt = (props: { onClose: () => void }) => {
     const [formOption, setFormOption] = useState("Login");
     const [_, setError] = useState("");
-    const [login] = useLoginMutation();
+    const [login, {isLoading}] = useLoginMutation();
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
     const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
@@ -90,7 +90,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
                                     </Field.Root>
                                 </Box>
                                 <Tabs.Content value="Login">
-                                    <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
+                                    <Button type="submit" loading={isLoading} backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
                                         <Text color="orange.800" fontWeight="semibold">Login</Text>
                                     </Button>
                                 </Tabs.Content>
