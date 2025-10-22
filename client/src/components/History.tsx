@@ -5,8 +5,6 @@ import { useGetStickersQuery } from "@/store/mainApi";
 import RouterButton from "./RouterButton";
 const History = () => {
     const { data: stickers, isLoading } = useGetStickersQuery();
-    console.log(stickers);
-    console.log("Whew lad");
     return (
         <Section>
             <Flex justifyContent="space-between" mt={14} mb={5}>
