@@ -4,9 +4,9 @@ import { domainUrl } from "./env";
 
 const Layout = () => {
   return (
-  <div className="min-h-screen flex flex-col">
+  <div style={{ maxWidth: "412px", margin: "0 auto" }}>
       <HeaderChakra />
-      <main className="flex-1 flex">
+      <main>
         <Outlet context={{ domainUrl }}/>
       </main>
     </div>
