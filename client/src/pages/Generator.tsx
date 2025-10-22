@@ -59,7 +59,7 @@ const Generator = () => {
             <ImageUploaderChakra onImageUpload={setImage} image={image} />
             <GenerationOptions onPromptChange={setPrompt} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
-            <History />
+            {credits && <History />}
             {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} />}
         </>
     )
