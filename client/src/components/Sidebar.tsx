@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux";
 import { removeToken } from "@/store/auth/authSlice";
 import { resetUserInfo } from "@/store/UI/uiSlice";
 import { mainApi } from "@/store/mainApi";
+import { useNavigate } from "react-router-dom";
 const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: boolean }) => {
     const dispatch = useDispatch();
     const location = useLocation()
+    const navigate = useNavigate(); 
     const logout = () => {
         dispatch(removeToken());
         dispatch(resetUserInfo());
@@ -78,7 +80,7 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                     })}
                 </Flex>
                 <Separator position="absolute" bottom="93px" left={0} width="100%" height="1px" />
-                <Button bg="white" position="absolute" left={3} bottom={8} onClick={() => { logout(); onClose() }} color="gray.800" fontWeight="bold" justifyContent="flex-start" textAlign="left" _hover={{ backgroundColor: "gray.100" }}>
+                <Button bg="white" position="absolute" left={3} bottom={8} onClick={() => { logout(); onClose(); navigate("/") }} color="gray.800" fontWeight="bold" justifyContent="flex-start" textAlign="left" _hover={{ backgroundColor: "gray.100" }}>
                     <LogOut /> Logout
                 </Button>
             </Box>
