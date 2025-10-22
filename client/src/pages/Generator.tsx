@@ -25,13 +25,48 @@ const Generator = () => {
         setEnableButton(!!image && !isLoading);
     }, [image, isLoading]);
 
+    useEffect(() => {
+        const stash = localStorage.getItem("stash");
+        if (stash) {
+            const { imageBase64, prompt: storedPrompt } = JSON.parse(stash);
+            setPrompt(storedPrompt || "");
+            if (imageBase64) {
+                const byteString = atob(imageBase64.split(",")[1]);
+                const mimeString = imageBase64.split(",")[0].match(/:(.*?);/)![1];
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                const file = new File([ab], "restored.png", { type: mimeString });
+                setImage(file);
+            }
+        }
+    }, []);
+
+    const stashFields = async () => {
+        if (image) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = reader.result as string;
+                localStorage.setItem(
+                    "stash",
+                    JSON.stringify({ imageBase64: base64, prompt })
+                );
+            };
+            reader.readAsDataURL(image);
+        } else {
+            localStorage.setItem("stash", JSON.stringify({ prompt }));
+        }
+    };
+
     const startGeneration = async () => {
-        if (credits==undefined){
+        if (credits == undefined) {
             dispatch(authRegister());
             dispatch(openAuth());
             return
         }
-        if(credits==0){
+        if (credits == 0) {
             setDisplayTopUpPrompt(true);
             return
         }
@@ -63,8 +98,8 @@ const Generator = () => {
             <ImageUploaderChakra onImageUpload={setImage} image={image} />
             <GenerationOptions onPromptChange={setPrompt} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
-            {credits!=undefined && <History />}
-            {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} />}
+            {credits != undefined && <History />}
+            {displayTopUpPrompt && <GetCreditsModal onClose={() => setDisplayTopUpPrompt(false)} stashFields={stashFields} />}
         </>
     )
 }

@@ -2,7 +2,11 @@ import { AbsoluteCenter, Box, Icon, Text, Button, Flex } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 import { Ghost } from "lucide-react"
 
-const GetCreditsModal = ({onClose}: {onClose: () => void}) => {
+type GetCreditsModalProps = {
+    onClose: () => void
+    stashFields: () => void
+}
+const GetCreditsModal = ({ onClose, stashFields }: GetCreditsModalProps) => {
     const navigate = useNavigate();
 
     return (
@@ -15,8 +19,8 @@ const GetCreditsModal = ({onClose}: {onClose: () => void}) => {
                         <Text color="grey">Add more credits to keep creating</Text>
                         <Text color="grey">more amazing stickers</Text>
                         <Box mt={6} mb={12}>
-                            <Button mx={2} background="orange.300" onClick={() => navigate("/billing")} fontWeight="semibold" color="orange.950">Add Credits</Button>
-                            <Button mx={2} background="white" onClick={() =>onClose()} fontWeight="semibold" color="gray.700" border="1px" borderColor="gray.200" borderStyle="solid">Not Now</Button>
+                            <Button mx={2} background="orange.300" onClick={() => {stashFields(); navigate("/billing")}} fontWeight="semibold" color="orange.950">Add Credits</Button>
+                            <Button mx={2} background="white" onClick={() => onClose() } fontWeight="semibold" color="gray.700" border="1px" borderColor="gray.200" borderStyle="solid">Not Now</Button>
                         </Box>
                     </Flex>
                 </Box>
