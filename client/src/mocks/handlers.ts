@@ -44,9 +44,7 @@ export const handlers = [
     await delay(3000);
     if (!validateAuth(request)) return unauthorizedResponse();
     return new Response(
-      JSON.stringify([
-       
-      ],
+      JSON.stringify(undefined
       ),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );

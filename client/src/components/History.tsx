@@ -21,7 +21,7 @@ const History = () => {
                 <Flex w="full" h="200px" direction="column" align="center">
                     <Spinner size="md" color="orange.300" mt={2} />
                 </Flex>
-            ) : (stickers?.length == 0 ? (
+            ) : (stickers?.length == 0 || stickers == undefined ? (
                 <Flex h={"162px"} bg={"gray.100"} direction={"column"} align={"center"} borderRadius={"2xl"}>
                     <Icon mt={6} w="32px" h="32px" color="orange.300">
                         <Clock />
