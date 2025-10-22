@@ -4,13 +4,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
 import type { RootState } from "../store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { openAuth } from "@/store/UI/uiSlice";
 import Sidebar from "./Sidebar";
 const HeaderChakra = () => {
-  const [authOpen, setAuthOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const showAuth = useSelector((state: RootState) => state.ui.showAuth);
   const userInfo = useSelector((state: RootState) => state.ui.userInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const credits = userInfo?.credits;
   return (
     <Box bg="white" px={6} py={4} boxShadow="md">
@@ -26,7 +28,7 @@ const HeaderChakra = () => {
           </Link>
         </Flex>
         {credits == undefined ? (
-          <Button backgroundColor="orange.300" h="38px" onClick={() => setAuthOpen(true)} fontWeight="semibold" color="orange.800">
+          <Button backgroundColor="orange.300" h="38px" onClick={() => dispatch(openAuth())} fontWeight="semibold" color="orange.800">
             Login
           </Button>
         ) : (
@@ -40,7 +42,7 @@ const HeaderChakra = () => {
           </Box>
         )}
       </Flex>
-      {authOpen && <LoginPrompt onClose={() => setAuthOpen(false)} />}
+      {showAuth && <LoginPrompt />}
       <Sidebar sidebarOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </Box>
   );

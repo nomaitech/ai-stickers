@@ -5,19 +5,23 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
 import { useNavigate } from "react-router-dom";
-const LoginPrompt = (props: { onClose: () => void }) => {
-    const [formOption, setFormOption] = useState("Login");
+import { useDispatch, useSelector } from "react-redux";
+import { closeAuth, authLogin, authRegister } from "@/store/UI/uiSlice";
+import type { RootState } from "../store";
+const LoginPrompt = () => {
+    const authOption = useSelector((state: RootState) => state.ui.authOption);
     const [_, setError] = useState("");
     const [login, {isLoading}] = useLoginMutation();
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
 
     const onSubmit = async (data: FormData) => {
-        if (formOption === "Login") {
+        if (authOption === "Login") {
             try {
                 await login(data).unwrap();
-                props.onClose();
+                dispatch(closeAuth());
                 navigate("/generate-sticker");
             } catch {
                 setError("Login failed")
@@ -26,7 +30,7 @@ const LoginPrompt = (props: { onClose: () => void }) => {
         } else {
             try {
                 await register(data).unwrap();
-                setFormOption("Login");
+                dispatch(authLogin());
             } catch {
                 setError("Register failed")
                 console.error("Register failed");
@@ -34,14 +38,23 @@ const LoginPrompt = (props: { onClose: () => void }) => {
         }
     }
 
+    const swapForm = (mode:string) => {
+        console.log(mode);
+        if(mode==="Login"){
+            dispatch(authLogin());
+        }else{
+            dispatch(authRegister());
+        }
+    }
+
     return (
-        <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={props.onClose}>
+        <Box position="fixed" top={0} left={0} w="100vw" h="100vh" bg="rgba(0,0,0,0.5)" overflowY="auto" zIndex={50} onClick={() => dispatch(closeAuth())}>
             <AbsoluteCenter>
                 <Box w={{ base: "90vw", md: "412px" }} maxW="412px" h="682px" bg="white" borderRadius="2xl" mt={8} mb={8} onClick={(e) => { e.stopPropagation() }}>
                     <Box position="absolute" top={8} right={0}>
-                        <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={props.onClose} />
+                        <CloseButton zIndex={1} size="2xl" borderRadius={"full"} onClick={() => dispatch(closeAuth())} />
                     </Box>
-                    <Tabs.Root size="lg" defaultValue="Login" value={formOption} onValueChange={(details) => setFormOption(details.value)}>
+                    <Tabs.Root size="lg" value={authOption} onValueChange={(details) => swapForm(details.value)}>
                         <Tabs.Content value="Sign Up">
                             <Text mt={16} mx={10} mb={-16} fontWeight="semibold" fontSize={"xl"}>Sign up now to get <Text as="span" bgGradient="to-r" gradientFrom="purple.400" gradientTo="orange.400" bgClip='text'>2 free credits</Text> to start generating your stickers</Text>
                         </Tabs.Content>

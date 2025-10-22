@@ -5,10 +5,11 @@ import Output from "@/components/Output";
 import History from "@/components/History";
 import GetCreditsModal from "@/components/GetCreditsModal";
 import { useGenerateStickerMutation } from "@/store/mainApi";
+import type { RootState } from "../store";
 import { useGetUserInfoQuery } from "@/store/mainApi";
 import { useState, useEffect } from "react";
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { openAuth, authRegister } from "@/store/UI/uiSlice";
 const Generator = () => {
     const [image, setImage] = useState<File | null>(null);
     const [prompt, setPrompt] = useState<string>("");
@@ -17,11 +18,19 @@ const Generator = () => {
     const [stickerResult, setStickerResult] = useState<string | null>(null);
     const [generateSticker, { isLoading }] = useGenerateStickerMutation();
     const { refetch } = useGetUserInfoQuery();
+    const userInfo = useSelector((state: RootState) => state.ui.userInfo);
+    const credits = userInfo?.credits;
+    const dispatch = useDispatch();
     useEffect(() => {
         setEnableButton(!!image && !isLoading);
     }, [image, isLoading]);
 
     const startGeneration = async () => {
+        if (!credits){
+            dispatch(authRegister());
+            dispatch(openAuth());
+            return
+        }
         try {
             const formData = new FormData();
             if (image instanceof Blob) {
@@ -47,7 +56,7 @@ const Generator = () => {
     return (
         <>
             <GeneratorHeader />
-            <ImageUploaderChakra onImageUpload={setImage} image={image}/>
+            <ImageUploaderChakra onImageUpload={setImage} image={image} />
             <GenerationOptions onPromptChange={setPrompt} prompt={prompt} />
             <Output enableButton={enableButton} stickerResult={stickerResult} isLoading={isLoading} startGeneration={startGeneration} />
             <History />
