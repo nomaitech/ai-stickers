@@ -128,7 +128,7 @@ export const handlers = [
     await delay(2000);
     const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
-      JSON.stringify({ email: "user@example.com", credits: 0 }),
+      JSON.stringify({ email: "user@example.com", credits: creditAmount }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     )
   }),
