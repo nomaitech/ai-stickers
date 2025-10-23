@@ -5,11 +5,20 @@ type PricingProps = {
     name: string
     price: number
     stickerAmount: number
+    highlighted?: boolean
 };
-const Pricing = ({ name, price, stickerAmount }: PricingProps) => {
-
+const Pricing = ({ name, price, stickerAmount, highlighted }: PricingProps) => {
     return (
-        <Box w={{ md: "379px" }} h="352px" mb={12} bg="white" borderRadius="2xl" borderWidth="1px" borderStyle="solid" borderColor="gray.200" p={6}>
+        <Box w={{ md: "379px" }}
+            h="352px"
+            mb={12}
+            bgGradient={highlighted ? "to-t" : undefined}
+            gradientFrom={highlighted ? "orange.50" : undefined}
+            gradientTo={highlighted ? "white" : undefined}
+            borderRadius="2xl"
+            borderWidth="1px"
+            borderStyle="solid"
+            borderColor="gray.200" p={6}>
             <Text mt={2} bgGradient="to-r" gradientFrom="orange.400" gradientTo="yellow.400" bgClip='text' fontWeight="semibold">{name}</Text>
             <Flex direction="row" align="baseline" mt={2}>
                 <Text fontSize="4xl" fontWeight="bold" mr={2}>${price}</Text>
