@@ -49,10 +49,7 @@ const Generator = () => {
             const reader = new FileReader();
             reader.onload = () => {
                 const base64 = reader.result as string;
-                localStorage.setItem(
-                    "stash",
-                    JSON.stringify({ imageBase64: base64, prompt })
-                );
+                localStorage.setItem( "stash", JSON.stringify({ imageBase64: base64, prompt }));
             };
             reader.readAsDataURL(image);
         } else {
