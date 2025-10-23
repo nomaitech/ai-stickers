@@ -19,7 +19,7 @@ function App() {
   return (
     isLoading ? (
       <AbsoluteCenter>
-        <Spinner size="md" color="orange.300" mt={2} />
+        <Spinner size="xl" color="orange.300" mt={2} />
       </AbsoluteCenter>
     ) : (
       <Route />
