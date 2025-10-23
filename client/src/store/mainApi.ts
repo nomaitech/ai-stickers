@@ -198,4 +198,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useGetPaymentSessionMutation,
+  useGetPaymentStatusQuery
 } = mainApi;
