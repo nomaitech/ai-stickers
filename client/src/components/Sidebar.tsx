@@ -38,7 +38,7 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
             transition="opacity 0.3s ease"
         >
             <Box
-                h="100vh"
+                h="100dvh"
                 w="80vw"
                 bg="white"
                 position="fixed"
