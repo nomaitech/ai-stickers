@@ -34,13 +34,13 @@ const HeaderChakra = () => {
         ) : (
           <Box h="38px" w="112px" position="relative" onClick={() => { navigate("/billing") }} borderRadius="md" borderStyle={"solid"} borderColor="gray.200" borderWidth="1px" _hover={{ cursor: "pointer" }}>
             <Flex position="absolute" direction="row" justifyContent="space-between" w="50px" left={2} top={1.5}>
-              <Icon color="grey"><Coins /></Icon>
+              <Icon color="fg.muted"><Coins /></Icon>
               <Flex align="center" justify="center" textAlign="center" w="full" ml={2}>
-                <Text color="grey" fontWeight="semibold">{credits}</Text>
+                <Text color="fg.muted" fontWeight="semibold">{credits}</Text>
               </Flex>
             </Flex>
-            <Separator orientation={"vertical"} position="absolute" top={1.5} right={11} width="1px" height="26px" />
-            <Icon position="absolute" color="grey" right={2} top={1.5}><Plus /></Icon>
+            <Separator orientation="vertical" position="absolute" top={1.5} right={11} width="1px" height="26px" />
+            <Icon position="absolute" color="fg.muted" right={2} top={1.5}><Plus /></Icon>
           </Box>
         )}
       </Flex>
