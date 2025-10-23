@@ -9,7 +9,7 @@ type PricingProps = {
 };
 const Pricing = ({ name, price, stickerAmount, highlighted }: PricingProps) => {
     return (
-        <Box w={{ md: "379px" }}
+        <Box w="full"
             h="352px"
             mb={12}
             bgGradient={highlighted ? "to-t" : undefined}
