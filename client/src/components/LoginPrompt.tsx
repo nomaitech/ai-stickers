@@ -15,7 +15,7 @@ const LoginPrompt = () => {
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { register: registerForm, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
+    const { register: registerForm, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
 
     const onSubmit = async (data: FormData) => {
         if (authOption === "Login") {
@@ -39,7 +39,7 @@ const LoginPrompt = () => {
     }
 
     const swapForm = (mode:string) => {
-        console.log(mode);
+        clearErrors();
         if(mode==="Login"){
             dispatch(authLogin());
         }else{
