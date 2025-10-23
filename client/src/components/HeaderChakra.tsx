@@ -18,7 +18,7 @@ const HeaderChakra = () => {
     <Box bg="white" px={6} py={4} boxShadow="md">
       <Flex align="center" justify="space-between">
         <Flex alignItems="center">
-          {credits != undefined && <Icon onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
+          {credits != undefined && <Icon position="relative" left="-1px" onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
             <Menu />
           </Icon>}
           <Link href="/generate-sticker">

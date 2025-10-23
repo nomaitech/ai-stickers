@@ -9,7 +9,7 @@ type PricingProps = {
 const Pricing = ({ name, price, stickerAmount }: PricingProps) => {
 
     return (
-        <Box w={{ base: "90vw", md: "379px" }} maxW="379px" h="352px" mb={12} bg="white" borderRadius="2xl" borderWidth="1px" borderStyle="solid" borderColor="gray.200" p={6}>
+        <Box w={{ md: "379px" }} h="352px" mb={12} bg="white" borderRadius="2xl" borderWidth="1px" borderStyle="solid" borderColor="gray.200" p={6}>
             <Text mt={2} bgGradient="to-r" gradientFrom="orange.400" gradientTo="yellow.400" bgClip='text' fontWeight="semibold">{name}</Text>
             <Flex direction="row" align="baseline" mt={2}>
                 <Text fontSize="4xl" fontWeight="bold" mr={2}>${price}</Text>
