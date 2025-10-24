@@ -1,6 +1,5 @@
 import { useSearchParams } from "react-router-dom";
 import { useGetPaymentStatusQuery } from "../store/mainApi";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { EmptyState, VStack } from "@chakra-ui/react"
 import ProcessingPayment from "@/components/ProcessingPayment";
@@ -14,7 +13,6 @@ const TopupResult = () => {
         pollingInterval: polling ? 3000 : 0,
         skip: !sessionId,
     });
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (data?.status === "completed" || data?.status === "cancel") {
