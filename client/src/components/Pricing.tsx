@@ -18,7 +18,8 @@ const Pricing = ({ name, price, stickerAmount, highlighted }: PricingProps) => {
             borderRadius="2xl"
             borderWidth="1px"
             borderStyle="solid"
-            borderColor="gray.200" p={6}>
+            borderColor={highlighted ? "orange.300" : "gray.200"}
+            p={6}>
             <Text mt={2} bgGradient="to-r" gradientFrom="orange.400" gradientTo="yellow.400" bgClip='text' fontWeight="semibold">{name}</Text>
             <Flex direction="row" align="baseline" mt={2}>
                 <Text fontSize="4xl" fontWeight="bold" mr={2}>${price}</Text>
