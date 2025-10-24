@@ -15,7 +15,7 @@ const unauthorizedResponse = () => {
   });
 };
 
-let stickers = [
+const stickers = [
   {
     id: "1",
     generated_img_url: "https://picsum.photos/150?1",
