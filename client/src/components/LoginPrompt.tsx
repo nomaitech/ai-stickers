@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeAuth, authLogin, authRegister } from "@/store/UI/uiSlice";
 import type { RootState } from "../store";
+import PrimaryButton from "./PrimaryButton";
 const LoginPrompt = () => {
     const authOption = useSelector((state: RootState) => state.ui.authOption);
     const [_, setError] = useState("");
@@ -104,9 +105,7 @@ const LoginPrompt = () => {
                                     </Field.Root>
                                 </Box>
                                 <Tabs.Content value="Login">
-                                    <Button type="submit" loading={isLoading} backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
-                                        <Text color="orange.800" fontWeight="semibold">Login</Text>
-                                    </Button>
+                                    <PrimaryButton text="Login" type="submit" loading={isLoading}/>
                                 </Tabs.Content>
                                 <Tabs.Content value="Sign Up">
                                     <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">

@@ -1,5 +1,5 @@
 import { Flex, Text, Image, Box } from "@chakra-ui/react";
-import TryNowButton from "./TryNowButton";
+import PrimaryButton from "./PrimaryButton";
 import telegramIntegration from "../assets/telegram.png";
 import DogReal from "../assets/dog-real.png";
 import DogSticker from "../assets/dog-sticker.png";
@@ -25,19 +25,19 @@ const Features = () => {
               <Image alignSelf="center" width={250} src={DogSticker} alt="Dog Sticker" />
             </Box>
           </Flex>
-          <TryNowButton text="Create Your Own Stickers" />
+          <PrimaryButton text="Create Your Own Stickers" to="/explore" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
           <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="cyan.400" bgClip='text' fontSize="lg" fontWeight="semibold">Personalize with AI Prompts</Text>
           <Text fontSize="md" color="fg.muted">Add an optional text prompt to change mood or theme, make your sticker truly unique.</Text>
           <Image borderRadius={19} my={4} alignSelf="center" w="full" src="https://placehold.co/380x250" alt="Telegram Integration" />
-          <TryNowButton text="Customize Your Stickers" />
+          <PrimaryButton text="Customize Your Stickers" to="/generate-sticker" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
           <Text bgGradient="to-r" gradientFrom="pink.400" gradientTo="orange.400" bgClip='text' fontSize="lg" fontWeight="semibold">Seamless Telegram Integration</Text>
           <Text fontSize="md" color="fg.muted">If you use Telegram, your stickers are automatically compiled into a ready-to-use pack.</Text>
           <Image borderRadius={4} my={4} alignSelf="center" width={200} src={telegramIntegration} alt="Telegram Integration" />
-          <TryNowButton />
+          <PrimaryButton text="Try now" to="/generate-sticker" />
         </Flex>
       </Flex>
     </Section>
