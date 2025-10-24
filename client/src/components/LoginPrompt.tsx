@@ -1,6 +1,5 @@
 import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link } from "@chakra-ui/react";
 import { PasswordInput } from "./ui/password-input";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
@@ -11,7 +10,6 @@ import type { RootState } from "../store";
 import PrimaryButton from "./PrimaryButton";
 const LoginPrompt = () => {
     const authOption = useSelector((state: RootState) => state.ui.authOption);
-    const [_, setError] = useState("");
     const [login, {isLoading}] = useLoginMutation();
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
@@ -25,7 +23,6 @@ const LoginPrompt = () => {
                 dispatch(closeAuth());
                 await navigate("/generate-sticker");
             } catch {
-                setError("Login failed")
                 console.error("Login failed");
             }
         } else {
@@ -34,7 +31,6 @@ const LoginPrompt = () => {
                 dispatch(closeAuth());
                 await navigate("/generate-sticker");
             } catch {
-                setError("Register failed")
                 console.error("Register failed");
             }
         }
