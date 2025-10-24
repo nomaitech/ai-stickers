@@ -15,7 +15,7 @@ type OutputProps = {
 const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: OutputProps) => {
     const [loadingProgress, setLoadingProgress] = useState(0);
     const userInfo = useSelector((state: RootState) => state.ui.userInfo);
-    const credits = userInfo?.credits;
+
     useEffect(() => {
         if (isLoading) {
             const intervalId = setInterval(() => {
@@ -36,7 +36,7 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
     return (
         <Section>
             <Button backgroundColor="orange.300" disabled={!enableButton} my={8} w="full" onClick={() => startGeneration()} size="xl" fontWeight="600" colorPalette="gray">
-                {credits ? <Text color="orange.800">Generate (-1 Credit)</Text> : <Text color="orange.800">Generate Sticker</Text>}
+                <Text color="orange.800">{userInfo ?  "Generate (-1 Credit)" : "Generate Sticker"}</Text>
             </Button>
             <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="200px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
                 {isLoading ? (
