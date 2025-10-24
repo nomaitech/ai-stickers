@@ -25,7 +25,7 @@ const Features = () => {
               <Image alignSelf="center" width={250} src={DogSticker} alt="Dog Sticker" />
             </Box>
           </Flex>
-          <PrimaryButton text="Create Your Own Stickers" to="/explore" />
+          <PrimaryButton text="Discover stickers from the community" to="/explore" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
           <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="cyan.400" bgClip='text' fontSize="lg" fontWeight="semibold">Personalize with AI Prompts</Text>
