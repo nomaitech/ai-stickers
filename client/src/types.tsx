@@ -32,7 +32,9 @@ export interface Sticker {
 }
 
 export type RegisterResponse = {
-  message: string;
+  access_token: string;
+  token_type: string;
+  user: UserInfo;
 }
 
 export type Token = {

@@ -42,8 +42,16 @@ export const handlers = [
     });
   }),
 
-  http.post("/auth/register", async () => {
-    return new Response(JSON.stringify({ message: "User registered" }), {
+  http.post("/auth/register", async ({ request }) => {
+    const requestBody = (await request.json()) as { email: string };
+    return new Response(JSON.stringify({
+      "access_token": "mock-token",
+      "token_type": "bearer",
+      "user": {
+        "credits": 2,
+        "email": requestBody.email
+      }
+    }), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });

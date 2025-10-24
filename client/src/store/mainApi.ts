@@ -32,6 +32,11 @@ export const mainApi = createApi({
         method: "POST",
         body: newUser,
       }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const result = await queryFulfilled;
+        dispatch(setToken(result.data.access_token));
+        dispatch(mainApi.endpoints.getUserInfo.initiate());
+      },
     }),
     getPaymentSession: builder.mutation<{ checkout_url: string }, void>({
       query: () => ({

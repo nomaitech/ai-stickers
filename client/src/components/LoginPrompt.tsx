@@ -22,7 +22,7 @@ const LoginPrompt = () => {
             try {
                 await login(data).unwrap();
                 dispatch(closeAuth());
-                navigate("/generate-sticker");
+                await navigate("/generate-sticker");
             } catch {
                 setError("Login failed")
                 console.error("Login failed");
@@ -30,7 +30,8 @@ const LoginPrompt = () => {
         } else {
             try {
                 await register(data).unwrap();
-                dispatch(authLogin());
+                dispatch(closeAuth());
+                await navigate("/generate-sticker");
             } catch {
                 setError("Register failed")
                 console.error("Register failed");
