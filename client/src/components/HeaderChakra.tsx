@@ -32,16 +32,22 @@ const HeaderChakra = () => {
             Login
           </Button>
         ) : (
-          <Box h="38px" w="112px" position="relative" onClick={() => { navigate("/billing") }} borderRadius="md" borderStyle={"solid"} borderColor="gray.200" borderWidth="1px" _hover={{ cursor: "pointer" }}>
-            <Flex position="absolute" direction="row" justifyContent="space-between" w="50px" left={2} top={1.5}>
-              <Icon color="fg.muted"><Coins /></Icon>
-              <Flex align="center" justify="center" textAlign="center" w="full" ml={2}>
-                <Text color="fg.muted" fontWeight="semibold">{credits}</Text>
-              </Flex>
-            </Flex>
-            <Separator orientation="vertical" position="absolute" top={1.5} right={11} width="1px" height="26px" />
-            <Icon position="absolute" color="fg.muted" right={2} top={1.5}><Plus /></Icon>
-          </Box>
+          <Flex
+            color="fg.muted"
+            align="center"
+            p={2}
+            h="38px"
+            onClick={() => navigate("/billing")}
+            borderRadius="md"
+            border="1px solid"
+            borderColor="gray.200"
+            cursor="pointer"
+          >
+            <Icon><Coins /></Icon>
+            <Text mx={2} fontWeight="semibold">{credits}</Text>
+            <Separator mx={1} orientation="vertical" width="1px" h="full" />
+            <Icon ><Plus /></Icon>
+          </Flex>
         )}
       </Flex>
       {showAuth && <LoginPrompt />}
