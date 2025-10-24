@@ -1,0 +1,60 @@
+import { Box, Flex, Button, Link, Text, Icon, Separator } from "@chakra-ui/react";
+import { Coins, Plus, Menu } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LoginPrompt from "./LoginPrompt";
+import type { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
+import { openAuth } from "@/store/UI/uiSlice";
+import Sidebar from "./Sidebar";
+const HeaderChakra = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const showAuth = useSelector((state: RootState) => state.ui.showAuth);
+  const userInfo = useSelector((state: RootState) => state.ui.userInfo);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const credits = userInfo?.credits;
+  return (
+    <Box bg="white" px={6} py={4} boxShadow="md">
+      <Flex align="center" justify="space-between">
+        <Flex alignItems="center">
+          {credits != undefined && <Icon position="relative" left="-1px" onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
+            <Menu />
+          </Icon>}
+          <Link href="/generate-sticker">
+            <Box h="38px" w="175px" backgroundColor="blue.200">
+              <Text>StickerSquirrel</Text>
+            </Box>
+          </Link>
+        </Flex>
+        {credits == undefined ? (
+          <Button backgroundColor="orange.300" h="38px" onClick={() => dispatch(openAuth())} fontWeight="semibold" color="orange.800">
+            Login
+          </Button>
+        ) : (
+          <Flex
+            color="fg.muted"
+            align="center"
+            p={2}
+            h="38px"
+            onClick={() => navigate("/billing")}
+            borderRadius="md"
+            border="1px solid"
+            borderColor="gray.200"
+            cursor="pointer"
+          >
+            <Icon><Coins /></Icon>
+            <Text mx={2} fontWeight="semibold">{credits}</Text>
+            <Separator mx={1} orientation="vertical" width="1px" h="full" />
+            <Icon ><Plus /></Icon>
+          </Flex>
+        )}
+      </Flex>
+      {showAuth && <LoginPrompt />}
+      <Sidebar sidebarOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    </Box>
+  );
+}
+
+
+export default HeaderChakra;
