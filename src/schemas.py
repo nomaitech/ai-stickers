@@ -54,6 +54,14 @@ class Token(BaseModel):
             ]
         }
 
+class DiscoverStickersResponse(BaseModel):
+    id: int = Field(description="Image ID")
+    generated_img_url: str = Field(description="Generated image URL")
+    created_at: datetime = Field(description="Image creation timestamp")
+
+    class Config:
+        from_attributes = True
+
 class StickersResponse(BaseModel):
     id: int = Field(description="Image ID")
     transaction_id: int = Field(description="Transaction ID")
@@ -65,8 +73,8 @@ class StickersResponse(BaseModel):
     prompt: Optional[str] = Field(description="Prompt")
     sticker_pack_id: Optional[int] = Field(description="Sticker pack ID")
     generation_time: Optional[float] = Field(description="Image generation time")
+    is_public: bool = Field(description="Whether the image is public")
     class Config:
-        orm_mode = True
         from_attributes = True
         json_schema_extra = {
             "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
