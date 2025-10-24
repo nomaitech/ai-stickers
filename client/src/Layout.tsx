@@ -6,6 +6,8 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
+
 const Layout = () => {
   const ScrollToTop = () => {
     const { pathname } = useLocation()
@@ -16,13 +18,13 @@ const Layout = () => {
   }
 
   return (
-  <div style={{ maxWidth: "412px", margin: "0 auto" }}>
+    <Box maxWidth="100vw" sm={{ maxWidth: "412px" }} m="0 auto">
       <HeaderChakra />
       <ScrollToTop />
       <main>
         <Outlet context={{ domainUrl }}/>
       </main>
-    </div>
+    </Box>
   );
 };
 
