@@ -5,6 +5,7 @@ import Generator from "@/pages/Generator";
 import Billing from "@/pages/Billing";
 import MyStickers from "@/pages/MyStickers";
 import Explore from "@/pages/Explore";
+import TopupResult from "@/pages/TopUpResult";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
       { path: "/generate-sticker", element: <Generator />},
       { path: "/billing", element: <Billing /> },
       { path: "/my-stickers", element: <MyStickers /> },
-      { path: "/payments", element: <Billing /> },
+      { path: "/payments", element: <TopupResult /> },
       { path: "/explore", element: <Explore /> },
     ],
   },
