@@ -14,6 +14,7 @@ const router = createBrowserRouter([
       { path: "/generate-sticker", element: <Generator />},
       { path: "/billing", element: <Billing /> },
       { path: "/my-stickers", element: <MyStickers /> },
+      { path: "/payments", element: <Billing /> },
       { path: "/explore", element: <Explore /> },
     ],
   },
