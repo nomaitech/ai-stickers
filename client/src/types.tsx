@@ -8,6 +8,11 @@ export type FormData = {
   password: string;
 };
 
+export interface DiscoverStickersResponse {
+  id: string;
+  generated_img_url: string;
+  created_at: string;
+}
 export interface StickerPack {
   id: string;
   name: string;

@@ -1,6 +1,5 @@
 import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link } from "@chakra-ui/react";
 import { PasswordInput } from "./ui/password-input";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import type { FormData } from "../types";
@@ -8,14 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeAuth, authLogin, authRegister } from "@/store/UI/uiSlice";
 import type { RootState } from "../store";
+import PrimaryButton from "./PrimaryButton";
 const LoginPrompt = () => {
     const authOption = useSelector((state: RootState) => state.ui.authOption);
-    const [_, setError] = useState("");
     const [login, {isLoading}] = useLoginMutation();
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { register: registerForm, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });
+    const { register: registerForm, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>();
 
     const onSubmit = async (data: FormData) => {
         if (authOption === "Login") {
@@ -24,7 +23,6 @@ const LoginPrompt = () => {
                 dispatch(closeAuth());
                 await navigate("/generate-sticker");
             } catch {
-                setError("Login failed")
                 console.error("Login failed");
             }
         } else {
@@ -33,7 +31,6 @@ const LoginPrompt = () => {
                 dispatch(closeAuth());
                 await navigate("/generate-sticker");
             } catch {
-                setError("Register failed")
                 console.error("Register failed");
             }
         }
@@ -104,9 +101,7 @@ const LoginPrompt = () => {
                                     </Field.Root>
                                 </Box>
                                 <Tabs.Content value="Login">
-                                    <Button type="submit" loading={isLoading} backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
-                                        <Text color="orange.800" fontWeight="semibold">Login</Text>
-                                    </Button>
+                                    <PrimaryButton text="Login" type="submit" loading={isLoading}/>
                                 </Tabs.Content>
                                 <Tabs.Content value="Sign Up">
                                     <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
