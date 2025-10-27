@@ -1,4 +1,4 @@
-import { Box, Flex, Button, Link, Text, Icon, Separator } from "@chakra-ui/react";
+import { Box, Flex, Link, Text, Icon, Separator } from "@chakra-ui/react";
 import { Coins, Plus, Menu } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import type { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { openAuth } from "@/store/UI/uiSlice";
 import Sidebar from "./Sidebar";
+import PrimaryButton from "./PrimaryButton";
+
 const HeaderChakra = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const showAuth = useSelector((state: RootState) => state.ui.showAuth);
@@ -28,9 +30,7 @@ const HeaderChakra = () => {
           </Link>
         </Flex>
         {credits == undefined ? (
-          <Button backgroundColor="orange.300" h="38px" onClick={() => dispatch(openAuth())} fontWeight="semibold" color="orange.800">
-            Login
-          </Button>
+          <PrimaryButton text="Login" onClick={() => dispatch(openAuth())} fontWeight="semibold" w="auto" size="sm" />
         ) : (
           <Flex
             color="fg.muted"

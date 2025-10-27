@@ -1,7 +1,7 @@
 import { Heading, Image, Flex, Box, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import Section from './Section';
-import TryNowButton from './TryNowButton';
+import PrimaryButton from './PrimaryButton';
 import dogSticker from '../assets/dog-sticker.png';
 import secondSticker from '@/assets/gallery/gallery1.png';
 import thirdSticker from '@/assets/gallery/gallery6.png';
@@ -27,7 +27,7 @@ const Proposal = () => {
                 <Box mt={8} bgImage="radial-gradient(circle, #FBCFE8 0%, white 60%)">
                     <Image src={images[imageIndex]} borderRadius="full" my={4} />
                 </Box>
-                <TryNowButton text="Try for free" />
+                <PrimaryButton text="Try for free" to="/generate-sticker" />
             </Flex>
         </Section>
     )

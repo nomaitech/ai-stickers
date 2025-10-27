@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareAuthHeaders } from "./utils";
 import { setToken } from "./auth/authSlice";
 import { updateUserInfo } from "./UI/uiSlice"
-import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse } from "../types";
+import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse, DiscoverStickersResponse } from "../types";
 
 export const mainApi = createApi({
   reducerPath: "mainApi",
@@ -59,6 +59,15 @@ export const mainApi = createApi({
         body: formData,
       }),
       invalidatesTags: ["Sticker"],
+    }),
+    discoverStickers: builder.query<DiscoverStickersResponse[], void>({
+      query: () => "/discover",
+      providesTags: (result) =>
+        result ? [
+          ...result.map(({ id }) => ({ type: "Sticker" as const, id })),
+          { type: "Sticker", id: "LIST" },
+        ] : [
+          { type: "Sticker", id: "LIST" }],
     }),
     getStickers: builder.query<Sticker[], void>({
       query: () => "/stickers",
@@ -203,5 +212,6 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useGetPaymentSessionMutation,
-  useGetPaymentStatusQuery
+  useGetPaymentStatusQuery,
+  useDiscoverStickersQuery
 } = mainApi;

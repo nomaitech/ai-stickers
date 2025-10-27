@@ -1,7 +1,7 @@
 import Section from "@/components/Section";
 import { Flex, Heading, Grid, Box, Text, Image, Spinner, AbsoluteCenter } from "@chakra-ui/react";
 import { useGetStickersQuery } from "@/store/mainApi";
-import TryNowButton from "@/components/TryNowButton";
+import PrimaryButton from "@/components/PrimaryButton";
 const MyStickers = () => {
     const { data: stickers, isLoading } = useGetStickersQuery();
 
@@ -12,9 +12,9 @@ const MyStickers = () => {
                 <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Stickers</Heading>
             </Flex>
             {stickers?.length == 0 ? (
-                <TryNowButton text="Generate your first sticker" />
+                <PrimaryButton text="Generate your first sticker" />
             ) : (
-                <TryNowButton text="Generate more stickers" />
+                <PrimaryButton text="Generate more stickers" />
             )}
             {isLoading ? (
                 <AbsoluteCenter>

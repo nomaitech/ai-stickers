@@ -1,12 +1,10 @@
 import { Box, Button, CloseButton, Link, Text, Separator, Flex } from "@chakra-ui/react"
-import RouterButton from "./RouterButton"
 import { Palette, Heart, Wallet, LogOut } from "lucide-react"
-import { useLocation, Link as RouterLink } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeToken } from "@/store/auth/authSlice";
 import { resetUserInfo } from "@/store/UI/uiSlice";
 import { mainApi } from "@/store/mainApi";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: boolean }) => {
     const dispatch = useDispatch();
@@ -74,11 +72,9 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                     {links.map(({ to, label, icon }) => {
                         const isActive = location.pathname === to
                         return (
-                            <RouterButton
+                            <Button
                                 key={to}
-                                as={RouterLink}
-                                to={to}
-                                onClick={onClose}
+                                onClick={() => { navigate(to); onClose(); }}
                                 bg={isActive ? "orange.100" : "white"}
                                 color="gray.800"
                                 fontWeight="bold"
@@ -88,12 +84,23 @@ const Sidebar = ({ onClose, sidebarOpen }: { onClose: () => void, sidebarOpen: b
                                 _hover={{ borderColor: "orange.400" }}
                             >
                                 {icon} {label}
-                            </RouterButton>
+                            </Button>
                         )
                     })}
                 </Flex>
                 <Separator position="absolute" bottom="193px" left={0} width="100%" height="1px" />
-                <Button bg="white" position="absolute" left={3} bottom={20} onClick={() => { logout(); onClose(); navigate("/") }} color="gray.800" fontWeight="bold" justifyContent="flex-start" textAlign="left" _hover={{ backgroundColor: "gray.100" }}>
+                <Button 
+                    bg="white" 
+                    position="absolute" 
+                    left={3} 
+                    bottom={20} 
+                    onClick={() => { logout(); onClose(); navigate("/"); }} 
+                    color="gray.800" 
+                    fontWeight="bold" 
+                    justifyContent="flex-start" 
+                    textAlign="left" 
+                    _hover={{ backgroundColor: "gray.100" }}
+                >
                     <LogOut /> Logout
                 </Button>
             </Box>

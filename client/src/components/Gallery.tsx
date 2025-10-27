@@ -5,7 +5,7 @@ import gallery3 from "../assets/gallery/gallery3.png";
 import gallery4 from "../assets/gallery/gallery4.png";
 import gallery5 from "../assets/gallery/gallery5.png";
 import gallery6 from "../assets/gallery/gallery6.png";
-import TryNowButton from "./TryNowButton";
+import PrimaryButton from "./PrimaryButton";
 import Section from "./Section";
 
 const galleryImages = [{ id: 1, image: gallery1, backgroundColor: "pink.50" }, { id: 2, image: gallery2, backgroundColor: "purple.50" }, { id: 3, image: gallery3, backgroundColor: "cyan.50" }, { id: 4, image: gallery4, backgroundColor: "yellow.50" }, { id: 5, image: gallery5, backgroundColor: "orange.50" }, { id: 6, image: gallery6, backgroundColor: "green.50" }];
@@ -24,7 +24,7 @@ const Gallery = () => {
         </Grid>
 
         <Flex justify="center" my={4}>
-          <TryNowButton text="Try for free" />
+          <PrimaryButton text="Try for free" to="/generate-sticker" />
         </Flex>
       </Flex>
     </Section>
