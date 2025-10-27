@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useGetPaymentStatusQuery } from "../store/mainApi";
 import { useState, useEffect } from "react";
 import { EmptyState, VStack } from "@chakra-ui/react"
@@ -6,6 +6,8 @@ import ProcessingPayment from "@/components/ProcessingPayment";
 import PaymentSuccessful from "@/components/PaymentSuccessful";
 import PaymentFailed from "@/components/PaymentFailed";
 const TopupResult = () => {
+    const location = useLocation();
+    const isCancelled = location.pathname.endsWith("/cancelled");
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get("session_id");
     const [polling, setPolling] = useState(true);
@@ -19,6 +21,8 @@ const TopupResult = () => {
             setPolling(false);
         }
     }, [data]);
+
+    if(isCancelled) return <PaymentFailed />
 
     if (isFetching) {
         return (
