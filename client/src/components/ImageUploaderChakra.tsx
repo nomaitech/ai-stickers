@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Section from "./Section";
-import { Upload } from "lucide-react";
-import { FileUpload, Icon, Text, Image, Box} from "@chakra-ui/react";
+import { Upload, Camera } from "lucide-react";
+import { FileUpload, Icon, Text, Image, Box, Button } from "@chakra-ui/react";
 
 type ImageUploaderProps = {
     onImageUpload: (file: File) => void
@@ -58,6 +58,19 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
                                     Only supports PNG, JPG and WEBP formats
                                 </Text>
                             </FileUpload.DropzoneContent>
+                        or
+                            <FileUpload.Root capture="environment" alignItems="stretch">
+                                <FileUpload.HiddenInput />
+                                <FileUpload.Trigger asChild>
+                                    <Button variant="outline" size="sm">
+                                        <Icon size="md" color="orange.300" pointerEvents="none">
+                                            <Camera />
+                                        </Icon> Open Camera
+                                    </Button>
+                                </FileUpload.Trigger>
+                                <FileUpload.List />
+                            </FileUpload.Root>
+
                         </>
                     )}
                 </FileUpload.Dropzone>
