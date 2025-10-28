@@ -94,6 +94,7 @@ class Images(Base):
     prompt = Column(String, nullable=True, index=True)
     sticker_pack_id = Column(Integer, ForeignKey("sticker_packs.id"), index=True)
     generation_time = Column(Float, nullable=True)
+    telegram_file_unique_id = Column(String, nullable=True)
 
     transaction = relationship("Transactions", back_populates="images")
     user = relationship("Users", back_populates="images")

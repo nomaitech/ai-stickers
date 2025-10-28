@@ -99,11 +99,15 @@ class StickerPackSchema(BaseModel):
 
 class StickerPackCreate(BaseModel):
     name: str = Field(description="Sticker pack name")
-    stickers: Optional[list[int]] = Field(description="List of sticker IDs")
+    stickers: list[int] = Field(
+        description="List of sticker IDs",
+        min_items=1,
+        max_items=50
+    )
     
     class Config:
         from_attributes = True
-        json_schema_extra = {"examples": [{"name": "My Awesome Stickers"}]}
+        json_schema_extra = {"examples": [{"name": "My Awesome Stickers", "stickers": [1,2,3]}]}
 
 
 class PaymentSessionCreate(BaseModel):

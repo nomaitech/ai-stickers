@@ -54,8 +54,9 @@ from src.schemas import (
 from src.sticker_factory import generate_sticker
 from src import billing
 from src.storage import upload_image_to_gcs
-
-
+from contextlib import asynccontextmanager
+import httpx
+from io import BytesIO
 class EndpointFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
         return "/health" not in record.getMessage()
@@ -63,8 +64,13 @@ class EndpointFilter(logging.Filter):
 
 logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await telegram_bot.fetch_username()
+    yield
 
-app = FastAPI()
+
+app = FastAPI(lifespan=lifespan)
 
 app.openapi = override_openapi_schema(app)
 
@@ -204,17 +210,15 @@ async def get_sticker_by_id(db: db_dependency, id: int, user: Users = Depends(ge
     return sticker
 
 
-@app.patch("/stickers/{id}", response_model=StickersResponse, tags=["Stickers"])
+
+@app.put("/stickers/{id}", response_model=StickersResponse, tags=["Stickers"])
 async def update_sticker(db: db_dependency, id: int, body: UpdateSticker, user: Users = Depends(get_current_user)):
     sticker = db.query(Images).filter(Images.user_id == user.id, Images.id == id).first()
     if not sticker:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No stickers found for this user")
 
-    update_data = body.model_dump(exclude_unset=True)
-    if "emoji" in update_data:
-        sticker.emoji = update_data["emoji"]
-    if "sticker_pack_id" in update_data:
-        sticker.sticker_pack_id = update_data["sticker_pack_id"]
+    sticker.emoji = body.emoji
+    sticker.sticker_pack_id = body.sticker_pack_id
 
     db.commit()
     db.refresh(sticker)
@@ -262,14 +266,23 @@ async def create_sticker_pack(
 
         sticker.sticker_pack_id = new_sticker_pack.id
         db.add(sticker)
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(sticker.generated_img_url)
+            response.raise_for_status()
+            sticker_bytes = BytesIO(response.content)
+            telegram_file = await telegram_bot.upload_sticker_file(sticker_bytes)
+
+        sticker.telegram_file_unique_id = telegram_file.file_id
 
         input_stickers_list.append(
             telegram_bot.InputSticker(
-                sticker.generated_img_url, 
+                sticker=telegram_file.file_id,
                 emoji_list=[sticker.emoji], 
                 format=telegram_bot.StickerFormat.STATIC
             )
         )
+
     sticker_pack_schema = StickerPackSchema.model_validate(new_sticker_pack)
     res = await telegram_bot.create_sticker_pack(sticker_pack_schema.sticker_pack_name, sticker_pack_schema.name, input_stickers_list)
     if not res:
@@ -289,12 +302,16 @@ async def get_sticker_pack_by_id(db: db_dependency, id: int, user: Users = Depen
 
 
 @app.patch("/sticker-packs/{id}", response_model=StickerPackSchema, tags=["Sticker Packs"])
-async def get_sticker_pack_by_id(db: db_dependency, id: int, new_name: str = Form(...), user: Users = Depends(get_current_user)):
+async def get_sticker_pack_by_id(db: db_dependency, id: int, new_name: str, user: Users = Depends(get_current_user)):
     sticker_pack = db.query(StickerPacks).filter(StickerPacks.user_id == user.id, StickerPacks.id == id).first()
     if not sticker_pack:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
 
     sticker_pack.name = new_name
+    db.flush()
+
+    
+
     db.commit()
     db.refresh(sticker_pack)
         
