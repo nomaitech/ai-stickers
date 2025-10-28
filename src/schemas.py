@@ -78,13 +78,13 @@ class UpdateSticker(BaseModel):
 
 class StickerPackSchema(BaseModel):
     id: int = Field(description="Sticker pack ID")
-    name: str = Field(description="Sticker pack title", alias="title")
+    title: str = Field(description="Sticker pack title")
     user_id: int = Field(description="User ID")
     created_at: datetime = Field(description="Sticker pack creation timestamp")
 
     @property
     def sticker_pack_name(self) -> str:
-        return f"{self.name.replace(' ', '_')}_by_{telegram_bot.BOT_USERNAME}"
+        return f"{self.title.replace(' ', '_')}_by_{telegram_bot.BOT_USERNAME}"
 
 
     @computed_field
@@ -98,7 +98,7 @@ class StickerPackSchema(BaseModel):
         validate_by_alias=True
 
 class StickerPackCreate(BaseModel):
-    name: str = Field(description="Sticker pack name")
+    title: str = Field(description="Sticker pack title")
     stickers: list[int] = Field(
         description="List of sticker IDs",
         min_items=1,
@@ -107,7 +107,7 @@ class StickerPackCreate(BaseModel):
     
     class Config:
         from_attributes = True
-        json_schema_extra = {"examples": [{"name": "My Awesome Stickers", "stickers": [1,2,3]}]}
+        json_schema_extra = {"examples": [{"title": "My Awesome Stickers", "stickers": [1,2,3]}]}
 
 
 class PaymentSessionCreate(BaseModel):

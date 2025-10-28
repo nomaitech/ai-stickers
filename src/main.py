@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import JSONResponse
 from sqlalchemy import func
+from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 from src.custom_swagger import override_openapi_schema
 from src.db_operations import (
     create_payment_session_db,
@@ -252,7 +253,7 @@ async def create_sticker_pack(
     db: db_dependency, 
     user: Users = Depends(get_current_user)
 ):
-    new_sticker_pack = StickerPacks(name=sticker_pack_data.name, user_id=user.id)
+    new_sticker_pack = StickerPacks(title=sticker_pack_data.title, user_id=user.id)
     db.add(new_sticker_pack)
     db.flush()
 
@@ -284,9 +285,9 @@ async def create_sticker_pack(
         )
 
     sticker_pack_schema = StickerPackSchema.model_validate(new_sticker_pack)
-    res = await telegram_bot.create_sticker_pack(sticker_pack_schema.sticker_pack_name, sticker_pack_schema.name, input_stickers_list)
+    res = await telegram_bot.create_sticker_pack(sticker_pack_schema.sticker_pack_name, sticker_pack_schema.title, input_stickers_list)
     if not res:
-        raise HTTPException(status_code=500, detail="Failed to create sticker pack")
+        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to create sticker pack")
 
     db.commit()
     db.refresh(new_sticker_pack)
@@ -302,15 +303,20 @@ async def get_sticker_pack_by_id(db: db_dependency, id: int, user: Users = Depen
 
 
 @app.patch("/sticker-packs/{id}", response_model=StickerPackSchema, tags=["Sticker Packs"])
-async def get_sticker_pack_by_id(db: db_dependency, id: int, new_name: str, user: Users = Depends(get_current_user)):
+async def get_sticker_pack_by_id(db: db_dependency, id: int, new_title: str, user: Users = Depends(get_current_user)):
     sticker_pack = db.query(StickerPacks).filter(StickerPacks.user_id == user.id, StickerPacks.id == id).first()
     if not sticker_pack:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
 
-    sticker_pack.name = new_name
+    sticker_pack_schema = StickerPackSchema.model_validate(sticker_pack)
+    old_pack_name = sticker_pack_schema.sticker_pack_name
+    
+    sticker_pack.title = new_title
     db.flush()
 
-    
+    res = await telegram_bot.update_sticker_set_title(old_pack_name, new_title)
+    if not res:
+        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update sticker set title")
 
     db.commit()
     db.refresh(sticker_pack)

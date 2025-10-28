@@ -105,7 +105,7 @@ class StickerPacks(Base):
     __tablename__ = "sticker_packs"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False, index=True)
+    title = Column(String, nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True)
     created_at = Column(DateTime, index=True, server_default=func.current_timestamp())
 
