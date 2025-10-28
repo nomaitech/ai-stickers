@@ -6,9 +6,8 @@ import LoginPrompt from "./LoginPrompt";
 import type { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { openAuth } from "@/store/UI/uiSlice";
-import Sidebar from "./Sidebar";
 import PrimaryButton from "./PrimaryButton";
-
+import NavDrawer from "./NavDrawer";
 const HeaderChakra = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const showAuth = useSelector((state: RootState) => state.ui.showAuth);
@@ -51,7 +50,7 @@ const HeaderChakra = () => {
         )}
       </Flex>
       {showAuth && <LoginPrompt />}
-      <Sidebar sidebarOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />
     </Box>
   );
 }
