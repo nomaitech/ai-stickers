@@ -8,6 +8,7 @@ type PrimaryButtonProps = ButtonProps & {
 const PrimaryButton = ({ text = "Try Now", to, ...props }: PrimaryButtonProps) => {
   return (
     <Button
+      asChild={to ? true : false}
       backgroundColor="orange.300"
       w="full"
       size="xl"
