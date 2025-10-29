@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+import os
 
 
 # revision identifiers, used by Alembic.
@@ -22,6 +23,19 @@ def upgrade() -> None:
     op.execute("""
     ALTER TABLE sticker_packs
     ADD COLUMN name TEXT;
+    """)
+    
+    bot_username = os.getenv("TELEGRAM_BOT_USERNAME", "stickersbot")
+    
+    op.execute(f"""
+    UPDATE sticker_packs
+    SET name = REPLACE(title, ' ', '_') || '_by_{bot_username}'
+    WHERE name IS NULL;
+    """)
+    
+    op.execute("""
+    ALTER TABLE sticker_packs
+    ALTER COLUMN name SET NOT NULL;
     """)
 
 
