@@ -7,7 +7,7 @@ import '@fontsource/inter/700.css';
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
-
+import { Toaster } from "@/components/ui/toaster";
 const Layout = () => {
   const ScrollToTop = () => {
     const { pathname } = useLocation()
@@ -21,6 +21,7 @@ const Layout = () => {
     <Box maxWidth="100vw" sm={{ maxWidth: "412px" }} m="0 auto">
       <HeaderChakra />
       <ScrollToTop />
+      <Toaster />
       <main>
         <Outlet context={{ domainUrl }}/>
       </main>
