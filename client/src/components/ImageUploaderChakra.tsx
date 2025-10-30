@@ -36,7 +36,7 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
                 />
                 <FileUpload.Dropzone>
                     {preview ? (
-                        <Box mt={4} pointerEvents="none">
+                        <Box pointerEvents="none">
                             <Image
                                 src={preview}
                                 alt="Preview"
