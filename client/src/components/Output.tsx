@@ -4,7 +4,7 @@ import { Line } from '@rc-component/progress';
 import { useState, useEffect } from 'react'
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
-
+import DogCombo from '../assets/dogCombo.png'
 type OutputProps = {
     enableButton: boolean
     stickerResult: string | null
@@ -36,7 +36,7 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
     return (
         <Section>
             <Button backgroundColor="orange.300" disabled={!enableButton} my={8} w="full" onClick={() => startGeneration()} size="xl" fontWeight="600" colorPalette="gray">
-                <Text color="orange.800">{userInfo ?  "Generate (-1 Credit)" : "Generate Sticker"}</Text>
+                <Text color="orange.800">{userInfo ? "Generate (-1 Credit)" : "Generate Sticker"}</Text>
             </Button>
             <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="200px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
                 {isLoading ? (
@@ -51,7 +51,9 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
                         <Image src={stickerResult} />
                     </AbsoluteCenter>
                 ) : (
-                    <Text>Placeholder</Text>
+                    <AbsoluteCenter w="full">
+                        <Image pb={2} src={DogCombo} alt="Dog image turned into sticker" />
+                    </AbsoluteCenter>
                 )}
             </Box>
         </Section>
