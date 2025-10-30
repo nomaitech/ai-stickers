@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Section from "./Section";
 import { Upload } from "lucide-react";
-import { FileUpload, Icon, Text, Image, Box} from "@chakra-ui/react";
+import { FileUpload, Icon, Text, Image, Box } from "@chakra-ui/react";
 
 type ImageUploaderProps = {
     onImageUpload: (file: File) => void
@@ -24,6 +24,23 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
             setPreview(null);
         }
     }, [image]);
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    useEffect(() => {
+        const handlePaste = (e: ClipboardEvent) => {
+            const item = e.clipboardData?.items[0];
+            if (!item) return;
+            const file = item.getAsFile();
+            if (!file) return;
+            if (!allowedTypes.includes(file.type)) return;
+            const url = URL.createObjectURL(file);
+            onImageUpload(file);
+            setPreview(url);
+        };
+        window.addEventListener("paste", handlePaste);
+        return () => window.removeEventListener("paste", handlePaste);
+    }, []);
+
     return (
         <Section>
             <Text color="text/fg" fontWeight="semibold">
