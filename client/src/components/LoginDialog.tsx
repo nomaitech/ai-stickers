@@ -7,7 +7,7 @@ import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import { useNavigate } from "react-router-dom";
 import type { FormData } from "../types";
 import type { RootState } from "../store";
-
+import { useRef, useEffect } from "react";
 import { closeAuth, authLogin, authRegister } from "@/store/UI/uiSlice";
 
 type LoginDialogProps = {
@@ -22,7 +22,10 @@ const LoginDialog = ({ open }: LoginDialogProps) => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const { register: registerForm, handleSubmit, clearErrors, formState: { errors } } = useForm<FormData>();
+    const { register: registerForm, handleSubmit, clearErrors, setFocus, formState: { errors } } = useForm<FormData>();
+useEffect(() => {
+    setFocus("email");
+}, [authOption, setFocus]);
 
     const onSubmit = async (data: FormData) => {
         if (authOption === "Login") {
@@ -54,8 +57,8 @@ const LoginDialog = ({ open }: LoginDialogProps) => {
     }
 
     return (
-        <Dialog.Root open={open} onOpenChange={(e) => { if (!e.open) dispatch(closeAuth()) }} placement="center" motionPreset="none" skipAnimationOnMount={true}>
-            <Dialog.Backdrop/>
+        <Dialog.Root open={open} onOpenChange={(e) => { if (!e.open) dispatch(closeAuth()) }} placement="center">
+            <Dialog.Backdrop />
             <Dialog.Positioner>
                 <Dialog.Content>
                     <Dialog.Body p={0}>
@@ -71,7 +74,7 @@ const LoginDialog = ({ open }: LoginDialogProps) => {
                                     <Tabs.Trigger value="Sign Up" _selected={{ fontWeight: "bold" }} css={{ '&::before': { content: 'none' } }}>
                                         Sign Up
                                     </Tabs.Trigger>
-                                    <Tabs.Indicator height="2px" bottom="-1px" position="absolute" bg="black" transition="none" />
+                                    <Tabs.Indicator height="2px" bottom="-1px" position="absolute" bg="black" />
                                 </Tabs.List>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Field.Root invalid={!!errors.email}>
@@ -133,7 +136,7 @@ const LoginDialog = ({ open }: LoginDialogProps) => {
                             </Box>
                         </Tabs.Root>
                     </Dialog.Body>
-                    <Dialog.CloseTrigger asChild onClick={() => dispatch(closeAuth())}>
+                    <Dialog.CloseTrigger asChild>
                         <CloseButton size="xl" />
                     </Dialog.CloseTrigger>
                 </Dialog.Content>
