@@ -7,7 +7,7 @@ import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
 import { useNavigate } from "react-router-dom";
 import type { FormData } from "../types";
 import type { RootState } from "../store";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { closeAuth, authLogin, authRegister } from "@/store/UI/uiSlice";
 
 type LoginDialogProps = {
