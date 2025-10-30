@@ -2,13 +2,15 @@ import { Box, Flex, Link, Text, Icon, Separator } from "@chakra-ui/react";
 import { Coins, Plus, Menu } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginPrompt from "./LoginPrompt";
+import LoginDialog from "./LoginDialog";
 import type { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { openAuth } from "@/store/UI/uiSlice";
 import PrimaryButton from "./PrimaryButton";
 import NavDrawer from "./NavDrawer";
+
 const HeaderChakra = () => {
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const showAuth = useSelector((state: RootState) => state.ui.showAuth);
   const userInfo = useSelector((state: RootState) => state.ui.userInfo);
@@ -49,7 +51,7 @@ const HeaderChakra = () => {
           </Flex>
         )}
       </Flex>
-      {showAuth && <LoginPrompt />}
+      <LoginDialog open={showAuth} />
       <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />
     </Box>
   );
