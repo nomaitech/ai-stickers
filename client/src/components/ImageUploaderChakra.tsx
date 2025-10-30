@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Section from "./Section";
 import { Upload } from "lucide-react";
 import { FileUpload, Icon, Text, Image, Box } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster"
 
 type ImageUploaderProps = {
     onImageUpload: (file: File) => void
@@ -16,6 +17,17 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+        if (!allowedTypes.includes(file.type)) {
+            toaster.create({
+                title: "Invalid Format",
+                description: "Please upload a png, jpeg or webp image.",
+                closable: true,
+                type: "error"
+            })
+            e.target.value = "";
+            return;
+        }
         onImageUpload(file);
     };
 
