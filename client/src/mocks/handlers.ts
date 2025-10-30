@@ -24,6 +24,8 @@ const stickers = [
   },
 ];
 
+let pendingCall = true;
+
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
     await delay(2000);
@@ -301,12 +303,27 @@ export const handlers = [
   http.get("/payment-status/:sessionId", async ({ request, params }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
     if (!params.sessionId) return new Response(null, { status: 404 });
-    return new Response(
-      JSON.stringify({
-        session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
-        status: "completed",
-        created_at: "2025-09-28T21:33:52.375329Z",
-        completed_at: "2025-09-28T21:34:28.800049Z"
-      }))
-  }),
+    
+    console.log("Gottenparams are: ", params);
+    if (pendingCall) {
+      pendingCall = false;
+      return new Response(
+        JSON.stringify({
+          status: "pending",
+        }), { status: 200 })
+    } else {
+      pendingCall = true;
+      if (params.sessionId == "completed") {
+        return new Response(
+          JSON.stringify({
+            status: "completed",
+          }), { status: 200 })
+      } else if (params.sessionId == "cancel") {
+        return new Response(
+          JSON.stringify({
+            status: "cancel",
+          }), { status: 200 })
+      }
+    }
+  })
 ];
