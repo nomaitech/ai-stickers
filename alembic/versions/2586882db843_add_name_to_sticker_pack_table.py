@@ -10,7 +10,8 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 import os
-
+from src import telegram_bot
+import asyncio
 
 # revision identifiers, used by Alembic.
 revision: str = '2586882db843'
@@ -20,12 +21,10 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute("""
-    ALTER TABLE sticker_packs
-    ADD COLUMN name TEXT;
-    """)
-    
-    bot_username = os.getenv("TELEGRAM_BOT_USERNAME", "stickersbot")
+    loop = asyncio.get_event_loop()
+    bot_username = loop.run_until_complete(telegram_bot.fetch_username())
+
+    op.add_column('sticker_packs', sa.Column('name', sa.Text(), nullable=True))
     
     op.execute(f"""
     UPDATE sticker_packs
@@ -33,10 +32,7 @@ def upgrade() -> None:
     WHERE name IS NULL;
     """)
     
-    op.execute("""
-    ALTER TABLE sticker_packs
-    ALTER COLUMN name SET NOT NULL;
-    """)
+    op.alter_column('sticker_packs', 'name', nullable=False)
 
 
 def downgrade() -> None:

@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, computed_field, EmailStr
-from typing import Optional
+from pydantic import AfterValidator, BaseModel, Field, computed_field, EmailStr
+from typing import Optional, Annotated
 from datetime import datetime
-from src import telegram_bot
+
+from src.utils import is_emoji_validator
 
 class UserSchema(BaseModel):
     email: EmailStr = Field(description="User email address")
@@ -54,7 +55,7 @@ class Token(BaseModel):
             ]
         }
 
-class StickersResponse(BaseModel):
+class Sticker(BaseModel):
     id: int = Field(description="Image ID")
     transaction_id: int = Field(description="Transaction ID")
     created_at: datetime = Field(description="Image creation timestamp")
@@ -65,32 +66,31 @@ class StickersResponse(BaseModel):
     prompt: Optional[str] = Field(description="Prompt")
     sticker_pack_id: Optional[int] = Field(description="Sticker pack ID")
     generation_time: Optional[float] = Field(description="Image generation time")
+    telegram_file_unique_id: Optional[str] = Field(description="Telegram file unique ID")
+
     class Config:
         from_attributes = True
         json_schema_extra = {
             "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
         }
 
-class UpdateSticker(BaseModel):
-    emoji: Optional[str] = None
-    sticker_pack_id: Optional[int] = None
+IsEmoji = Annotated[str, AfterValidator(is_emoji_validator)]
 
+class UpdateSticker(BaseModel):
+    emoji: Optional[IsEmoji] = None
+    sticker_pack_id: Optional[int] = None
 
 class StickerPackSchema(BaseModel):
     id: int = Field(description="Sticker pack ID")
     title: str = Field(description="Sticker pack title")
     user_id: int = Field(description="User ID")
     created_at: datetime = Field(description="Sticker pack creation timestamp")
-
-    @property
-    def sticker_pack_name(self) -> str:
-        return f"{self.title.replace(' ', '_')}_by_{telegram_bot.BOT_USERNAME}"
-
+    name: str = Field(description="Telegram sticker pack name")
 
     @computed_field
     @property
     def telegram_url(self) -> str:
-        return f"https://t.me/addstickers/{self.sticker_pack_name}"
+        return f"https://t.me/addstickers/{self.name}"
 
     class Config:
         from_attributes = True

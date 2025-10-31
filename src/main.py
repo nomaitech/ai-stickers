@@ -47,7 +47,7 @@ from src.schemas import (
     Token,
     PaymentSessionCreate,
     PaymentStatusResponse,
-    StickersResponse,
+    Sticker,
     UpdateSticker,
     StickerPackSchema,
     StickerPackCreate,
@@ -153,7 +153,7 @@ async def login(db: db_dependency, form_data: UserSchema):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@app.post("/stickers", response_model=StickersResponse, tags=["Stickers"])
+@app.post("/stickers", response_model=Sticker, tags=["Stickers"])
 async def create_sticker(file: UploadFile, db: db_dependency, emoji: str = Form("🙂"), prompt: str = Form(None), user: Users = Depends(get_current_user)):
     balance = (
         db.query(func.sum(Transactions.amount))
@@ -194,7 +194,7 @@ async def create_sticker(file: UploadFile, db: db_dependency, emoji: str = Form(
     return new_img
 
 
-@app.get("/stickers", response_model=list[StickersResponse], tags=["Stickers"])
+@app.get("/stickers", response_model=list[Sticker], tags=["Stickers"])
 async def list_stickers(db: db_dependency, user: Users = Depends(get_current_user)):
     sticker_list = db.query(Images).filter(Images.user_id == user.id).order_by(Images.created_at.desc()).all()
     if not sticker_list:
@@ -202,7 +202,7 @@ async def list_stickers(db: db_dependency, user: Users = Depends(get_current_use
     return sticker_list
 
 
-@app.get("/stickers/{id}", response_model=StickersResponse, tags=["Stickers"])
+@app.get("/stickers/{id}", response_model=Sticker, tags=["Stickers"])
 async def get_sticker_by_id(db: db_dependency, id: int, user: Users = Depends(get_current_user)):
     sticker = db.query(Images).filter(Images.user_id == user.id, Images.id == id).first()
     if not sticker:
@@ -210,22 +210,56 @@ async def get_sticker_by_id(db: db_dependency, id: int, user: Users = Depends(ge
 
     return sticker
 
-
-
-@app.put("/stickers/{id}", response_model=StickersResponse, tags=["Stickers"])
-async def update_sticker(db: db_dependency, id: int, body: UpdateSticker, user: Users = Depends(get_current_user)):
-    sticker = db.query(Images).filter(Images.user_id == user.id, Images.id == id).first()
-    if not sticker:
+def get_image_by_id(db: db_dependency, id: int, user: Users = Depends(get_current_user)) -> Images:
+    image = db.query(Images).filter(Images.user_id == user.id, Images.id == id).first()
+    if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No stickers found for this user")
 
-    sticker.emoji = body.emoji
-    sticker.sticker_pack_id = body.sticker_pack_id
+    return image
 
-    db.commit()
-    db.refresh(sticker)
 
-    return sticker
+@app.patch("/stickers/{id}", response_model=Sticker, tags=["Stickers"])
+async def update_sticker(
+    db: db_dependency, 
+    payload: UpdateSticker, 
+    image: Images = Depends(get_image_by_id)):
 
+    old_sp_id = image.sticker_pack_id
+    old_emoji = image.emoji
+
+    update_data = payload.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(image, key, value)
+
+    old_sticker_pack_db = db.query(StickerPacks).filter(StickerPacks.id == old_sp_id).first()
+
+    if (image.sticker_pack_id != old_sp_id or image.sticker_pack_id is None) and old_sticker_pack_db is not None:
+        telegram_sticker, amount_stickers = await telegram_bot.sticker_by_file_unique_id(old_sticker_pack_db.name, image.telegram_file_unique_id, include_amount=True)
+        if not telegram_sticker:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if amount_stickers < 2:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Can't delete the only sticker from stickerpack. If you want to remove the sticker. Delete the stickerpack")
+        await telegram_bot.remove_sticker_from_set(telegram_sticker)
+
+    if image.sticker_pack_id != old_sp_id:
+        new_sticker_pack_db = db.query(StickerPacks).filter(StickerPacks.id == image.sticker_pack_id).first()
+        if not new_sticker_pack_db:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Sticker Pack ID doesn't exist")
+
+        new_telegram_sp = await telegram_bot.get_sticker_pack(new_sticker_pack_db.name)
+        input_sticker = image.to_tg_inputsticker()
+        await telegram_bot.add_sticker_to_set(new_telegram_sp.name, input_sticker)
+        updated_telegram_sp = await telegram_bot.get_sticker_pack(new_sticker_pack_db.name)
+        image.telegram_file_unique_id = updated_telegram_sp.stickers[-1].file_unique_id
+    else:
+        if old_emoji != image.emoji:
+            telegram_sticker = await telegram_bot.sticker_by_file_unique_id(old_sticker_pack_db.name, image.telegram_file_unique_id)
+            await telegram_bot.update_sticker_emoji(telegram_sticker, [image.emoji])
+
+    db.add(image)
+    db.commit()    
+    db.refresh(image)
+    return image
 
 @app.delete("/stickers/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Stickers"])
 async def update_sticker(db: db_dependency, id: int, user: Users = Depends(get_current_user)):
@@ -242,8 +276,6 @@ async def update_sticker(db: db_dependency, id: int, user: Users = Depends(get_c
 @app.get("/sticker-packs", response_model=list[StickerPackSchema], tags=["Sticker Packs"])
 async def list_sticker_packs(db: db_dependency, user: Users = Depends(get_current_user)):
     sticker_pack_list = db.query(StickerPacks).filter(StickerPacks.user_id == user.id).order_by(StickerPacks.created_at.desc()).all()
-    if not sticker_pack_list:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
     return sticker_pack_list
     
 
@@ -253,41 +285,43 @@ async def create_sticker_pack(
     db: db_dependency, 
     user: Users = Depends(get_current_user)
 ):
-    new_sticker_pack = StickerPacks(title=sticker_pack_data.title, user_id=user.id)
+    sticker_pack_name = f"{sticker_pack_data.title.replace(' ', '_')}_by_{telegram_bot.BOT_USERNAME}"
+    new_sticker_pack = StickerPacks(title=sticker_pack_data.title, user_id=user.id, name=sticker_pack_name)
     db.add(new_sticker_pack)
-    db.flush()
-
-    input_stickers_list = []
-    for sticker_id in sticker_pack_data.stickers:
-        sticker = get_sticker_by_id_db(db, sticker_id, user.id)
-        if not sticker:
-            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} not found")
-        if sticker.sticker_pack_id:
-            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} already in a sticker pack")
-
-        sticker.sticker_pack_id = new_sticker_pack.id
-        db.add(sticker)
-        
-        async with httpx.AsyncClient() as client:
-            response = await client.get(sticker.generated_img_url)
-            response.raise_for_status()
-            sticker_bytes = BytesIO(response.content)
-            telegram_file = await telegram_bot.upload_sticker_file(sticker_bytes)
-
-        sticker.telegram_file_unique_id = telegram_file.file_id
-
-        input_stickers_list.append(
-            telegram_bot.InputSticker(
-                sticker=telegram_file.file_id,
-                emoji_list=[sticker.emoji], 
-                format=telegram_bot.StickerFormat.STATIC
-            )
-        )
+    try:
+        db.flush()
+    except IntegrityError:
+        raise HTTPException(status_code=400, detail=f"StickerPack already exists with that name")
 
     sticker_pack_schema = StickerPackSchema.model_validate(new_sticker_pack)
-    res = await telegram_bot.create_sticker_pack(sticker_pack_schema.sticker_pack_name, sticker_pack_schema.title, input_stickers_list)
+
+    input_stickers_list: list[telegram_bot.InputSticker] = []
+    db_stickers: list[Images] = []
+
+    
+    for sticker_id in sticker_pack_data.stickers:
+        # TODO: Improve to make one DB call
+        image = get_sticker_by_id_db(db, sticker_id, user.id)
+        if not image:
+            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} not found")
+        if image.sticker_pack_id:
+            raise HTTPException(status_code=400, detail=f"Sticker {sticker_id} already in a sticker pack")
+        
+        input_sticker = image.to_tg_inputsticker()
+
+        input_stickers_list.append(input_sticker)
+        db_stickers.append(image)
+
+    res = await telegram_bot.create_sticker_pack(sticker_pack_schema.name, sticker_pack_schema.title, input_stickers_list)
+    print("HELLO", res)
     if not res:
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to create sticker pack")
+
+    created_sticker_pack = await telegram_bot.get_sticker_pack(sticker_pack_schema.name)
+    for db_sticker, telegram_sticker in zip(db_stickers, created_sticker_pack.stickers):
+        db_sticker.telegram_file_unique_id = telegram_sticker.file_unique_id
+        db_sticker.sticker_pack_id = new_sticker_pack.id
+        db.add(db_sticker)
 
     db.commit()
     db.refresh(new_sticker_pack)
@@ -307,14 +341,14 @@ async def get_sticker_pack_by_id(db: db_dependency, id: int, new_title: str, use
     sticker_pack = db.query(StickerPacks).filter(StickerPacks.user_id == user.id, StickerPacks.id == id).first()
     if not sticker_pack:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
-
+    
     sticker_pack_schema = StickerPackSchema.model_validate(sticker_pack)
-    old_pack_name = sticker_pack_schema.sticker_pack_name
     
     sticker_pack.title = new_title
     db.flush()
 
-    res = await telegram_bot.update_sticker_set_title(old_pack_name, new_title)
+    print(sticker_pack_schema.name)
+    res = await telegram_bot.update_sticker_set_title(sticker_pack_schema.name, new_title)
     if not res:
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update sticker set title")
 
@@ -329,15 +363,17 @@ async def get_sticker_pack_by_id(db: db_dependency, id: int, user: Users = Depen
     sticker_pack = db.query(StickerPacks).filter(StickerPacks.user_id == user.id, StickerPacks.id == id).first()
     if not sticker_pack:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No sticker packs found for this user")
+    
     sticker_pack_schema = StickerPackSchema.model_validate(sticker_pack)
-    await telegram_bot.delete_sticker_pack(sticker_pack_schema.sticker_pack_name)
+    await telegram_bot.delete_sticker_pack(sticker_pack_schema.name)
+    
     db.delete(sticker_pack)
     db.commit()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@app.get("/sticker-packs/{id}/stickers", response_model=list[StickersResponse], tags=["Sticker Packs"])
+@app.get("/sticker-packs/{id}/stickers", response_model=list[Sticker], tags=["Sticker Packs"])
 async def get_stickers_in_pack(db: db_dependency, id: int, user: Users = Depends(get_current_user)):
     list_stickers_in_pack = db.query(Images).filter(Images.user_id == user.id, Images.sticker_pack_id == id).all()
     if not list_stickers_in_pack:

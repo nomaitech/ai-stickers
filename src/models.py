@@ -16,6 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import IntegrityError
 import os
 import enum
+from src import telegram_bot
 
 engine = create_engine(os.getenv("DATABASE_URL"))
 
@@ -100,6 +101,12 @@ class Images(Base):
     user = relationship("Users", back_populates="images")
     sticker_pack = relationship("StickerPacks", back_populates="images")
 
+    def to_tg_inputsticker(self) -> telegram_bot.InputSticker:
+        return telegram_bot.InputSticker(
+            sticker=self.generated_img_url,
+            emoji_list=[self.emoji], 
+            format=telegram_bot.StickerFormat.STATIC
+        )
 
 class StickerPacks(Base):
     __tablename__ = "sticker_packs"
@@ -108,6 +115,7 @@ class StickerPacks(Base):
     title = Column(String, nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True)
     created_at = Column(DateTime, index=True, server_default=func.current_timestamp())
+    name = Column(String, nullable=False, unique=True, index=True)
 
     user = relationship("Users", back_populates="sticker_packs")
     images = relationship("Images", back_populates="sticker_pack")
