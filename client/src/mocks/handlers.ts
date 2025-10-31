@@ -303,9 +303,7 @@ export const handlers = [
   http.get("/payment-status/:sessionId", async ({ request, params }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
     if (!params.sessionId) return new Response(null, { status: 404 });
-    
-    console.log("Gottenparams are: ", params);
-    if (pendingCall) {
+      if (pendingCall) {
       pendingCall = false;
       return new Response(
         JSON.stringify({
