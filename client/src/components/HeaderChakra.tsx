@@ -19,9 +19,7 @@ const HeaderChakra = () => {
     <Box bg="white" px={6} py={4} boxShadow="md">
       <Flex align="center" justify="space-between">
         <Flex alignItems="center">
-          {credits != undefined && <Icon position="relative" left="-1px" onClick={() => setSidebarOpen(!sidebarOpen)} mr={4}>
-            <Menu />
-          </Icon>}
+          {credits != undefined && <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />}
           <Link href="/generate-sticker">
             <Box h="38px" w="175px" backgroundColor="blue.200">
               <Text>StickerSquirrel</Text>
@@ -50,7 +48,6 @@ const HeaderChakra = () => {
         )}
       </Flex>
       {showAuth && <LoginPrompt />}
-      <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />
     </Box>
   );
 }
