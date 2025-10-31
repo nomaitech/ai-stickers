@@ -46,9 +46,8 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
             <Text color="text/fg" fontWeight="semibold">
                 Upload your image *
             </Text>
-            <FileUpload.Root my={5} alignItems="stretch">
+            <FileUpload.Root my={5} alignItems="stretch" accept={allowedTypes}>
                 <FileUpload.HiddenInput
-                    accept="image/*"
                     onChange={handleFileChange}
                 />
                 <FileUpload.Dropzone>
