@@ -5,6 +5,7 @@ Revises: 79dedccc6231
 Create Date: 2025-09-10 09:28:42.448061
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -12,14 +13,14 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'c3afac8a5896'
-down_revision: Union[str, Sequence[str], None] = '79dedccc6231'
+revision: str = "c3afac8a5896"
+down_revision: Union[str, Sequence[str], None] = "79dedccc6231"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-   op.execute("""
+    op.execute("""
     ALTER TABLE images
     ADD COLUMN user_id integer REFERENCES users (id);
     """)

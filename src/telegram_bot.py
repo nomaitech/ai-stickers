@@ -11,6 +11,7 @@ bot = Bot(token=TELEGRAM_BOT_TOKEN)
 
 BOT_USERNAME = None
 
+
 async def fetch_username():
     global BOT_USERNAME
     if not BOT_USERNAME:
@@ -19,7 +20,7 @@ async def fetch_username():
     return BOT_USERNAME
 
 
-async def create_sticker_pack(name: str, title:str, stickers: list[InputSticker]):
+async def create_sticker_pack(name: str, title: str, stickers: list[InputSticker]):
     async with bot:
         # TODO: change to sticker_pack.user_id
         return await bot.create_new_sticker_set(12911582, name, title, stickers)
@@ -43,7 +44,9 @@ async def update_sticker_set_title(name: str, title: str):
 
 async def upload_sticker_file(sticker_bytes) -> File:
     async with bot:
-        return await bot.upload_sticker_file(12911582, InputFile(sticker_bytes), StickerFormat.STATIC)
+        return await bot.upload_sticker_file(
+            12911582, InputFile(sticker_bytes), StickerFormat.STATIC
+        )
 
 
 async def add_sticker_to_set(name: str, sticker: InputSticker):
@@ -63,10 +66,8 @@ async def update_sticker_emoji(sticker, emoji_list):
 
 
 async def sticker_by_file_unique_id(
-    stickerset_name: str,
-    file_unique_id: str,
-    include_amount: bool = False
-) -> Union[Optional['Sticker'], Optional[Tuple['Sticker', int]]]:
+    stickerset_name: str, file_unique_id: str, include_amount: bool = False
+) -> Union[Optional["Sticker"], Optional[Tuple["Sticker", int]]]:
     """Get sticker from stickerset and return also the amount of stickers in the sticketset"""
     stickerset = await get_sticker_pack(stickerset_name)
 

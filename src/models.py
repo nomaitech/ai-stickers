@@ -46,6 +46,7 @@ class Users(Base):
     images = relationship("Images", back_populates="user")
     sticker_packs = relationship("StickerPacks", back_populates="user")
 
+
 class TransactionList(enum.Enum):
     top_up = "top-up"
     image_generation = "image-generation"
@@ -104,9 +105,10 @@ class Images(Base):
     def to_tg_inputsticker(self) -> telegram_bot.InputSticker:
         return telegram_bot.InputSticker(
             sticker=self.generated_img_url,
-            emoji_list=[self.emoji], 
-            format=telegram_bot.StickerFormat.STATIC
+            emoji_list=[self.emoji],
+            format=telegram_bot.StickerFormat.STATIC,
         )
+
 
 class StickerPacks(Base):
     __tablename__ = "sticker_packs"

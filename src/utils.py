@@ -16,22 +16,23 @@ def is_emoji(character):
     # U+2700–U+27BF: Dingbats
     # U+1F1E6–U+1F1FF: Regional Indicator Symbols (for flags)
     return (
-        0x1F600 <= code_point <= 0x1F64F or
-        0x1F300 <= code_point <= 0x1F5FF or
-        0x1F680 <= code_point <= 0x1F6FF or
-        0x1F700 <= code_point <= 0x1F77F or
-        0x1F780 <= code_point <= 0x1F7FF or
-        0x1F800 <= code_point <= 0x1F8FF or
-        0x1F900 <= code_point <= 0x1F9FF or
-        0x1FA00 <= code_point <= 0x1FA6F or
-        0x1FA70 <= code_point <= 0x1FAFF or
-        0x1FB00 <= code_point <= 0x1FBFF or
-        0x2600  <= code_point <= 0x26FF  or
-        0x2700  <= code_point <= 0x27BF  or
-        0x1F1E6 <= code_point <= 0x1F1FF    # for regional indicator (flag) symbols
+        0x1F600 <= code_point <= 0x1F64F
+        or 0x1F300 <= code_point <= 0x1F5FF
+        or 0x1F680 <= code_point <= 0x1F6FF
+        or 0x1F700 <= code_point <= 0x1F77F
+        or 0x1F780 <= code_point <= 0x1F7FF
+        or 0x1F800 <= code_point <= 0x1F8FF
+        or 0x1F900 <= code_point <= 0x1F9FF
+        or 0x1FA00 <= code_point <= 0x1FA6F
+        or 0x1FA70 <= code_point <= 0x1FAFF
+        or 0x1FB00 <= code_point <= 0x1FBFF
+        or 0x2600 <= code_point <= 0x26FF
+        or 0x2700 <= code_point <= 0x27BF
+        or 0x1F1E6 <= code_point <= 0x1F1FF  # for regional indicator (flag) symbols
     )
+
 
 def is_emoji_validator(character):
     if len(character) > 1 or not is_emoji(character):
-        raise ValueError(f'{character} is not an emoji')
+        raise ValueError(f"{character} is not an emoji")
     return character
