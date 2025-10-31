@@ -56,8 +56,6 @@ from src.sticker_factory import generate_sticker
 from src import billing
 from src.storage import upload_image_to_gcs
 from contextlib import asynccontextmanager
-import httpx
-from io import BytesIO
 
 
 class EndpointFilter(logging.Filter):
@@ -315,7 +313,7 @@ async def update_sticker(
 
 
 @app.delete("/stickers/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Stickers"])
-async def update_sticker(
+async def delete_sticker(
     db: db_dependency, id: int, user: Users = Depends(get_current_user)
 ):
     sticker = (
@@ -365,7 +363,7 @@ async def create_sticker_pack(
         db.flush()
     except IntegrityError:
         raise HTTPException(
-            status_code=400, detail=f"StickerPack already exists with that name"
+            status_code=400, detail="StickerPack already exists with that name"
         )
 
     sticker_pack_schema = StickerPackSchema.model_validate(new_sticker_pack)
@@ -434,7 +432,7 @@ async def get_sticker_pack_by_id(
 @app.patch(
     "/sticker-packs/{id}", response_model=StickerPackSchema, tags=["Sticker Packs"]
 )
-async def get_sticker_pack_by_id(
+async def update_sticker_pack(
     db: db_dependency, id: int, new_title: str, user: Users = Depends(get_current_user)
 ):
     sticker_pack = (
@@ -474,7 +472,7 @@ async def get_sticker_pack_by_id(
     status_code=status.HTTP_204_NO_CONTENT,
     tags=["Sticker Packs"],
 )
-async def get_sticker_pack_by_id(
+async def delete_sticker_pack(
     db: db_dependency, id: int, user: Users = Depends(get_current_user)
 ):
     sticker_pack = (

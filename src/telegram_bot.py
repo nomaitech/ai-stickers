@@ -1,7 +1,7 @@
 __all__ = ["InputSticker", "StickerFormat", "BOT_USERNAME", "InputFile"]
 
 import os
-from telegram import Bot, InputSticker, File, InputFile, StickerSet, Sticker
+from telegram import Bot, InputSticker, File, InputFile, Sticker
 from telegram.constants import StickerFormat
 from typing import Tuple, Optional, Union
 

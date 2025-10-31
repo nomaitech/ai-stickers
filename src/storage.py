@@ -1,10 +1,7 @@
 import os
 import uuid
 from typing import Optional
-from io import BytesIO
-from PIL import Image
 from google.cloud import storage
-from google.cloud.exceptions import NotFound
 import logging
 
 logger = logging.getLogger(__name__)
