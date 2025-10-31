@@ -1,5 +1,5 @@
 import { Box, Flex, Link, Text, Icon, Separator } from "@chakra-ui/react";
-import { Coins, Plus, Menu } from "lucide-react";
+import { Coins, Plus } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginPrompt from "./LoginPrompt";
