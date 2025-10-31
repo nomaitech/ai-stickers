@@ -48,6 +48,7 @@ from src.schemas import (
     PaymentSessionCreate,
     PaymentStatusResponse,
     Sticker,
+    DiscoverStickersResponse,
     UpdateSticker,
     StickerPackSchema,
     StickerPackCreate,
@@ -200,6 +201,12 @@ async def create_sticker(
     db.commit()
 
     return new_img
+
+@app.get("/discover", response_model=list[DiscoverStickersResponse], tags=["Stickers"])
+async def discover_stickers(db: db_dependency):
+    stickers = db.query(Images).filter(Images.is_public == True).order_by(Images.created_at.desc()).all()
+    
+    return [DiscoverStickersResponse.model_validate(sticker) for sticker in stickers]
 
 
 @app.get("/stickers", response_model=list[Sticker], tags=["Stickers"])

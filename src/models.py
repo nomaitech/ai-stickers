@@ -10,6 +10,7 @@ from sqlalchemy import (
     ForeignKey,
     create_engine,
     func,
+    Boolean,
 )
 from sqlalchemy.orm import Session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -97,7 +98,8 @@ class Images(Base):
     sticker_pack_id = Column(Integer, ForeignKey("sticker_packs.id"), index=True)
     generation_time = Column(Float, nullable=True)
     telegram_file_unique_id = Column(String, nullable=True)
-
+    is_public = Column(Boolean, nullable=False, default=True)
+    
     transaction = relationship("Transactions", back_populates="images")
     user = relationship("Users", back_populates="images")
     sticker_pack = relationship("StickerPacks", back_populates="images")

@@ -1,30 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { UserInfo } from "../../types";
 
 type UIState = {
-  showRegister: boolean;
-  credits: number | null;
-  email: string;
+  showAuth: boolean;
+  authOption: "Login" | "Sign Up";
+  userInfo: UserInfo | undefined;
 };
 
 const uiSlice = createSlice({
   name: "ui",
-  initialState: { showRegister: false, credits: null } as UIState,
+  initialState: { showAuth: false, authOption: "Login" } as UIState,
   reducers: {
-    openRegister: (state) => {
-      state.showRegister = true;
+    openAuth: (state) => {
+      state.showAuth = true;
     },
-    closeRegister: (state) => {
-      state.showRegister = false;
+    closeAuth: (state) => {
+      state.showAuth = false;
     },
-    updateCredits: (state, action) => {
-      state.credits = action.payload;
+    authLogin: (state) => {
+      state.authOption = "Login";
     },
-    updateEmail: (state, action) => {
-      state.email = action.payload;
+    authRegister: (state) => {
+      state.authOption = "Sign Up";
+    },
+    updateUserInfo: (state, action) => {
+      state.userInfo = action.payload;
+    },
+    resetUserInfo: (state) => {
+      state.userInfo = undefined;
     },
   },
 });
 
-export const { openRegister, closeRegister, updateCredits, updateEmail } =
+export const { openAuth, closeAuth, updateUserInfo, resetUserInfo, authLogin, authRegister } =
   uiSlice.actions;
 export default uiSlice.reducer;

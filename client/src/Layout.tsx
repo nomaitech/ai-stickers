@@ -1,25 +1,30 @@
 import { Outlet } from "react-router-dom";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Register from "./components/Register";
-import { Toaster } from "sonner";
-import { domainUrl } from "../constants/env";
-import { useSelector } from "react-redux";
-import type { RootState } from "../src/store";
+import HeaderChakra from "./components/HeaderChakra";
+import { domainUrl } from "./env";
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
 
 const Layout = () => {
-  const showRegister = useSelector((state: RootState) => state.ui.showRegister);
+  const ScrollToTop = () => {
+    const { pathname } = useLocation()
+    useEffect(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" })
+    }, [pathname])
+    return null
+  }
 
   return (
-  <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1 flex bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
+    <Box maxWidth="100vw" sm={{ maxWidth: "412px" }} m="0 auto">
+      <HeaderChakra />
+      <ScrollToTop />
+      <main>
         <Outlet context={{ domainUrl }}/>
       </main>
-      <Footer />
-      {showRegister && <Register />}
-      <Toaster />
-    </div>
+    </Box>
   );
 };
 

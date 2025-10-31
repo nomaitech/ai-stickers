@@ -58,6 +58,14 @@ class Token(BaseModel):
         }
 
 
+class DiscoverStickersResponse(BaseModel):
+    id: int = Field(description="Image ID")
+    generated_img_url: str = Field(description="Generated image URL")
+    created_at: datetime = Field(description="Image creation timestamp")
+
+    class Config:
+        from_attributes = True
+
 class Sticker(BaseModel):
     id: int = Field(description="Image ID")
     transaction_id: int = Field(description="Transaction ID")
@@ -72,6 +80,7 @@ class Sticker(BaseModel):
     telegram_file_unique_id: Optional[str] = Field(
         description="Telegram file unique ID"
     )
+    is_public: bool = Field(description="Whether the image is public")
 
     class Config:
         from_attributes = True

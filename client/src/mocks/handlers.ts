@@ -1,4 +1,4 @@
-import { http } from "msw";
+import { delay, http } from "msw";
 
 import imageRawData from "../assets/stickerOutputMock.png";
 
@@ -15,8 +15,18 @@ const unauthorizedResponse = () => {
   });
 };
 
+const stickers = [
+  {
+    id: "1",
+    generated_img_url: "https://picsum.photos/150?1",
+    emoji: "👍",
+    createdAt: new Date().toISOString(),
+  },
+];
+
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
+    await delay(2000);
     type LoginBody = { email: string; password: string };
     const requestBody = (await request.json()) as LoginBody;
     const { email, password } = requestBody;
@@ -32,32 +42,49 @@ export const handlers = [
     });
   }),
 
-  http.post("/auth/register", async () => {
-    return new Response(JSON.stringify({ message: "User registered" }), {
+  http.post("/auth/register", async ({ request }) => {
+    const requestBody = (await request.json()) as { email: string };
+    return new Response(JSON.stringify({
+      "access_token": "mock-token",
+      "token_type": "bearer",
+      "user": {
+        "credits": 2,
+        "email": requestBody.email
+      }
+    }), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
   }),
 
-  http.get("/stickers", async ({ request }) => {
-    if (!validateAuth(request)) return unauthorizedResponse();
-    console.log("It does try to get em I dont know man");
+  http.get("/discover", async () => {
+    const stickers = [
+      {
+        "id": 75,
+        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/f0465c2f-2b05-49af-b8c9-8a3d7575b212.png",
+        "created_at": "2025-10-24T13:39:16.524595Z"
+      },
+      {
+        "id": 74,
+        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/45decea0-863b-458e-87ae-8579b015da53.png",
+        "created_at": "2025-10-24T13:15:05.499927Z"
+      },
+      {
+        "id": 73,
+        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/1ec6a44f-66ef-460a-a847-3542a5479396.png",
+        "created_at": "2025-10-23T13:10:56.681573Z"
+      },
+    ]
     return new Response(
-      JSON.stringify([
-          {
-            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "👍",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-          {
-            id: "4fa85f64-5717-4562-b3fc-2c963f66afa6",
-            generated_img_url: "https://picsum.photos/150",
-            emoji: "🤪",
-            createdAt: "2025-09-10T12:11:06.383Z",
-          },
-        ],
-      ),
+      JSON.stringify(stickers),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  }),
+  http.get("/stickers", async ({ request }) => {
+    await delay(3000);
+    if (!validateAuth(request)) return unauthorizedResponse();
+    return new Response(
+      JSON.stringify(stickers),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),
@@ -81,9 +108,14 @@ export const handlers = [
         headers: { "Content-Type": "application/json" },
       });
     }
-
-    await new Promise((r) => setTimeout(r, 2000));
-
+    await delay(5000);
+    const newSticker = {
+      id: crypto.randomUUID(),
+      generated_img_url: `https://picsum.photos/150?${Math.random()}`,
+      emoji: (formData.get("emoji") as string) || "👍🏼",
+      createdAt: new Date().toISOString(),
+    };
+    stickers.push(newSticker);
     return new Response(
       JSON.stringify({
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -119,11 +151,12 @@ export const handlers = [
 
   http.get("/user-info", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
+    await delay(2000);
     const creditAmount = Math.floor(Math.random() * 100);
     return new Response(
       JSON.stringify({ email: "user@example.com", credits: creditAmount }),
       { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    )
   }),
 
   http.post("/topup", async ({ request }) => {
@@ -255,10 +288,10 @@ export const handlers = [
     if (!params.sessionId) return new Response(null, { status: 404 });
     return new Response(
       JSON.stringify({
-      session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
-      status: "completed",
-      created_at: "2025-09-28T21:33:52.375329Z",
-      completed_at: "2025-09-28T21:34:28.800049Z"
-    }))
+        session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
+        status: "completed",
+        created_at: "2025-09-28T21:33:52.375329Z",
+        completed_at: "2025-09-28T21:34:28.800049Z"
+      }))
   }),
 ];
