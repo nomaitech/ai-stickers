@@ -3,7 +3,7 @@ import { removeToken } from "@/store/auth/authSlice";
 import { Drawer, CloseButton, Button, Flex, Box, Text, Link, Separator } from "@chakra-ui/react"
 import { resetUserInfo } from "@/store/UI/uiSlice";
 import { mainApi } from "@/store/mainApi";
-import { Palette, Heart, Wallet, LogOut } from "lucide-react"
+import { Palette, Heart, Wallet, LogOut, Menu } from "lucide-react"
 import { useLocation, useNavigate } from "react-router-dom";
 const links = [
     { to: "/generate-sticker", label: "Generate Stickers", icon: <Palette /> },
@@ -30,7 +30,9 @@ const NavDrawer = ({ open, onOpenChange }: NavDrawerProps) => {
     return (
         <Drawer.Root open={open} onOpenChange={(e) => onOpenChange(e.open)} placement="start">
             <Drawer.Backdrop />
-            <Drawer.Trigger />
+            <Drawer.Trigger asChild mr={4}>
+                <Menu />
+            </Drawer.Trigger>
             <Drawer.Positioner>
                 <Drawer.Content>
                     <Drawer.CloseTrigger />
@@ -42,7 +44,7 @@ const NavDrawer = ({ open, onOpenChange }: NavDrawerProps) => {
                                 </Box>
                             </Link>
                             <Drawer.CloseTrigger asChild mt={1}>
-                                <CloseButton size="md"/>
+                                <CloseButton size="md" />
                             </Drawer.CloseTrigger>
                         </Flex>
                     </Drawer.Header>
