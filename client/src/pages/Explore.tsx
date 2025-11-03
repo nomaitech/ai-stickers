@@ -43,11 +43,11 @@ const Explore = () => {
         </Section>
         {isInitialLoading ? (
             <AbsoluteCenter>
-                <PrimaryButton text="Loading..." isDisabled />
+                <PrimaryButton text="Loading..." disabled />
             </AbsoluteCenter>
         ) : stickers.length === 0 ? (
             <AbsoluteCenter>
-                <VStack spacing={4}>
+                <VStack gap={4}>
                     <Text fontSize="lg" color="gray.500">No public stickers yet. Be the first to share!</Text>
                     <PrimaryButton text="Create a sticker" to="/generate-sticker" />
                 </VStack>
@@ -71,9 +71,8 @@ const Explore = () => {
                         <PrimaryButton
                             text="Load more"
                             onClick={handleLoadMore}
-                            isDisabled={isLoadingMore}
-                            isLoading={isLoadingMore}
-                            loadingText="Loading"
+                            disabled={isLoadingMore}
+                            loading={isLoadingMore}
                             maxW="xs"
                         />
                     </Box>
