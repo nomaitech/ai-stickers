@@ -1,7 +1,7 @@
 """Rename telegram_file_id for telegram_file_unique_id
 
 Revision ID: 820f695da917
-Revises: fca1ff7fac97
+Revises: 2586882db843
 Create Date: 2025-10-29 14:56:19.217169
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "820f695da917"
-down_revision: Union[str, Sequence[str], None] = "fca1ff7fac97"
+down_revision: Union[str, Sequence[str], None] = "2586882db843"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

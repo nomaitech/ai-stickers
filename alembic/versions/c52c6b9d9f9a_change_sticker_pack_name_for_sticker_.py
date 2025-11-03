@@ -1,7 +1,7 @@
 """Change sticker_pack_name for sticker_pack_tilte
 
 Revision ID: c52c6b9d9f9a
-Revises: 5ada8df33d63
+Revises: 3ada8df33d63
 Create Date: 2025-10-28 15:59:08.558870
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "c52c6b9d9f9a"
-down_revision: Union[str, Sequence[str], None] = "5ada8df33d63"
+down_revision: Union[str, Sequence[str], None] = "3ada8df33d63"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
