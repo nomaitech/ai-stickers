@@ -57,28 +57,43 @@ export const handlers = [
     });
   }),
 
-  http.get("/discover", async () => {
+  http.get("/discover", async ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page") ?? 1);
+    const pageSize = Number(url.searchParams.get("page_size") ?? 20);
+
     const stickers = [
       {
-        "id": 75,
-        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/f0465c2f-2b05-49af-b8c9-8a3d7575b212.png",
-        "created_at": "2025-10-24T13:39:16.524595Z"
+        id: 75,
+        generated_img_url: "https://storage.googleapis.com/ai-stickers-prod/generated/f0465c2f-2b05-49af-b8c9-8a3d7575b212.png",
+        created_at: "2025-10-24T13:39:16.524595Z",
       },
       {
-        "id": 74,
-        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/45decea0-863b-458e-87ae-8579b015da53.png",
-        "created_at": "2025-10-24T13:15:05.499927Z"
+        id: 74,
+        generated_img_url: "https://storage.googleapis.com/ai-stickers-prod/generated/45decea0-863b-458e-87ae-8579b015da53.png",
+        created_at: "2025-10-24T13:15:05.499927Z",
       },
       {
-        "id": 73,
-        "generated_img_url": "https://storage.googleapis.com/ai-stickers-prod/generated/1ec6a44f-66ef-460a-a847-3542a5479396.png",
-        "created_at": "2025-10-23T13:10:56.681573Z"
+        id: 73,
+        generated_img_url: "https://storage.googleapis.com/ai-stickers-prod/generated/1ec6a44f-66ef-460a-a847-3542a5479396.png",
+        created_at: "2025-10-23T13:10:56.681573Z",
       },
-    ]
-    return new Response(
-      JSON.stringify(stickers),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    ];
+
+    const responseBody = {
+      items: stickers.slice(0, pageSize),
+      page,
+      page_size: pageSize,
+      total_items: stickers.length,
+      total_pages: Math.ceil(stickers.length / pageSize),
+      has_next: page * pageSize < stickers.length,
+      has_prev: page > 1,
+    };
+
+    return new Response(JSON.stringify(responseBody), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   }),
   http.get("/stickers", async ({ request }) => {
     await delay(3000);

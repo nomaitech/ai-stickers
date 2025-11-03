@@ -3,6 +3,7 @@ import os
 import logging
 import datetime
 import time
+import math
 from typing import Annotated
 from fastapi import (
     FastAPI,
@@ -13,6 +14,7 @@ from fastapi import (
     Depends,
     Request,
     Form,
+    Query,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
@@ -49,6 +51,7 @@ from src.schemas import (
     PaymentStatusResponse,
     Sticker,
     DiscoverStickersResponse,
+    DiscoverPaginatedResponse,
     UpdateSticker,
     StickerPackSchema,
     StickerPackCreate,
@@ -202,11 +205,46 @@ async def create_sticker(
 
     return new_img
 
-@app.get("/discover", response_model=list[DiscoverStickersResponse], tags=["Stickers"])
-async def discover_stickers(db: db_dependency):
-    stickers = db.query(Images).filter(Images.is_public == True).order_by(Images.created_at.desc()).all()
-    
-    return [DiscoverStickersResponse.model_validate(sticker) for sticker in stickers]
+@app.get("/discover", response_model=DiscoverPaginatedResponse, tags=["Stickers"])
+async def discover_stickers(
+    db: db_dependency,
+    page: int = Query(1, ge=1, description="Page number, starting at 1"),
+    page_size: int = Query(
+        20,
+        ge=1,
+        le=100,
+        description="Number of stickers to return per page (max 100)",
+    ),
+):
+    total_items = (
+        db.query(func.count(Images.id))
+        .filter(Images.is_public.is_(True))
+        .scalar()
+    ) or 0
+
+    total_pages = math.ceil(total_items / page_size) if total_items else 0
+    offset = (page - 1) * page_size
+
+    stickers = (
+        db.query(Images)
+        .filter(Images.is_public.is_(True))
+        .order_by(Images.created_at.desc())
+        .offset(offset)
+        .limit(page_size)
+        .all()
+    )
+
+    items = [DiscoverStickersResponse.model_validate(sticker) for sticker in stickers]
+
+    return DiscoverPaginatedResponse(
+        items=items,
+        page=page,
+        page_size=page_size,
+        total_items=total_items,
+        total_pages=total_pages,
+        has_next=page < total_pages,
+        has_prev=page > 1,
+    )
 
 
 @app.get("/stickers", response_model=list[Sticker], tags=["Stickers"])

@@ -66,6 +66,19 @@ class DiscoverStickersResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+class DiscoverPaginatedResponse(BaseModel):
+    items: list[DiscoverStickersResponse]
+    page: int = Field(description="Current page number", ge=1)
+    page_size: int = Field(description="Number of items per page", ge=1)
+    total_items: int = Field(description="Total number of public stickers", ge=0)
+    total_pages: int = Field(description="Total amount of pages", ge=0)
+    has_next: bool = Field(description="Whether there is a next page available")
+    has_prev: bool = Field(description="Whether there is a previous page available")
+
+    class Config:
+        from_attributes = True
+
 class Sticker(BaseModel):
     id: int = Field(description="Image ID")
     transaction_id: int = Field(description="Transaction ID")

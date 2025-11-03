@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareAuthHeaders } from "./utils";
 import { setToken } from "./auth/authSlice";
 import { updateUserInfo } from "./UI/uiSlice"
-import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse, DiscoverStickersResponse } from "../types";
+import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse, DiscoverPaginatedResponse, DiscoverStickersResponse } from "../types";
 
 export const mainApi = createApi({
   reducerPath: "mainApi",
@@ -60,14 +60,45 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ["Sticker"],
     }),
-    discoverStickers: builder.query<DiscoverStickersResponse[], void>({
-      query: () => "/discover",
-      providesTags: (result) =>
-        result ? [
-          ...result.map(({ id }) => ({ type: "Sticker" as const, id })),
-          { type: "Sticker", id: "LIST" },
-        ] : [
-          { type: "Sticker", id: "LIST" }],
+    discoverStickers: builder.query<
+      DiscoverPaginatedResponse,
+      { page?: number; page_size?: number } | void
+    >({
+      query: (params) => {
+        const { page = 1, page_size = 20 } = params ?? {};
+        return {
+          url: "/discover",
+          params: { page, page_size },
+        };
+      },
+      transformResponse: (
+        response: DiscoverPaginatedResponse | DiscoverStickersResponse[],
+      ): DiscoverPaginatedResponse => {
+        if (Array.isArray(response)) {
+          const items = response;
+          return {
+            items,
+            page: 1,
+            page_size: items.length,
+            total_items: items.length,
+            total_pages: items.length > 0 ? 1 : 0,
+            has_next: false,
+            has_prev: false,
+          };
+        }
+
+        return response;
+      },
+      providesTags: (result) => {
+        if (result?.items?.length) {
+          return [
+            ...result.items.map(({ id }) => ({ type: "Sticker" as const, id })),
+            { type: "Sticker", id: "LIST" },
+          ];
+        }
+
+        return [{ type: "Sticker", id: "LIST" }];
+      },
     }),
     getStickers: builder.query<Sticker[], void>({
       query: () => "/stickers",
