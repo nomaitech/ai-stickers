@@ -62,6 +62,11 @@ spec:
             secretKeyRef:
               name: ai-sticker-api-secrets
               key: STRIPE_WEBHOOK_SECRET
+        - name: TELEGRAM_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: TELEGRAM_BOT_TOKEN
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /app/secrets/google-credentials.json
         - name: GCS_BUCKET_NAME
