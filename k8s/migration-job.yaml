@@ -13,6 +13,11 @@ spec:
         image: ai-sticker:latest
         imagePullPolicy: IfNotPresent
         env:
+        - name: TELEGRAM_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: ai-sticker-api-secrets
+              key: TELEGRAM_BOT_TOKEN
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
