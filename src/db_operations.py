@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 import datetime
-from src.models import PaymentSessions, Transactions, TransactionList
+from src.models import PaymentSessions, Transactions, TransactionList, Images
 
 
 def create_payment_session_db(
@@ -43,7 +43,9 @@ def update_payment_session_status(
     return payment_session
 
 
-def add_credits_to_user(db: Session, user_id: int, payment_session_id: int) -> Transactions:
+def add_credits_to_user(
+    db: Session, user_id: int, payment_session_id: int
+) -> Transactions:
     credits_to_add = 10
     new_transaction = Transactions(
         current_transaction=TransactionList.top_up,
@@ -65,4 +67,12 @@ def get_user_credits(db: Session, user_id: int) -> int:
         )
         .scalar()
         or 0
+    )
+
+
+def get_sticker_by_id(db: Session, sticker_id: int, user_id: int) -> Images:
+    return (
+        db.query(Images)
+        .filter(Images.id == sticker_id, Images.user_id == user_id)
+        .first()
     )
