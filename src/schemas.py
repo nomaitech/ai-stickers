@@ -1,10 +1,12 @@
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import AfterValidator, BaseModel, Field, computed_field, EmailStr
+from typing import Optional, Annotated
 from datetime import datetime
+
+from src.utils import is_emoji_validator
 
 
 class UserSchema(BaseModel):
-    email: str = Field(description="User email address")
+    email: EmailStr = Field(description="User email address")
     password: str = Field(description="User password")
 
     class Config:
@@ -13,7 +15,7 @@ class UserSchema(BaseModel):
             "examples": [{"email": "test@example.com", "password": "password123"}]
         }
 
-   
+
 class UserOut(BaseModel):
     email: str = Field(description="User email address")
     credits: Optional[int] = Field(description="User credits")
@@ -39,6 +41,7 @@ class RegisterResponse(BaseModel):
             ]
         }
 
+
 class Token(BaseModel):
     access_token: str = Field(description="JWT access token")
     token_type: str = Field(default="bearer", description="Token type")
@@ -54,6 +57,7 @@ class Token(BaseModel):
             ]
         }
 
+
 class DiscoverStickersResponse(BaseModel):
     id: int = Field(description="Image ID")
     generated_img_url: str = Field(description="Generated image URL")
@@ -62,7 +66,7 @@ class DiscoverStickersResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class StickersResponse(BaseModel):
+class Sticker(BaseModel):
     id: int = Field(description="Image ID")
     transaction_id: int = Field(description="Transaction ID")
     created_at: datetime = Field(description="Image creation timestamp")
@@ -73,30 +77,61 @@ class StickersResponse(BaseModel):
     prompt: Optional[str] = Field(description="Prompt")
     sticker_pack_id: Optional[int] = Field(description="Sticker pack ID")
     generation_time: Optional[float] = Field(description="Image generation time")
+    telegram_file_unique_id: Optional[str] = Field(
+        description="Telegram file unique ID"
+    )
     is_public: bool = Field(description="Whether the image is public")
+
     class Config:
         from_attributes = True
         json_schema_extra = {
-            "examples": [{"original_img_url": "https://example.com/original.png", "generated_img_url": "https://example.com/generated.png"}]
+            "examples": [
+                {
+                    "original_img_url": "https://example.com/original.png",
+                    "generated_img_url": "https://example.com/generated.png",
+                }
+            ]
         }
 
+
+IsEmoji = Annotated[str, AfterValidator(is_emoji_validator)]
+
+
 class UpdateSticker(BaseModel):
-    emoji: Optional[str] = None
+    emoji: Optional[IsEmoji] = None
     sticker_pack_id: Optional[int] = None
 
 
 class StickerPackSchema(BaseModel):
     id: int = Field(description="Sticker pack ID")
-    name: str = Field(description="Sticker pack name")
+    title: str = Field(description="Sticker pack title")
     user_id: int = Field(description="User ID")
     created_at: datetime = Field(description="Sticker pack creation timestamp")
+    name: str = Field(description="Telegram sticker pack name")
 
-class StickerPackCreate(BaseModel):
-    name: str = Field(description="Sticker pack name")
-    
+    @computed_field
+    @property
+    def telegram_url(self) -> str:
+        return f"https://t.me/addstickers/{self.name}"
+
     class Config:
         from_attributes = True
-        json_schema_extra = {"examples": [{"name": "My Awesome Stickers"}]}
+        validate_by_name = True
+        validate_by_alias = True
+
+
+class StickerPackCreate(BaseModel):
+    title: str = Field(description="Sticker pack title")
+    stickers: list[int] = Field(
+        description="List of sticker IDs", min_items=1, max_items=50
+    )
+
+    class Config:
+        from_attributes = True
+        json_schema_extra = {
+            "examples": [{"title": "My Awesome Stickers", "stickers": [1, 2, 3]}]
+        }
+
 
 class PaymentSessionCreate(BaseModel):
     price: str = Field(description="Stripe price ID")
@@ -124,4 +159,3 @@ class PaymentStatusResponse(BaseModel):
                 }
             ]
         }
-
