@@ -19,96 +19,106 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-      - name: ai-sticker-api
-        image: ai-sticker:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - name: google-credentials
-          mountPath: /app/secrets/google-credentials.json
-          subPath: GOOGLE_APPLICATION_CREDENTIALS_JSON
-          readOnly: true
-        env:
-        - name: OPENAI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: OPENAI_API_KEY
-        - name: JWT_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: JWT_PRIVATE_KEY
-        - name: JWT_PUBLIC_KEY
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: JWT_PUBLIC_KEY
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: DATABASE_URL
-        - name: STRIPE_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: STRIPE_SECRET_KEY
-        - name: STRIPE_WEBHOOK_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: STRIPE_WEBHOOK_SECRET
-        - name: TELEGRAM_BOT_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: ai-sticker-api-secrets
-              key: TELEGRAM_BOT_TOKEN
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /app/secrets/google-credentials.json
-        - name: GCS_BUCKET_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: ai-sticker-api-config
-              key: GCS_BUCKET_NAME
-        - name: FRONTEND_URL
-          valueFrom:
-            configMapKeyRef:
-              name: ai-sticker-api-config
-              key: FRONTEND_URL
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 3
-          failureThreshold: 2
+        - name: ai-sticker-api
+          image: ai-sticker:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: google-credentials
+              mountPath: /app/secrets/google-credentials.json
+              subPath: GOOGLE_APPLICATION_CREDENTIALS_JSON
+              readOnly: true
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: OPENAI_API_KEY
+            - name: JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: JWT_PRIVATE_KEY
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: JWT_PUBLIC_KEY
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: DATABASE_URL
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: STRIPE_SECRET_KEY
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: STRIPE_WEBHOOK_SECRET
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: TELEGRAM_BOT_TOKEN
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: ai-sticker-api-secrets
+                  key: SENTRY_DSN
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /app/secrets/google-credentials.json
+            - name: GCS_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-sticker-api-config
+                  key: GCS_BUCKET_NAME
+            - name: FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-sticker-api-config
+                  key: FRONTEND_URL
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: ai-sticker-api-config
+                  key: ENVIRONMENT
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
       volumes:
-      - name: google-credentials
-        secret:
-          secretName: ai-sticker-api-secrets
-          items:
-          - key: GOOGLE_APPLICATION_CREDENTIALS_JSON
-            path: GOOGLE_APPLICATION_CREDENTIALS_JSON
+        - name: google-credentials
+          secret:
+            secretName: ai-sticker-api-secrets
+            items:
+              - key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+                path: GOOGLE_APPLICATION_CREDENTIALS_JSON
 
 ---
 apiVersion: v1
@@ -120,8 +130,8 @@ metadata:
     app: ai-sticker-api
 spec:
   ports:
-  - port: 80
-    targetPort: 8000
+    - port: 80
+      targetPort: 8000
   selector:
     app: ai-sticker-api
 
@@ -141,13 +151,13 @@ spec:
         - ai-stickers-api.jonbesga.com
       secretName: tls-ai-stickers-api-ingress-dns
   rules:
-  - host: ai-stickers-api.jonbesga.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: ai-sticker-api-service
-            port:
-              number: 80
+    - host: ai-stickers-api.jonbesga.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-sticker-api-service
+                port:
+                  number: 80
