@@ -61,12 +61,12 @@ import sentry_sdk
 
 
 SENTRY_DSN = os.getenv("SENTRY_DSN")
-SENTRY_ENVIRONMENT = os.getenv("SENTRY_ENVIRONMENT", "development")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 if SENTRY_DSN:
     sentry_sdk.init(
         SENTRY_DSN,
-        environment=SENTRY_ENVIRONMENT,
+        environment=ENVIRONMENT,
         send_default_pii=True,
     )
 
