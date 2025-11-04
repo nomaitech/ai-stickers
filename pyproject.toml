@@ -17,6 +17,7 @@ dependencies = [
     "pyjwt>=2.10.1",
     "python-multipart>=0.0.20",
     "python-telegram-bot>=22.4",
+    "sentry-sdk[fastapi]>=2.34.1",
     "sqlalchemy>=2.0.42",
     "stripe>=10.0.0",
     "uvicorn>=0.35.0",

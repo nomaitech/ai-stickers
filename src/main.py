@@ -57,6 +57,18 @@ from src.sticker_factory import generate_sticker
 from src import billing
 from src.storage import upload_image_to_gcs
 from contextlib import asynccontextmanager
+import sentry_sdk
+
+
+SENTRY_DSN = os.getenv("SENTRY_DSN")
+SENTRY_ENVIRONMENT = os.getenv("SENTRY_ENVIRONMENT", "development")
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        SENTRY_DSN,
+        environment=SENTRY_ENVIRONMENT,
+        send_default_pii=True,
+    )
 
 
 class EndpointFilter(logging.Filter):
@@ -91,6 +103,11 @@ app.add_middleware(
 
 # Get the path to ref.png relative to the app root
 REF_IMAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "ref.png")
+
+
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
 
 
 @app.get("/health")
