@@ -85,11 +85,9 @@ async def lifespan(app: FastAPI):
     yield
 
 
-docs_url=None if ENVIRONMENT == "production" else "/docs"
-redoc_url=None if ENVIRONMENT == "production" else "/redoc"
-openapi_url=None if ENVIRONMENT == "production" else "/openapi.json"
+openapi_url = None if ENVIRONMENT == "production" else "/openapi.json"
 
-app = FastAPI(lifespan=lifespan, docs_url=docs_url, redoc_url=redoc_url, openapi_url=openapi_url)
+app = FastAPI(lifespan=lifespan, openapi_url=openapi_url)
 
 app.openapi = override_openapi_schema(app)
 
