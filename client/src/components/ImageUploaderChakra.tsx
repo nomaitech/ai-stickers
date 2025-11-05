@@ -7,6 +7,9 @@ type ImageUploaderProps = {
     onImageUpload: (file: File) => void
     image: File | null
 }
+
+const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
 const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -25,7 +28,7 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
         }
     }, [image]);
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
     useEffect(() => {
         const handlePaste = (e: ClipboardEvent) => {
             const item = e.clipboardData?.items[0];
