@@ -50,7 +50,6 @@ const HeaderChakra = () => {
         )}
       </Flex>
       <LoginDialog open={showAuth} />
-      <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />
     </Box>
   );
 }
