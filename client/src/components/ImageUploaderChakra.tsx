@@ -17,7 +17,6 @@ const ImageUploaderChakra = ({ onImageUpload, image }: ImageUploaderProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
         if (!allowedTypes.includes(file.type)) {
             toaster.create({
                 title: "Invalid Format",
