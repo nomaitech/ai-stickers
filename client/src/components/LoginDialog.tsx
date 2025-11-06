@@ -60,7 +60,7 @@ useEffect(() => {
         <Dialog.Root open={open} onOpenChange={(e) => { if (!e.open) dispatch(closeAuth()) }} placement="center">
             <Dialog.Backdrop />
             <Dialog.Positioner>
-                <Dialog.Content>
+                <Dialog.Content maxW="412px" height="682px">
                     <Dialog.Body p={0}>
                         <Tabs.Root size="lg" value={authOption} onValueChange={(details) => swapForm(details.value)}>
                             <Tabs.Content value="Sign Up">
