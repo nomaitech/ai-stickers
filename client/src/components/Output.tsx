@@ -1,4 +1,4 @@
-import { Button, Text, Box, Image, AbsoluteCenter, Spinner } from '@chakra-ui/react'
+import { Button, Text, Box, Image, Flex, Spinner } from '@chakra-ui/react'
 import Section from './Section'
 import { Line } from '@rc-component/progress';
 import { useState, useEffect } from 'react'
@@ -40,20 +40,20 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
             </Button>
             <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="200px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
                 {isLoading ? (
-                    <AbsoluteCenter flexDirection="column">
+                    <Flex flexDirection="column" alignItems="center" justifyContent="center">
                         <Box w="150px">
                             <Line percent={loadingProgress} strokeWidth={4} strokeColor="#F6AD55" />
                         </Box>
                         <Spinner size="md" color="orange.300" mt={2} />
-                    </AbsoluteCenter>
+                    </Flex>
                 ) : stickerResult ? (
-                    <AbsoluteCenter>
+                    <Flex alignItems="center" justifyContent="center">
                         <Image src={stickerResult} />
-                    </AbsoluteCenter>
+                    </Flex>
                 ) : (
-                    <AbsoluteCenter w="full">
+                    <Flex w="full" alignItems="center" justifyContent="center">
                         <Image pb={2} src={DogCombo} alt="Dog image turned into sticker" />
-                    </AbsoluteCenter>
+                    </Flex>
                 )}
             </Box>
         </Section>
