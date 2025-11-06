@@ -38,7 +38,7 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
             <Button backgroundColor="orange.300" disabled={!enableButton} my={8} w="full" onClick={() => startGeneration()} size="xl" fontWeight="600" colorPalette="gray">
                 <Text color="orange.800">{userInfo ? "Generate (-1 Credit)" : "Generate Sticker"}</Text>
             </Button>
-            <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="200px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
+            <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="210px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
                 {isLoading ? (
                     <Flex flexDirection="column" alignItems="center" justifyContent="center">
                         <Box w="150px">
@@ -52,7 +52,7 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
                     </Flex>
                 ) : (
                     <Flex w="full" alignItems="center" justifyContent="center">
-                        <Image pb={2} src={DogCombo} alt="Dog image turned into sticker" />
+                        <Image src={DogCombo} alt="Dog image turned into sticker" />
                     </Flex>
                 )}
             </Box>
