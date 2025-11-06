@@ -1,18 +1,20 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, Separator } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <Flex p={4} height={30} direction="column" align="center" boxShadow="0 -4px 6px rgba(0, 0, 0, 0.2)">
-      <Flex w="full" height={15} justify="space-between" alignItems="center">
-        <div>
-          <Link variant="underline" href="/terms">Terms and conditions</Link>
-        </div>
-        <div>
-          <Link variant="underline" href="mailto:contact@gensticker.com">Contact Us</Link>
-        </div>
+    <VStack boxShadow="0 0px 15px 0px rgba(0, 0, 0, 0.2)">
+      <Box h="38px" w="175px" m={8} backgroundColor="blue.200">
+        <Text>StickerSquirrel</Text>
+      </Box>
+      <Text fontWeight="bold">Contact Us</Text>
+      <Link href="mailto:contact@gensticker.com">stickers[@]nomaitech.com</Link>
+      <Separator w="90%" m={8} />
+      <Flex w="full" height={15} justify="space-around" alignItems="center">
+          <Link href="/terms">Terms and conditions</Link>
+          <Link href="mailto:contact@gensticker.com">Privacy Policy</Link>
       </Flex>
-        <Text fontSize="sm" color="fg.muted" p={4} textAlign="center">Missing features? Email contact@gensticker.com and we might add them!</Text>
-    </Flex>
+      <Text color="orange.300" m={8}>2025. Made by Nomai ltd.</Text>
+    </VStack>
   );
 };
 
