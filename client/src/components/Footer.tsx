@@ -7,11 +7,11 @@ const Footer = () => {
         <Text>StickerSquirrel</Text>
       </Box>
       <Text fontWeight="bold">Contact Us</Text>
-      <Link href="mailto:contact@gensticker.com">stickers[@]nomaitech.com</Link>
+      <Link href="mailto:stickers[@]nomaitech.com">stickers[@]nomaitech.com</Link>
       <Separator w="90%" m={8} />
       <Flex w="full" height={15} justify="space-around" alignItems="center">
           <Link href="/terms">Terms and conditions</Link>
-          <Link href="mailto:contact@gensticker.com">Privacy Policy</Link>
+          <Link href="/privacy">Privacy Policy</Link>
       </Flex>
       <Text color="orange.300" m={8}>2025. Made by Nomai ltd.</Text>
     </VStack>
