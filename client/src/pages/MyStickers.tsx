@@ -8,13 +8,14 @@ const MyStickers = () => {
     return (
         <Section>
             <Flex my={8} flexDirection="row" align="left">
-                <Heading size="4xl" mr={2}>My</Heading>
-                <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Stickers</Heading>
+                <Heading size="4xl" mr={2}>My
+                    <Text as="span" fontSize="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold"> Stickers</Text>
+                </Heading>
             </Flex>
             {stickers?.length == 0 ? (
-                <PrimaryButton text="Generate your first sticker" />
+                <PrimaryButton to="/generate-sticker" text="Generate your first sticker" />
             ) : (
-                <PrimaryButton text="Generate more stickers" />
+                <PrimaryButton to="/generate-sticker" text="Generate more stickers" />
             )}
             {isLoading ? (
                 <AbsoluteCenter>
