@@ -1,7 +1,10 @@
 import { Heading, Flex, Text } from '@chakra-ui/react';
 import Section from '@/components/Section';
 import Pricing from '@/components/Pricing';
+import useTopUp from '@/hooks/useTopUp';
+
 const Billing = () => {
+    const getTopUpLink = useTopUp();
 
     return (
         <>
@@ -13,9 +16,9 @@ const Billing = () => {
                 <Text color="fg.muted">Choose the best plan for you, with no commitments - COPY WIP</Text>
             </Section>
             <Section>
-                <Pricing name="Standard" price={10} stickerAmount={40} highlighted/>
-                <Pricing name="Basic" price={5} stickerAmount={15} />
-                <Pricing name="Premium" price={15} stickerAmount={100} />
+                <Pricing onClick={getTopUpLink} name="Standard" price={10} stickerAmount={40} highlighted/>
+                <Pricing onClick={getTopUpLink} name="Basic" price={5} stickerAmount={15} />
+                <Pricing onClick={getTopUpLink} name="Premium" price={15} stickerAmount={100} />
             </Section>
         </>
     )

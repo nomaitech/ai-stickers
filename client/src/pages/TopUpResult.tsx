@@ -22,6 +22,8 @@ const TopupResult = () => {
         }
     }, [data]);
 
+    console.log("Id is");
+    console.log(sessionId)
     if(isCancelled) return <PaymentFailed />
 
     if (isFetching) {
