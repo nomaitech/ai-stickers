@@ -7,7 +7,7 @@ const useTopUp = () => {
   const [getPaymentSession] = useGetPaymentSessionMutation();
 
   const topUp = async () => {
-dispatch(mainApi.util.invalidateTags(['PaymentStatus']))
+    dispatch(mainApi.util.invalidateTags(['PaymentStatus']))
     const result = await getPaymentSession().unwrap();
     window.location.replace(result.checkout_url);
   };

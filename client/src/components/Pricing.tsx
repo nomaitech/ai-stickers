@@ -6,8 +6,9 @@ type PricingProps = {
     price: number
     stickerAmount: number
     highlighted?: boolean
+    onClick: () => void
 };
-const Pricing = ({ name, price, stickerAmount, highlighted }: PricingProps) => {
+const Pricing = ({ name, price, stickerAmount, highlighted, onClick }: PricingProps) => {
     return (
         <Box w="full"
             h="352px"
@@ -50,7 +51,7 @@ const Pricing = ({ name, price, stickerAmount, highlighted }: PricingProps) => {
                     </Flex>
                 </List.Item>
             </List.Root>
-            <Button backgroundColor="orange.300" onClick={() => console.log("Whoa")} w="full" size="xl" mt={6} variant="solid" fontWeight="800" colorPalette="gray">
+            <Button backgroundColor="orange.300" onClick={onClick} w="full" size="xl" mt={6} variant="solid" fontWeight="800" colorPalette="gray">
                 <Text color="orange.800">Add Credits</Text>
             </Button>
         </Box>
