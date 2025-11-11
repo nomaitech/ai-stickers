@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Text, Icon, Separator } from "@chakra-ui/react";
+import { Box, Flex, Text, Icon, Separator } from "@chakra-ui/react";
 import { Coins, Plus } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
