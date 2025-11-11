@@ -7,6 +7,7 @@ import MyStickers from "@/pages/MyStickers";
 import Explore from "@/pages/Explore";
 import TopupResult from "@/pages/TopUpResult";
 import Team from "@/pages/Team";
+import TelegramStickers from "@/pages/TelegramStickers";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/payments/success", element: <TopupResult /> },
       { path: "/payments/cancelled", element: <TopupResult /> },
       { path: "/about", element: <Team /> },
+      { path: "/telegram-stickers", element: <TelegramStickers /> },
     ],
   },
 ]);

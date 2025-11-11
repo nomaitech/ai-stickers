@@ -4,13 +4,14 @@ import { Drawer, CloseButton, Button, Flex, Box, Text, Separator } from "@chakra
 import { Link } from "react-router-dom";
 import { resetUserInfo } from "@/store/UI/uiSlice";
 import { mainApi } from "@/store/mainApi";
-import { Palette, Heart, Wallet, LogOut, Menu } from "lucide-react"
+import { Palette, Heart, Wallet, LogOut, Menu, Send } from "lucide-react"
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 const links = [
     { to: "/generate-sticker", label: "Generate Stickers", icon: <Palette /> },
     { to: "/my-stickers", label: "My Stickers", icon: <Heart /> },
     { to: "/billing", label: "Billing", icon: <Wallet /> },
+    { to: "/telegram-stickers" , label: "Telegram Stickers", icon: <Send /> },
 ]
 
 type NavDrawerProps = {
