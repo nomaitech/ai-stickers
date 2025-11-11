@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { openAuth } from "@/store/UI/uiSlice";
 import PrimaryButton from "./PrimaryButton";
 import NavDrawer from "./NavDrawer";
+import Logo from "./Logo";
 
 const HeaderChakra = () => {
 
@@ -22,11 +23,7 @@ const HeaderChakra = () => {
       <Flex align="center" justify="space-between">
         <Flex alignItems="center">
           {credits != undefined && <NavDrawer open={sidebarOpen} onOpenChange={setSidebarOpen} />}
-          <Link href="/generate-sticker">
-            <Box h="38px" w="175px" backgroundColor="blue.200">
-              <Text>StickerSquirrel</Text>
-            </Box>
-          </Link>
+          <Logo/>
         </Flex>
         {credits == undefined ? (
           <PrimaryButton text="Login" onClick={() => dispatch(openAuth())} fontWeight="semibold" w="auto" size="sm" />
