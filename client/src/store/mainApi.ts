@@ -245,5 +245,6 @@ export const {
   useGetPaymentSessionMutation,
   useGetPaymentStatusQuery,
   useDiscoverStickersQuery,
-  useListPacksQuery, 
+  useListPacksQuery,
+  useListStickersFromPackQuery,
 } = mainApi;
