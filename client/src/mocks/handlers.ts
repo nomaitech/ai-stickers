@@ -1,5 +1,8 @@
 import { delay, http } from "msw";
 import imageRawData from "../assets/stickerOutputMock.png";
+const testImages = import.meta.glob('../assets/gallery/gallery*.png', { eager: true });
+
+const images = Object.values(testImages);
 
 const validateAuth = (request: Request): boolean => {
   const authHeader = request.headers.get("Authorization") || "";
@@ -14,11 +17,44 @@ const unauthorizedResponse = () => {
   });
 };
 
+const returnRandomIndex = (inputArray: any[]) => {
+  return inputArray[Math.floor(Math.random() * inputArray.length)];
+}
+
+const returnRandomizedArray = (inputArray: any[]) =>{
+    const shuffle = inputArray.sort(() => Math.random() - 0.5);
+    return shuffle.slice(0, Math.floor(Math.random() * (inputArray.length))+1);
+}
+
 const stickers = [
   {
     id: "1",
-    generated_img_url: "https://picsum.photos/150?1",
+    generated_img_url: returnRandomIndex(images).default,
     emoji: "👍",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    generated_img_url: returnRandomIndex(images).default,
+    emoji: "😮",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "3",
+    generated_img_url: returnRandomIndex(images).default,
+    emoji: "😃",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "4",
+    generated_img_url: returnRandomIndex(images).default,
+    emoji: "👍",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "5",
+    generated_img_url: returnRandomIndex(images).default,
+    emoji: "😃",
     createdAt: new Date().toISOString(),
   },
 ];
@@ -234,6 +270,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     type stickerPackName = { name: string };
     const body = (await request.json()) as stickerPackName;
+    console.log("New name is: ", body.name);
     return new Response(
       JSON.stringify({
         id: params.packId,
@@ -253,20 +290,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     if (!params.packId) return new Response(null, { status: 404 });
     return new Response(
-      JSON.stringify([
-        {
-          id: "6fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🔥",
-          createdAt: "2025-09-10T12:30:06.383Z",
-        },
-        {
-          id: "7fa85f64-5717-4562-b3fc-2c963f66afa6",
-          generated_img_url: "https://picsum.photos/150",
-          emoji: "🎉",
-          createdAt: "2025-09-10T12:31:06.383Z",
-        },
-      ]),
+      JSON.stringify(returnRandomizedArray(stickers)),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),

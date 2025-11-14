@@ -247,4 +247,5 @@ export const {
   useDiscoverStickersQuery,
   useListPacksQuery,
   useListStickersFromPackQuery,
+  useRenameStickerPackMutation,
 } = mainApi;
