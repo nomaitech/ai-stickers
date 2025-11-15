@@ -3,12 +3,21 @@ kind: InfisicalSecret
 metadata:
   name: infisicalsecret-crd
 spec:
+  hostAPI: https://eu.infisical.com/api
+  resyncInterval: 10
   authentication:
       universalAuth:
           secretsScope:
               projectSlug: nomai
               envSlug: "prod"
-              secretsPath: "/"
+              secretsPath: "/ai-stickers"
           credentialsRef:
               secretName: universal-auth-credentials
               secretNamespace: default
+  managedKubeSecretReferences:
+    - secretName: managed-secret
+      secretNamespace: ai-stickers
+      creationPolicy: "Orphan"
+      template:
+          includeAllSecrets: true
+

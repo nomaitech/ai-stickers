@@ -35,7 +35,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: universal-auth-credentials
+                  name: managed-secret
                   key: DATABASE_URL
             - name: OPENAI_API_KEY
               valueFrom:
