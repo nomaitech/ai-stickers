@@ -28,7 +28,6 @@ const StickerInteractCard = ({ sticker }: StickerInteractCardProps) => {
                 downloadFile(sticker.generated_img_url, `createStickersOnline-${sticker.id}.png`)
                 break;
             case "edit emoji":
-                console.log("Yeah boy");
                 setDisplayEmojiSelector(true);
                 break;
             default:
@@ -44,7 +43,7 @@ const StickerInteractCard = ({ sticker }: StickerInteractCardProps) => {
 
     return (
         <Box borderRadius="2xl" borderWidth="1px" borderStyle="solid" borderColor="border/default" position="relative" overflow="hidden">
-            <Image bg="gray.100" src={sticker.generated_img_url} alt={sticker.emoji} />
+            <Image bg="gray.100" src={sticker.generated_img_url} alt={sticker.emoji} padding={4}/>
             <Menu.Root onSelect={(input) => handleMenuSelect(input.value)}>
                 <Menu.Trigger asChild>
                     <Icon position="absolute" right={2} top={2} size="xl" color="gray.400">

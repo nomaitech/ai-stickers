@@ -47,7 +47,7 @@ const PackStickersDisplay = ({ parentPackId, parentPackName }: PackStickersProps
                 onClick={()=> navigate(`/edit-stickerpack/${parentPackId}`)}>
                     {stickers.map((sticker) => (
                         <GridItem key={sticker.id} borderRadius={8} bg="gray.100">
-                            <Image src={sticker.generated_img_url} />
+                            <Image src={sticker.generated_img_url}/>
                         </GridItem>
                     ))}
                     {stickers.length < rows * cols && (

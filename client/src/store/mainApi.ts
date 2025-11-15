@@ -160,7 +160,7 @@ export const mainApi = createApi({
           ]
           : [{ type: "StickerPack", id: "LIST" }],
     }),
-    createPack: builder.mutation<StickerPack, { name: string }>({
+    createPack: builder.mutation<StickerPack, { name: string, stickerIds: string[] }>({
       query: ({ name }) => ({
         url: "/sticker-packs",
         method: "POST",
@@ -248,5 +248,6 @@ export const {
   useListPacksQuery,
   useListStickersFromPackQuery,
   useRenameStickerPackMutation,
-  useModifyStickerMutation
+  useModifyStickerMutation,
+  useCreatePackMutation
 } = mainApi;
