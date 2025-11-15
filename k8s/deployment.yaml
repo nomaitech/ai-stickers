@@ -32,6 +32,11 @@ spec:
               subPath: GOOGLE_APPLICATION_CREDENTIALS_JSON
               readOnly: true
           env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: universal-auth-credentials
+                  key: DATABASE_URL
             - name: OPENAI_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -47,11 +52,6 @@ spec:
                 secretKeyRef:
                   name: ai-sticker-api-secrets
                   key: JWT_PUBLIC_KEY
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: ai-sticker-api-secrets
-                  key: DATABASE_URL
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
