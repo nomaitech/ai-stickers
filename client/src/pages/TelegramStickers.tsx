@@ -12,7 +12,7 @@ const TelegramStickers = () => {
             <Flex my={8} flexDirection="column" align="left">
                 <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Telegram Sticker Packs</Heading>
                 <Text mt={8} mb={12} fontSize="md" color="fg.muted">If you use Telegram, your stickers are automatically compiled into a ready-to-use pack.</Text>
-                <PrimaryButton text="Create new sticker pack" to="/generate-sticker" />
+                <PrimaryButton text="Create new sticker pack" to="/create-pack" />
             </Flex>
             {isLoading ? (
                 <Center>

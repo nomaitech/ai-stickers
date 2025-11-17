@@ -42,8 +42,17 @@ export type PaymentStatusResponse = {
 
 export interface Sticker {
   id: string;
+  transcation_id: string;
+  created_at: string;
+  original_img_url: string;
   generated_img_url: string;
+  user_id: string;
   emoji: string;
+  prompt?: string;
+  sticker_pack_id?: string;
+  generation_time?: number;
+  telegram_file_unique_id?: string;
+  is_public?: boolean;
 }
 
 export type RegisterResponse = {

@@ -1,40 +1,31 @@
-import { Heading, Field, Input, Text, Button, Spinner, Center } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Center, Heading, Spinner, Text } from "@chakra-ui/react";
 import Section from "@/components/Section";
 import StickerSelectorScroller from "@/components/StickerSelectorScroller";
-import { useGetStickersQuery, useCreatePackMutation } from "@/store/mainApi";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useListStickersFromPackQuery } from "@/store/mainApi";
 import type { Sticker } from "@/types";
 
-const CreatePack = () => {
-    const { data, isLoading } = useGetStickersQuery();
-    const [createPack] = useCreatePackMutation();
+const AddStickersToPack = () => {
+    const { stickerPackId } = useParams();
+    const { data,  isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
-    const [name, setName] = useState("");
 
-    const createStickerPack = (name: string, stickersArray: Sticker[]) => {
-        createPack({
-            name,
-            stickerIds: stickersArray.map((sticker) => sticker.id)
-        })
+    const addToStickerPack = (chosenStickers: Sticker[]) => {
+        console.log(chosenStickers);
     }
 
     return (
         <Section>
             <Heading size="4xl">Create your</Heading>
             <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Telegram Pack</Heading>
-            <Field.Root required>
-                <Field.Label>
-                    Sticker pack title <Field.RequiredIndicator />
-                </Field.Label>
-                <Input onChange={(e) => setName(e.target.value)} placeholder="Type the name of your sticker pack" />
-            </Field.Root>
             {isLoading ? (
                 <Center>
                     <Spinner size="xl" color="orange.300" mt={2} />
                 </Center>
             ) : (
                 <>
-                    <Text fontWeight="bold" fontSize="sm" my={4}>Select stickers to add to your pack (min 1 sticker)</Text>
+                    <Text fontWeight="bold" fontSize="sm" my={4}>Select stickers to add to your pack</Text><Text>(Max 64 stickers)</Text>
                     {data && <StickerSelectorScroller stickers={data} onSelect={setChosenStickers} />}
                     <Button
                         backgroundColor="orange.300"
@@ -47,12 +38,12 @@ const CreatePack = () => {
                         colorPalette="gray"
                         color="orange.800"
                         _hover={{ textDecoration: "none", backgroundColor: "orange.400", color: "orange.950" }}
-                        onClick={() => createStickerPack(name, chosenStickers)}
-                    >Create sticker pack</Button>
+                        onClick={() => addToStickerPack(chosenStickers)}
+                    >Add stickers to your pack</Button>
                 </>
             )}
         </Section>
     )
 }
 
-export default CreatePack;
+export default AddStickersToPack;

@@ -10,6 +10,8 @@ import Team from "@/pages/Team";
 import TelegramStickers from "@/pages/TelegramStickers";
 import EditPack from "@/pages/EditPack";
 import CreatePack from "@/pages/CreatePack";
+import AddStickersToPack from "@/pages/AddStickersToPack";
+import RemoveStickersFromPack from "@/pages/RemoveStickersFromPack";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +27,9 @@ const router = createBrowserRouter([
       { path: "/about", element: <Team /> },
       { path: "/telegram-stickers", element: <TelegramStickers /> },
       { path: "/edit-stickerpack/:stickerPackId", element: <EditPack /> },
-      { path : "/create-pack", element: <CreatePack /> },
+      { path: "/create-pack", element: <CreatePack /> },
+      { path: "/add-to-pack/:stickerPackId", element: <AddStickersToPack /> },
+      { path: "/remove-from-pack/:stickerPackId", element: <RemoveStickersFromPack /> },
     ],
   },
 ]);

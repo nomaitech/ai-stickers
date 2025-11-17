@@ -161,13 +161,11 @@ export const mainApi = createApi({
           : [{ type: "StickerPack", id: "LIST" }],
     }),
     createPack: builder.mutation<StickerPack, { name: string, stickerIds: string[] }>({
-      query: ({ name }) => ({
+      query: ({name, stickerIds}) => ({
         url: "/sticker-packs",
         method: "POST",
-        body: new URLSearchParams({ name }),
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+        body: { name, stickerIds },
+        headers: { "Content-Type": "application/json" },
       }),
       invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
     }),

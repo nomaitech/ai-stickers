@@ -24,7 +24,7 @@ const EditPack = () => {
                         color="orange.800"
                         _hover={{ textDecoration: "none", backgroundColor: "orange.400", color: "orange.950" }}
                     >
-                        <Link href="/add-sticker">Add Stickers</Link>
+                        <Link href={`/add-to-pack/${stickerPackId}`}>Add Stickers</Link>
                     </Button>
                     <Button
                         asChild={true}
@@ -37,7 +37,7 @@ const EditPack = () => {
                         borderColor="orange.300"
                         _hover={{ textDecoration: "none", backgroundColor: "orange.400", color: "orange.950" }}
                     >
-                        <Link href="/add-sticker">Remove Stickers</Link>
+                        <Link href={`/remove-from-pack/${stickerPackId}`}>Remove Stickers</Link>
                     </Button>
                 </Grid>
             </Flex>

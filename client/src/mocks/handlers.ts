@@ -241,13 +241,19 @@ export const handlers = [
 
   http.post("/sticker-packs", async ({ request }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
-    type stickerName = { name: string };
-    const body = (await request.json()) as stickerName;
+    type stickerPackCreationInputs = {
+      name: string;
+      stickerIds: string[];
+    }
+    const body = (await request.json()) as stickerPackCreationInputs;
     return new Response(
       JSON.stringify({
         id: "5fa85f64-5717-4562-b3fc-2c963f66afa6",
-        name: body?.name || "Untitled Pack",
+        title: body?.name || "Untitled Pack",
+        user_id: "example-1c0a-4b6f-a8f8-0c6b5c8e4a5d",
         createdAt: new Date().toISOString(),
+        name : body.name || "Untitled Telegram sticker pack name",
+        telegram_url: `https://t.me/addstickers/${body.name}`,
       }),
       { status: 201, headers: { "Content-Type": "application/json" } }
     );
@@ -270,7 +276,6 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     type stickerPackName = { name: string };
     const body = (await request.json()) as stickerPackName;
-    console.log("New name is: ", body.name);
     return new Response(
       JSON.stringify({
         id: params.packId,
