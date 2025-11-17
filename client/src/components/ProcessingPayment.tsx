@@ -1,6 +1,6 @@
 import { EmptyState, ProgressCircle, AbsoluteCenter, Flex, Box } from "@chakra-ui/react"
-
 const ProcessingPayemnt = () => {
+
     return (
         <Box h="100vh" bgGradient="to-t" gradientFrom="orange.100" gradientTo="white">
             <EmptyState.Root>
@@ -9,7 +9,7 @@ const ProcessingPayemnt = () => {
                     </EmptyState.Indicator>
                     <AbsoluteCenter textAlign="center" w="full">
                         <Flex direction="column" align="center">
-                            <ProgressCircle.Root size="lg" value={70} colorPalette="orange" my={2}>
+                            <ProgressCircle.Root size="lg" value={null} colorPalette="orange" my={2}>
                                 <ProgressCircle.Circle>
                                     <ProgressCircle.Track />
                                     <ProgressCircle.Range strokeLinecap="round" />

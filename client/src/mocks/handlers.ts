@@ -1,5 +1,4 @@
 import { delay, http } from "msw";
-
 import imageRawData from "../assets/stickerOutputMock.png";
 
 const validateAuth = (request: Request): boolean => {
@@ -23,6 +22,8 @@ const stickers = [
     createdAt: new Date().toISOString(),
   },
 ];
+
+let pendingCall = true;
 
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
@@ -291,7 +292,7 @@ export const handlers = [
       return new Response(
         JSON.stringify({
           checkout_url:
-            "https://checkout.stripe.com/c/pay/cs_test_a1sMgOitlqmL0OvhPSvGN77nEWeibNgAhVlNFAke3ASNqZcZphTxpFKAyw#fidkdWxOYHwnPyd1blpxYHZxWjA0V3F3UjNEcXFpdGxvZExTfzduYGo3RkpkV0JNYFNRX2BiNFFGUGh9bmZKcHAwS3dGUWN2dzZkU2dGYEJrbFR9VHNKQkBOdFxhUVFDYDY9T1NhVWJnNlZnNTU1MjY0YTZXbCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl",
+            `/payments/success?session_id=cs_succeed_test_a1B2c3D4e5F6g7H8i9J0k1L2`,
         }),
         { status: 200 }
       );
@@ -301,12 +302,25 @@ export const handlers = [
   http.get("/payment-status/:sessionId", async ({ request, params }) => {
     if (!validateAuth(request)) return unauthorizedResponse();
     if (!params.sessionId) return new Response(null, { status: 404 });
-    return new Response(
-      JSON.stringify({
-        session_id: "cs_test_a14pkmVa005GOq2dyvsxjH7xtS3Qa2b6FKzvA0iKDEpqldRJxhQA83sBfB",
-        status: "completed",
-        created_at: "2025-09-28T21:33:52.375329Z",
-        completed_at: "2025-09-28T21:34:28.800049Z"
-      }))
-  }),
+      if (pendingCall) {
+      pendingCall = false;
+      return new Response(
+        JSON.stringify({
+          status: "pending",
+        }), { status: 200 })
+    } else {
+      pendingCall = true;
+      if (params.sessionId == "cs_succeed_test_a1B2c3D4e5F6g7H8i9J0k1L2") {
+        return new Response(
+          JSON.stringify({
+            status: "completed",
+          }), { status: 200 })
+      } else if (params.sessionId == "cancel") {
+        return new Response(
+          JSON.stringify({
+            status: "cancel",
+          }), { status: 200 })
+      }
+    }
+  })
 ];
