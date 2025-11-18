@@ -1,24 +1,30 @@
-import { Button, Center, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Button, Center, Heading, Spinner, Text, Highlight } from "@chakra-ui/react";
 import Section from "@/components/Section";
 import StickerSelectorScroller from "@/components/StickerSelectorScroller";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useListStickersFromPackQuery } from "@/store/mainApi";
+import { useListStickersFromPackQuery, useModifyStickerMutation } from "@/store/mainApi";
 import type { Sticker } from "@/types";
 
 const AddStickersToPack = () => {
     const { stickerPackId } = useParams();
-    const { data,  isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
+    const { data, isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
+    const [modifySticker] = useModifyStickerMutation();
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
 
-    const addToStickerPack = (chosenStickers: Sticker[]) => {
-        console.log(chosenStickers);
+    const addToStickerPack = async (chosenStickers: Sticker[]) => {
+        for (let i = 0; i < chosenStickers.length; i++) {
+            await modifySticker({ stickerId: chosenStickers[i].id, packId: stickerPackId });
+        }
     }
 
     return (
         <Section>
-            <Heading size="4xl">Create your</Heading>
-            <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Telegram Pack</Heading>
+            <Heading size="4xl">
+                <Highlight query="Telegram Pack" styles={{ bgGradient: "to-r", gradientFrom: "purple.500", gradientVia: "pink.400", gradientTo: "orange.400", bgClip: 'text', fontWeight: "semibold" }}>
+                    Add more stickers to your Telegram Pack
+                </Highlight>
+            </Heading>
             {isLoading ? (
                 <Center>
                     <Spinner size="xl" color="orange.300" mt={2} />

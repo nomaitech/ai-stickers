@@ -1,5 +1,6 @@
 import Section from "@/components/Section";
-import { Flex, Heading, Text, Button, Link, Grid, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Text, Button, Grid, Spinner } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { useListStickersFromPackQuery } from "@/store/mainApi";
 import { useParams } from "react-router-dom";
 import StickerInteractCard from "@/components/StickerInteractCard";
@@ -24,7 +25,7 @@ const EditPack = () => {
                         color="orange.800"
                         _hover={{ textDecoration: "none", backgroundColor: "orange.400", color: "orange.950" }}
                     >
-                        <Link href={`/add-to-pack/${stickerPackId}`}>Add Stickers</Link>
+                        <Link to={`/add-to-pack/${stickerPackId}`}>Add Stickers</Link>
                     </Button>
                     <Button
                         asChild={true}
@@ -37,7 +38,7 @@ const EditPack = () => {
                         borderColor="orange.300"
                         _hover={{ textDecoration: "none", backgroundColor: "orange.400", color: "orange.950" }}
                     >
-                        <Link href={`/remove-from-pack/${stickerPackId}`}>Remove Stickers</Link>
+                        <Link to={`/remove-from-pack/${stickerPackId}`}>Remove Stickers</Link>
                     </Button>
                 </Grid>
             </Flex>
