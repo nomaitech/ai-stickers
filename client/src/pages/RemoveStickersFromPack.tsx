@@ -2,12 +2,13 @@ import { Button, Center, Heading, Spinner, Text, Highlight } from "@chakra-ui/re
 import Section from "@/components/Section";
 import StickerSelectorScroller from "@/components/StickerSelectorScroller";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useListStickersFromPackQuery, useModifyStickerMutation } from "@/store/mainApi";
 import type { Sticker } from "@/types";
 
 const RemoveStickersFromPack = () => {
     const { stickerPackId } = useParams();
+    const navigate = useNavigate();
     const { data, isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
     const [modifySticker] = useModifyStickerMutation();
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
@@ -16,6 +17,7 @@ const RemoveStickersFromPack = () => {
         for (let i = 0; i < chosenStickers.length; i++) {
             await modifySticker({ stickerId: chosenStickers[i].id, packId: null });
         }
+        navigate(`/edit-stickerpack/${stickerPackId}`);
     }
     
     return (

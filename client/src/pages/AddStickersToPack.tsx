@@ -2,13 +2,16 @@ import { Button, Center, Heading, Spinner, Text, Highlight } from "@chakra-ui/re
 import Section from "@/components/Section";
 import StickerSelectorScroller from "@/components/StickerSelectorScroller";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useListStickersFromPackQuery, useModifyStickerMutation } from "@/store/mainApi";
+import { useParams, useNavigate } from "react-router-dom";
+import { useModifyStickerMutation, useGetStickersQuery } from "@/store/mainApi";
 import type { Sticker } from "@/types";
 
 const AddStickersToPack = () => {
     const { stickerPackId } = useParams();
-    const { data, isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
+    const navigate = useNavigate();
+    const { data: allStickers, isLoading } = useGetStickersQuery();
+    const nonPackedStickers = allStickers ? allStickers.filter(s => s.sticker_pack_id == null) : [];
+
     const [modifySticker] = useModifyStickerMutation();
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
 
@@ -16,6 +19,7 @@ const AddStickersToPack = () => {
         for (let i = 0; i < chosenStickers.length; i++) {
             await modifySticker({ stickerId: chosenStickers[i].id, packId: stickerPackId });
         }
+        navigate(`/edit-stickerpack/${stickerPackId}`);
     }
 
     return (
@@ -31,8 +35,12 @@ const AddStickersToPack = () => {
                 </Center>
             ) : (
                 <>
-                    <Text fontWeight="bold" fontSize="sm" my={4}>Select stickers to add to your pack</Text><Text>(Max 64 stickers)</Text>
-                    {data && <StickerSelectorScroller stickers={data} onSelect={setChosenStickers} />}
+                    <Text fontWeight="bold" fontSize="sm" my={4}>
+                        <Highlight query={["(Max", "64", "stickers)"]} styles={{ color: "fg.muted" }}>
+                            Select stickers to add to your pack (Max 64 stickers)
+                        </Highlight>
+                    </Text>
+                    {nonPackedStickers && <StickerSelectorScroller stickers={nonPackedStickers} onSelect={setChosenStickers} />}
                     <Button
                         backgroundColor="orange.300"
                         w="full"

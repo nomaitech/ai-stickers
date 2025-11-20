@@ -1,8 +1,8 @@
 import { delay, http } from "msw";
 import imageRawData from "../assets/stickerOutputMock.png";
-const testImages = import.meta.glob('../assets/gallery/gallery*.png', { eager: true });
+const testImages = import.meta.glob('../assets/gallery/gallery*.png', { eager: true }) as Record<string, { default: string }>;
 
-const images = Object.values(testImages);
+const images = Object.values(testImages).map(value => value.default);
 
 const validateAuth = (request: Request): boolean => {
   const authHeader = request.headers.get("Authorization") || "";
@@ -17,43 +17,61 @@ const unauthorizedResponse = () => {
   });
 };
 
-const returnRandomIndex = (inputArray: any[]) => {
-  return inputArray[Math.floor(Math.random() * inputArray.length)];
-}
+let stickerReturnCount=0;
 
-const returnRandomizedArray = (inputArray: any[]) =>{
-    const shuffle = inputArray.sort(() => Math.random() - 0.5);
-    return shuffle.slice(0, Math.floor(Math.random() * (inputArray.length))+1);
+const returnSteppedArray = () =>{
+    if(stickerReturnCount % 3 == 0){
+      stickerReturnCount++
+        return stickers.slice(0, 1);
+    }else if (stickerReturnCount % 3 == 1){
+      stickerReturnCount++
+        return stickers.slice(0, 5);
+    } else{
+      stickerReturnCount++
+        return stickers.slice(0, 7);
+    }
 }
 
 const stickers = [
   {
     id: "1",
-    generated_img_url: returnRandomIndex(images).default,
+    generated_img_url: images[0],
     emoji: "👍",
     createdAt: new Date().toISOString(),
   },
   {
     id: "2",
-    generated_img_url: returnRandomIndex(images).default,
+    generated_img_url: images[1],
     emoji: "😮",
     createdAt: new Date().toISOString(),
   },
   {
     id: "3",
-    generated_img_url: returnRandomIndex(images).default,
+    generated_img_url: images[2],
     emoji: "😃",
     createdAt: new Date().toISOString(),
   },
   {
     id: "4",
-    generated_img_url: returnRandomIndex(images).default,
+    generated_img_url: images[3],
     emoji: "👍",
     createdAt: new Date().toISOString(),
   },
   {
     id: "5",
-    generated_img_url: returnRandomIndex(images).default,
+    generated_img_url: images[4],
+    emoji: "😃",
+    createdAt: new Date().toISOString(),
+  },
+    {
+    id: "6",
+    generated_img_url: images[5],
+    emoji: "👍",
+    createdAt: new Date().toISOString(),
+  },
+    {
+    id: "7",
+    generated_img_url: images[6],
     emoji: "😃",
     createdAt: new Date().toISOString(),
   },
@@ -234,6 +252,11 @@ export const handlers = [
           name: "Sticker Pack 2",
           createdAt: "2025-09-10T12:15:06.383Z",
         },
+        {
+          id: "4fa85f64-5217-4562-b3fc-2c963f66afa6",
+          name: "Sticker Pack 3",
+          createdAt: "2025-09-10T12:15:06.353Z",
+        },
       ]),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
@@ -295,7 +318,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     if (!params.packId) return new Response(null, { status: 404 });
     return new Response(
-      JSON.stringify(returnRandomizedArray(stickers)),
+      JSON.stringify(returnSteppedArray()),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   }),

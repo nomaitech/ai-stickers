@@ -4,7 +4,7 @@ import GenerationOptions from "@/components/GenerationOptions";
 import Output from "@/components/Output";
 import History from "@/components/History";
 import GetCreditsModal from "@/components/GetCreditsModal";
-import { useGenerateStickerMutation } from "@/store/mainApi";
+import { useCreateStickerMutation } from "@/store/mainApi";
 import type { RootState } from "../store";
 import { useGetUserInfoQuery } from "@/store/mainApi";
 import { useState, useEffect } from "react";
@@ -16,7 +16,7 @@ const Generator = () => {
     const [enableButton, setEnableButton] = useState<boolean>(false);
     const [displayTopUpPrompt, setDisplayTopUpPrompt] = useState<boolean>(false);
     const [stickerResult, setStickerResult] = useState<string | null>(null);
-    const [generateSticker, { isLoading }] = useGenerateStickerMutation();
+    const [generateSticker, { isLoading }] = useCreateStickerMutation();
     const { refetch } = useGetUserInfoQuery();
     const userInfo = useSelector((state: RootState) => state.ui.userInfo);
     const credits = userInfo?.credits;
@@ -68,16 +68,13 @@ const Generator = () => {
             return
         }
         try {
-            const formData = new FormData();
             if (image instanceof Blob) {
-                formData.append("file", image);
+                const result = await generateSticker({original_image: image, prompt, emoji: "👍🏼"}).unwrap();
+                setStickerResult(result.generated_img_url);
+                setImage(null);
+                setPrompt("");
+                refetch();
             }
-            formData.append("prompt", prompt);
-            const result = await generateSticker(formData).unwrap();
-            setStickerResult(result.generated_img_url);
-            setImage(null);
-            setPrompt("");
-            refetch();
         } catch (err) {
             if (err && typeof err === "object" && "status" in err) {
                 if ((err as { status: number }).status === 402) {

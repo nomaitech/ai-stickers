@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareAuthHeaders } from "./utils";
 import { setToken } from "./auth/authSlice";
 import { updateUserInfo } from "./UI/uiSlice"
-import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, GenerationResponse, DiscoverPaginatedResponse, DiscoverStickersResponse } from "../types";
+import type { Token, Credentials, RegisterResponse, UserInfo, PaymentStatusResponse, Sticker, StickerPack, DiscoverPaginatedResponse, DiscoverStickersResponse } from "../types";
 
 export const mainApi = createApi({
   reducerPath: "mainApi",
@@ -52,18 +52,7 @@ export const mainApi = createApi({
       }),
       providesTags: ["PaymentStatus"],
     }),
-    generateSticker: builder.mutation<GenerationResponse, FormData>({
-      query: (formData) => ({
-        url: "/stickers",
-        method: "POST",
-        body: formData,
-      }),
-      invalidatesTags: ["Sticker"],
-    }),
-    discoverStickers: builder.query<
-      DiscoverPaginatedResponse,
-      { page?: number; page_size?: number } | void
-    >({
+    discoverStickers: builder.query<DiscoverPaginatedResponse, { page?: number; page_size?: number } | void>({
       query: (params) => {
         const { page = 1, page_size = 20 } = params ?? {};
         return {
@@ -111,8 +100,11 @@ export const mainApi = createApi({
     }),
     createSticker: builder.mutation<Sticker, { original_image: File; emoji?: string; prompt?: string }>({
       query: ({ original_image, emoji, prompt }) => {
+        console.log("original_image", original_image);
         const formData = new FormData();
-        formData.append("original_image", original_image);
+        formData.append("file", original_image);
+        formData.append("emoji", emoji || "👍🏼");
+        formData.append("prompt", prompt || "");
         if (emoji !== undefined) formData.append("emoji", emoji);
         if (prompt !== undefined) formData.append("prompt", prompt);
         return {
@@ -157,8 +149,7 @@ export const mainApi = createApi({
           ? [
             ...result.map(({ id }) => ({ type: "StickerPack" as const, id })),
             { type: "StickerPack", id: "LIST" },
-          ]
-          : [{ type: "StickerPack", id: "LIST" }],
+          ] : [{ type: "StickerPack", id: "LIST" }],
     }),
     createPack: builder.mutation<StickerPack, { name: string, stickerIds: string[] }>({
       query: ({ name, stickerIds }) => ({
@@ -167,13 +158,16 @@ export const mainApi = createApi({
         body: { name, stickerIds },
         headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: [{ type: "StickerPack", id: "LIST" }],
+      invalidatesTags: [{ type: "StickerPack", id: "LIST" }, { type: "Sticker"}],
     }),
     getPack: builder.query<StickerPack, string>({
       query: (packId) => ({
         url: `/sticker-packs/${packId}`,
         method: "GET",
       }),
+      providesTags: (_result, _error, packId) => [
+        { type: "StickerPack", id: packId },
+      ],
     }),
     renameStickerPack: builder.mutation<StickerPack, { packId: string; name: string }>({
       query: ({ packId, name }) => ({
@@ -211,7 +205,8 @@ export const mainApi = createApi({
         method: "POST",
         body: { stickerId },
       }),
-      invalidatesTags: (_result, _error, { packId }) => [
+      invalidatesTags: (_result, _error, { packId, stickerId }) => [
+        { type: "Sticker", id: stickerId },
         { type: "StickerPack", id: packId },
       ],
     }),
@@ -240,7 +235,7 @@ export const mainApi = createApi({
 });
 
 export const {
-  useGenerateStickerMutation,
+  useCreateStickerMutation,
   useGetUserInfoQuery,
   useGetStickersQuery,
   useLoginMutation,
