@@ -41,7 +41,7 @@ const StickerSelectorScroller = ({ stickers, onSelect }: StickerSelectorScroller
             <InternalSelectionBridge onSelect={onSelect} />
             <Listbox.Content>
                 <Grid templateColumns="repeat(3, 1fr)">
-                    {stickerListCollection.items.map((sticker, index) => (
+                    {stickerListCollection.items.map((sticker) => (
                         <Listbox.Item
                             item={sticker}
                             key={sticker.generated_img_url}
