@@ -1,11 +1,10 @@
 import { Flex, Link, Text, Box, VStack, Separator } from "@chakra-ui/react";
+import Logo from "@/components/Logo";
 
 const Footer = () => {
   return (
     <VStack boxShadow="0 0px 15px 0px rgba(0, 0, 0, 0.2)">
-      <Box h="38px" w="175px" m={8} backgroundColor="blue.200">
-        <Text>StickerSquirrel</Text>
-      </Box>
+      <Logo />
       <Text fontWeight="bold">Contact Us</Text>
       <Link href="mailto:stickers[@]nomaitech.com">stickers[@]nomaitech.com</Link>
       <Separator w="90%" m={8} />
