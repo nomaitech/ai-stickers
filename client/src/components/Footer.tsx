@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 
 const Footer = () => {
   return (
-    <VStack boxShadow="0 0px 15px 0px rgba(0, 0, 0, 0.2)" spacing={4} py={8} px={6}>
+    <VStack boxShadow="0 0px 15px 0px rgba(0, 0, 0, 0.2)" py={8} px={6}>
       <Box>
         <Logo />
       </Box>
