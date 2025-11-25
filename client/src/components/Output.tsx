@@ -1,4 +1,4 @@
-import { Button, Text, Box, Image, Flex, Spinner } from '@chakra-ui/react'
+import { Button, Text, Box, Image, Flex } from '@chakra-ui/react'
 import Section from './Section'
 import { Line } from '@rc-component/progress';
 import { useState, useEffect } from 'react'
@@ -38,21 +38,32 @@ const Output = ({ enableButton, stickerResult, isLoading, startGeneration }: Out
             <Button backgroundColor="orange.300" disabled={!enableButton} my={8} w="full" onClick={() => startGeneration()} size="xl" fontWeight="600" colorPalette="gray">
                 <Text color="orange.800">{userInfo ? "Generate (-1 Credit)" : "Generate Sticker"}</Text>
             </Button>
-            <Box borderStyle="dotted" position="relative" borderColor="orange.300" h="210px" borderWidth="2px" borderRadius="2xl" overflow="hidden">
+            <Box
+                borderStyle="dotted"
+                position="relative"
+                borderColor="orange.300"
+                borderWidth="2px"
+                borderRadius="2xl"
+                minH="260px"
+                p={4}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                bg="white"
+            >
                 {isLoading ? (
-                    <Flex flexDirection="column" alignItems="center" justifyContent="center">
+                    <Flex flexDirection="column" alignItems="center" justifyContent="center" w="full" maxW="240px">
                         <Box w="150px">
                             <Line percent={loadingProgress} strokeWidth={4} strokeColor="#F6AD55" />
                         </Box>
-                        <Spinner size="md" color="orange.300" mt={2} />
                     </Flex>
                 ) : stickerResult ? (
-                    <Flex alignItems="center" justifyContent="center">
-                        <Image src={stickerResult} />
+                    <Flex alignItems="center" justifyContent="center" w="full">
+                        <Image src={stickerResult} objectFit="contain" maxH="100%" maxW="100%" />
                     </Flex>
                 ) : (
                     <Flex w="full" alignItems="center" justifyContent="center">
-                        <Image src={DogCombo} alt="Dog image turned into sticker" />
+                        <Image src={DogCombo} alt="Dog image turned into sticker" objectFit="contain" maxW="100%" />
                     </Flex>
                 )}
             </Box>
