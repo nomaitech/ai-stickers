@@ -35,7 +35,7 @@ const CreatePack = () => {
             ) : (
                 <>
                     <Text fontWeight="bold" fontSize="sm" my={4}>Select stickers to add to your pack (min 1 sticker)</Text>
-                    {data && <StickerSelectorScroller stickers={data} onSelect={setChosenStickers} />}
+                    {data && <StickerSelectorScroller stickers={data.filter(s => s.sticker_pack_id == null)} onSelect={setChosenStickers} />}
                     <Button
                         backgroundColor="orange.300"
                         w="full"

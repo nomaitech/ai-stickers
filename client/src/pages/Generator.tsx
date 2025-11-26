@@ -69,7 +69,7 @@ const Generator = () => {
         }
         try {
             if (image instanceof Blob) {
-                const result = await generateSticker({original_image: image, prompt, emoji: "👍🏼"}).unwrap();
+                const result = await generateSticker({original_image: image, prompt}).unwrap();
                 setStickerResult(result.generated_img_url);
                 setImage(null);
                 setPrompt("");

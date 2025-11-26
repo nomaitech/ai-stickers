@@ -100,13 +100,10 @@ export const mainApi = createApi({
     }),
     createSticker: builder.mutation<Sticker, { original_image: File; emoji?: string; prompt?: string }>({
       query: ({ original_image, emoji, prompt }) => {
-        console.log("original_image", original_image);
         const formData = new FormData();
         formData.append("file", original_image);
         formData.append("emoji", emoji || "👍🏼");
         formData.append("prompt", prompt || "");
-        if (emoji !== undefined) formData.append("emoji", emoji);
-        if (prompt !== undefined) formData.append("prompt", prompt);
         return {
           url: "/stickers",
           method: "POST",
@@ -115,7 +112,7 @@ export const mainApi = createApi({
       },
       invalidatesTags: [{ type: "Sticker", id: "LIST" }],
     }),
-    modifySticker: builder.mutation<Sticker, { stickerId: string; emoji?: string; packId?: string | null }>({
+    modifySticker: builder.mutation<Sticker, { stickerId: string; emoji?: string; packId?: string }>({
       query: ({ stickerId, emoji, packId }) => ({
         url: `/stickers/${stickerId}`,
         method: "PATCH",
@@ -127,7 +124,7 @@ export const mainApi = createApi({
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
         { type: "Sticker", id: "LIST" },
-        ...(packId ? [{ type: "StickerPack" as const, id: packId }] : []),
+        { type: "StickerPack", id: packId }
       ],
     }),
     deleteSticker: builder.mutation<void, string>({
@@ -247,5 +244,6 @@ export const {
   useListStickersFromPackQuery,
   useRenameStickerPackMutation,
   useModifyStickerMutation,
-  useCreatePackMutation
+  useCreatePackMutation,
+  useRemoveStickerFromPackMutation
 } = mainApi;

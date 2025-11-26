@@ -26,7 +26,6 @@ const StickerSelectorScroller = ({ stickers, onSelect }: StickerSelectorScroller
             onSelect(selected);
         }, [selected]);
 
-
         return null;
     };
 
