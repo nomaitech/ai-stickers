@@ -9,8 +9,7 @@ import type { Sticker } from "@/types";
 const AddStickersToPack = () => {
     const { stickerPackId } = useParams();
     const navigate = useNavigate();
-    const { data: allStickers, isLoading } = useGetStickersQuery();
-    const nonPackedStickers = allStickers ? allStickers.filter(s => s.sticker_pack_id == null) : [];
+    const { data, isLoading } = useGetStickersQuery();
 
     const [modifySticker] = useModifyStickerMutation();
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
@@ -40,7 +39,7 @@ const AddStickersToPack = () => {
                             Select stickers to add to your pack (Max 64 stickers)
                         </Highlight>
                     </Text>
-                    {nonPackedStickers && <StickerSelectorScroller stickers={nonPackedStickers} onSelect={setChosenStickers} />}
+                    {data && <StickerSelectorScroller stickers={data.filter(s => s.sticker_pack_id == null)} onSelect={setChosenStickers} />}
                     <Button
                         backgroundColor="orange.300"
                         w="full"
