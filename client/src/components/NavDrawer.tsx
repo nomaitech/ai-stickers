@@ -41,11 +41,6 @@ const NavDrawer = ({ open, onOpenChange }: NavDrawerProps) => {
                     <Drawer.Header>
                         <Flex>
                             <Logo/>
-                            <Link to="/generate-sticker">
-                                <Box h="38px" w="175px" backgroundColor="blue.200">
-                                    <Text>StickerSquirrel</Text>
-                                </Box>
-                            </Link>
                             <Drawer.CloseTrigger asChild mt={1}>
                                 <CloseButton size="md" />
                             </Drawer.CloseTrigger>
