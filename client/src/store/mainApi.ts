@@ -248,4 +248,5 @@ export const {
   useListPacksQuery,
   useListStickersFromPackQuery,
   useRenameStickerPackMutation,
+  useModifyStickerMutation
 } = mainApi;
