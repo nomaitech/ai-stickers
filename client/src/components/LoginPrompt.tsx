@@ -1,4 +1,5 @@
-import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Tabs, CloseButton, Input, Field, Button, Text, Separator, Flex, Link as ChakraLink } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { PasswordInput } from "./ui/password-input";
 import { useForm } from "react-hook-form";
 import { useLoginMutation, useRegisterMutation } from "@/store/mainApi";
@@ -10,7 +11,7 @@ import type { RootState } from "../store";
 import PrimaryButton from "./PrimaryButton";
 const LoginPrompt = () => {
     const authOption = useSelector((state: RootState) => state.ui.authOption);
-    const [login, {isLoading}] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
     const [register] = useRegisterMutation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -36,11 +37,11 @@ const LoginPrompt = () => {
         }
     }
 
-    const swapForm = (mode:string) => {
+    const swapForm = (mode: string) => {
         clearErrors();
-        if(mode==="Login"){
+        if (mode === "Login") {
             dispatch(authLogin());
-        }else{
+        } else {
             dispatch(authRegister());
         }
     }
@@ -101,7 +102,7 @@ const LoginPrompt = () => {
                                     </Field.Root>
                                 </Box>
                                 <Tabs.Content value="Login">
-                                    <PrimaryButton text="Login" type="submit" loading={isLoading}/>
+                                    <PrimaryButton text="Login" type="submit" loading={isLoading} />
                                 </Tabs.Content>
                                 <Tabs.Content value="Sign Up">
                                     <Button type="submit" backgroundColor="orange.300" w="full" size="xl" variant="solid" colorPalette="gray">
@@ -118,9 +119,11 @@ const LoginPrompt = () => {
                                 </Button>
                                 <Text fontSize="xs" color="fg.subtle" my={8}>
                                     By continuing, you agree to our{' '}
-                                    <Link href="/terms" display="inline" color="fg.subtle" textDecoration="underline" textUnderlineOffset="2px" textDecorationThickness="1px" _hover={{ textDecoration: "underline" }}>
-                                        Terms and Conditions, and Privacy Policy.
-                                    </Link>
+                                    <ChakraLink asChild display="inline" color="fg.subtle" textDecoration="underline" textUnderlineOffset="2px" textDecorationThickness="1px" _hover={{ textDecoration: "underline" }}>
+                                        <Link to="/terms">
+                                            Terms and Conditions, and Privacy Policy.
+                                        </Link>
+                                    </ChakraLink>
                                 </Text>
                             </form>
                         </Box>

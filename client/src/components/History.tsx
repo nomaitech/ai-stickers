@@ -1,4 +1,5 @@
-import { Flex, Text, Icon, Image, Box, Grid, Spinner, Button, Link } from "@chakra-ui/react"
+import { Flex, Text, Icon, Image, Box, Grid, Spinner, Button } from "@chakra-ui/react"
+import { Link } from "react-router-dom"
 import { ArrowRight, History as Clock } from "lucide-react"
 import Section from "./Section"
 import { useGetStickersQuery } from "@/store/mainApi";
@@ -10,7 +11,7 @@ const History = () => {
             <Flex justifyContent="space-between" mt={14} mb={5}>
                 <Text color="text/fg" fontWeight="semibold" fontSize="xl">History</Text>
                 <Button color="gray.700" bgColor={"white"} fontWeight="semibold" fontSize="sm">
-                  <Link href="/my-stickers">View All
+                  <Link to="/my-stickers">View All
                       <Icon>
                           <ArrowRight />
                       </Icon>
