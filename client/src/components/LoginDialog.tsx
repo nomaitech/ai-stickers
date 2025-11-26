@@ -1,4 +1,5 @@
-import { Dialog, CloseButton, Tabs, Text, Box, Field, Input, Flex, Link, Button, Separator } from "@chakra-ui/react"
+import { Dialog, CloseButton, Tabs, Text, Box, Field, Input, Flex, Link as ChakraLink, Button, Separator } from "@chakra-ui/react"
+import { Link } from "react-router-dom";
 import { PasswordInput } from "./ui/password-input";
 import PrimaryButton from "./PrimaryButton";
 import { useForm } from "react-hook-form";
@@ -128,9 +129,11 @@ useEffect(() => {
                                     </Button>
                                     <Text fontSize="xs" color="fg.subtle" my={8}>
                                         By continuing, you agree to our{' '}
-                                        <Link href="/terms" display="inline" color="fg.subtle" textDecoration="underline" textUnderlineOffset="2px" textDecorationThickness="1px" _hover={{ textDecoration: "underline" }}>
+                                    <ChakraLink asChild display="inline" color="fg.subtle" textDecoration="underline" textUnderlineOffset="2px" textDecorationThickness="1px" _hover={{ textDecoration: "underline" }}>
+                                        <Link to="/terms">
                                             Terms and Conditions, and Privacy Policy.
                                         </Link>
+                                    </ChakraLink>
                                     </Text>
                                 </form>
                             </Box>
