@@ -152,7 +152,7 @@ export const mainApi = createApi({
       query: ({ name, stickerIds }) => ({
         url: "/sticker-packs",
         method: "POST",
-        body: { name, stickerIds },
+        body: { title:name, stickers:stickerIds },
         headers: { "Content-Type": "application/json" },
       }),
       invalidatesTags: (_result, _error, { stickerIds }) => [
