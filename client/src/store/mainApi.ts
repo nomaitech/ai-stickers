@@ -121,7 +121,7 @@ export const mainApi = createApi({
           ...(packId !== undefined && { sticker_pack_id: packId }),
         },
       }),
-      invalidatesTags: (_result, _error, { stickerId, packId }) => [
+      invalidatesTags: (_result, _error, { stickerId }) => [
         { type: "Sticker", id: stickerId },
         { type: "Sticker", id: "LIST" },
         { type: "StickerPack", id: "LIST" },
