@@ -124,7 +124,7 @@ export const mainApi = createApi({
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
         { type: "Sticker", id: "LIST" },
-        { type: "StickerPack", id: packId || undefined },
+        { type: "StickerPack", id: "LIST" },
       ],
     }),
     deleteSticker: builder.mutation<void, string>({
@@ -152,7 +152,7 @@ export const mainApi = createApi({
       query: ({ name, stickerIds }) => ({
         url: "/sticker-packs",
         method: "POST",
-        body: { title:name, stickers:stickerIds },
+        body: { name, stickers:stickerIds },
         headers: { "Content-Type": "application/json" },
       }),
       invalidatesTags: (_result, _error, { stickerIds }) => [
