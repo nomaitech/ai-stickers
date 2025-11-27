@@ -40,27 +40,27 @@ spec:
             - name: OPENAI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: ai-sticker-api-secrets
+                  name: managed-secret
                   key: OPENAI_API_KEY
             - name: JWT_PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
-                  name: ai-sticker-api-secrets
+                  name: managed-secret
                   key: JWT_PRIVATE_KEY
             - name: JWT_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
-                  name: ai-sticker-api-secrets
+                  name: managed-secret
                   key: JWT_PUBLIC_KEY
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: ai-sticker-api-secrets
+                  name: managed-secret
                   key: STRIPE_SECRET_KEY
             - name: STRIPE_WEBHOOK_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: ai-sticker-api-secrets
+                  name: managed-secret
                   key: STRIPE_WEBHOOK_SECRET
             - name: TELEGRAM_BOT_TOKEN
               valueFrom:
