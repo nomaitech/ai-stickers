@@ -3,19 +3,19 @@ import Section from "@/components/Section";
 import StickerSelectorScroller from "@/components/StickerSelectorScroller";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useListStickersFromPackQuery, useRemoveStickerFromPackMutation } from "@/store/mainApi";
+import { useListStickersFromPackQuery, useModifyStickerMutation } from "@/store/mainApi";
 import type { Sticker } from "@/types";
 
 const RemoveStickersFromPack = () => {
     const { stickerPackId } = useParams();
     const navigate = useNavigate();
     const { data, isLoading } = useListStickersFromPackQuery(stickerPackId ?? "");
-    const [removeStickerFromPack] = useRemoveStickerFromPackMutation();
+    const [modifySticker] = useModifyStickerMutation();
     const [chosenStickers, setChosenStickers] = useState<Sticker[]>([])
 
     const removeFromStickerPack = async (chosenStickers: Sticker[]) => {
         for (let i = 0; i < chosenStickers.length; i++) {
-            await removeStickerFromPack({ stickerId: chosenStickers[i].id, packId: chosenStickers[i].sticker_pack_id as string});
+            await modifySticker({ stickerId: chosenStickers[i].id, packId: null});
         }
         navigate(`/edit-stickerpack/${stickerPackId}`);
     }

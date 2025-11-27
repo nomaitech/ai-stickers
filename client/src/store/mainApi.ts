@@ -112,7 +112,7 @@ export const mainApi = createApi({
       },
       invalidatesTags: [{ type: "Sticker", id: "LIST" }],
     }),
-    modifySticker: builder.mutation<Sticker, { stickerId: string; emoji?: string; packId?: string }>({
+    modifySticker: builder.mutation<Sticker, { stickerId: string; emoji?: string; packId?: string | null }>({
       query: ({ stickerId, emoji, packId }) => ({
         url: `/stickers/${stickerId}`,
         method: "PATCH",
@@ -124,7 +124,7 @@ export const mainApi = createApi({
       invalidatesTags: (_result, _error, { stickerId, packId }) => [
         { type: "Sticker", id: stickerId },
         { type: "Sticker", id: "LIST" },
-        { type: "StickerPack", id: packId }
+        { type: "StickerPack", id: packId || undefined },
       ],
     }),
     deleteSticker: builder.mutation<void, string>({
@@ -173,7 +173,7 @@ export const mainApi = createApi({
       query: ({ packId, name }) => ({
         url: `/sticker-packs/${packId}`,
         method: "PATCH",
-        body: { name },
+        body: { new_title: name },
       }),
       invalidatesTags: (_result, _error, { packId }) => [
         { type: "StickerPack", id: packId },
@@ -198,27 +198,6 @@ export const mainApi = createApi({
         { type: "Sticker", id: "LIST" },
         ...(stickers ? stickers.map(s => ({ type: "Sticker" as const, id: s.id })) : [])
       ]
-    }),
-    addStickerToPack: builder.mutation<void, { packId: string; stickerId: string }>({
-      query: ({ packId, stickerId }) => ({
-        url: `/sticker-packs/${packId}/stickers`,
-        method: "POST",
-        body: { stickerId },
-      }),
-      invalidatesTags: (_result, _error, { packId, stickerId }) => [
-        { type: "Sticker", id: stickerId },
-        { type: "StickerPack", id: packId },
-      ],
-    }),
-    removeStickerFromPack: builder.mutation<void, { packId: string; stickerId: string }>({
-      query: ({ packId, stickerId }) => ({
-        url: `/sticker-packs/${packId}/stickers/${stickerId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: (_result, _error, { packId, stickerId }) => [
-        { type: "Sticker", id: stickerId },
-        { type: "StickerPack", id: packId },
-      ],
     }),
     getUserInfo: builder.query<UserInfo, void>({
       query: () => "/user-info",
@@ -248,5 +227,4 @@ export const {
   useRenameStickerPackMutation,
   useModifyStickerMutation,
   useCreatePackMutation,
-  useRemoveStickerFromPackMutation
 } = mainApi;
