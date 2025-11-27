@@ -5,8 +5,9 @@ import os
 ALGORITHM = "RS256"
 ACCESS_TOKEN_EXPIRE = 60 * 60 * 24
 
-JWT_PRIVATE_KEY = os.getenv("JWT_PRIVATE_KEY")
-JWT_PUBLIC_KEY = os.getenv("JWT_PUBLIC_KEY")
+JWT_PRIVATE_KEY: str = os.getenv("JWT_PRIVATE_KEY", "")
+JWT_PUBLIC_KEY: str = os.getenv("JWT_PUBLIC_KEY", "")
+
 
 if not (JWT_PRIVATE_KEY and JWT_PUBLIC_KEY):
     raise EnvironmentError("No JWT keys set")
