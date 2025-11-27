@@ -25,8 +25,11 @@ export interface DiscoverPaginatedResponse {
 }
 export interface StickerPack {
   id: string;
+  title: string;
+  user_id: number;
   name: string;
   createdAt: string;
+  telegram_url: string;
 }
 
 export type GenerationResponse = {
