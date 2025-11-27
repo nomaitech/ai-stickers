@@ -28,7 +28,7 @@ const TelegramStickers = () => {
                 ) : (
                     stickerPacks?.map(stickerPack => (
                         <Box w="full" key={stickerPack.id} borderRadius="2xl" borderWidth="1px" borderStyle="solid" borderColor="border/default" p={2} my={8}>
-                            <PackStickersDisplay parentPackId={stickerPack.id} parentPackName={stickerPack.name}/>
+                            <PackStickersDisplay parentPackId={stickerPack.id} parentPackName={stickerPack.title}/>
                         </Box>
                     ))
                 )
