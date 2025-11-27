@@ -12,6 +12,7 @@ const CreatePack = () => {
     const [name, setName] = useState("");
 
     const createStickerPack = (name: string, stickersArray: Sticker[]) => {
+        console.log(name, stickersArray);
         createPack({
             name,
             stickerIds: stickersArray.map((sticker) => sticker.id)
