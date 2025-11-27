@@ -155,7 +155,10 @@ export const mainApi = createApi({
         body: { name, stickerIds },
         headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: [{ type: "StickerPack", id: "LIST" }, { type: "Sticker"}],
+      invalidatesTags: (_result, _error, { stickerIds }) => [
+        { type: "StickerPack" as const, id: "LIST" },
+        ...stickerIds.map(id => ({ type: "Sticker" as const, id })),
+      ]
     }),
     getPack: builder.query<StickerPack, string>({
       query: (packId) => ({
