@@ -148,7 +148,7 @@ export const mainApi = createApi({
             { type: "StickerPack", id: "LIST" },
           ] : [{ type: "StickerPack", id: "LIST" }],
     }),
-    createPack: builder.mutation<StickerPack, { name: string, stickerIds: string[] }>({
+    createPack: builder.mutation<StickerPack, { name: string, stickerIds: number[] }>({
       query: ({ name, stickerIds }) => ({
         url: "/sticker-packs",
         method: "POST",

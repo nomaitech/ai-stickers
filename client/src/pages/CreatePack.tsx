@@ -15,7 +15,7 @@ const CreatePack = () => {
         console.log(name, stickersArray);
         createPack({
             name,
-            stickerIds: stickersArray.map((sticker) => sticker.id)
+            stickerIds: stickersArray.map((sticker) => parseInt(sticker.id))
         })
     }
 
