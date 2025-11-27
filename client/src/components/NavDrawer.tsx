@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { removeToken } from "@/store/auth/authSlice";
-import { Drawer, CloseButton, Button, Flex, Box, Text, Separator } from "@chakra-ui/react"
-import { Link } from "react-router-dom";
+import { Drawer, CloseButton, Button, Flex, Separator } from "@chakra-ui/react"
 import { resetUserInfo } from "@/store/UI/uiSlice";
 import { mainApi } from "@/store/mainApi";
 import { Palette, Heart, Wallet, LogOut, Menu } from "lucide-react"
