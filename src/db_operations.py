@@ -46,7 +46,27 @@ def update_payment_session_status(
 def add_credits_to_user(
     db: Session, user_id: int, payment_session_id: int
 ) -> Transactions:
-    credits_to_add = 10
+    # Mapping of Stripe price IDs to credit amounts
+    PRICE_TO_CREDITS = {
+        "price_1SY6E5KnbMZqixzhdXQ2l1Qu": 15,   # $5 Basic
+        "price_1SY6E5KnbMZqixzhhBPfcnfo": 40,   # $10 Standard
+        "price_1SY6E5KnbMZqixzhsQu87ilP": 100,  # $15 Premium
+    }
+
+    # Get the payment session to retrieve the price_id
+    payment_session = db.query(PaymentSessions).filter(
+        PaymentSessions.id == payment_session_id
+    ).first()
+
+    if not payment_session:
+        raise ValueError(f"Payment session {payment_session_id} not found")
+
+    # Get credits based on price_id
+    credits_to_add = PRICE_TO_CREDITS.get(payment_session.price_id)
+
+    if credits_to_add is None:
+        raise ValueError(f"Unknown price_id: {payment_session.price_id}")
+
     new_transaction = Transactions(
         current_transaction=TransactionList.top_up,
         amount=credits_to_add,
