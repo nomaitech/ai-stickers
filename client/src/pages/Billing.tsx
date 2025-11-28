@@ -16,9 +16,9 @@ const Billing = () => {
                 <Text color="fg.muted">Choose the best plan for you, with no commitments - COPY WIP</Text>
             </Section>
             <Section>
-                <Pricing onClick={getTopUpLink} name="Standard" price={10} stickerAmount={40} highlighted/>
-                <Pricing onClick={getTopUpLink} name="Basic" price={5} stickerAmount={15} />
-                <Pricing onClick={getTopUpLink} name="Premium" price={15} stickerAmount={100} />
+                <Pricing onClick={()=> {getTopUpLink("price_1SY6E5KnbMZqixzhhBPfcnfo")}} name="Standard" price={10} stickerAmount={40} highlighted/>
+                <Pricing onClick={()=> {getTopUpLink("price_1SY6E5KnbMZqixzhdXQ2l1Qu")}} name="Basic" price={5} stickerAmount={15} />
+                <Pricing onClick={()=> {getTopUpLink("price_1SY6E5KnbMZqixzhsQu87ilP")}} name="Premium" price={15} stickerAmount={100} />
             </Section>
         </>
     )
