@@ -21,13 +21,13 @@ const Proposal = () => {
     return (
         <Section>
             <Flex my={8} flexDirection="column" align="left">
-                <Heading size="4xl">Turn Your Photos Into</Heading>
-                <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Personalized Stickers</Heading>
-                <Text mt={8} mb={12} fontSize="xl">Upload a photo and let AI turn it into a sticker pack ready for chat apps, memes, or merch.</Text>
+                <Heading size="4xl">Create Custom Telegram</Heading>
+                <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Stickers in Seconds</Heading>
+                <Text mt={8} mb={12} fontSize="xl">Transform any photo into professional Telegram stickers with AI. Upload, customize, and share your unique sticker packs instantly.</Text>
                 <Box mt={8} bgImage="radial-gradient(circle, #FBCFE8 0%, white 60%)">
                     <Image src={images[imageIndex]} borderRadius="full" my={4} />
                 </Box>
-                <PrimaryButton text="Try for free" to="/generate-sticker" />
+                <PrimaryButton text="Get 2 Free Stickers" to="/generate-sticker" />
             </Flex>
         </Section>
     )

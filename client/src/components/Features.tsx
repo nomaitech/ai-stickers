@@ -10,10 +10,10 @@ const Features = () => {
   return (
     <Section>
       <Flex flexDirection="column">
-        <Text fontSize="3xl" textAlign="center" fontWeight="semibold">Features</Text>
+        <Text fontSize="3xl" textAlign="center" fontWeight="semibold">How It Works</Text>
         <Flex my={4} flexDirection="column" gap={4}>
-          <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="pink.400" bgClip='text' fontSize="lg" fontWeight="semibold">Turn Photos into Stickers</Text>
-          <Text fontSize="md" color="fg.muted">Upload any photo and get a clean, high-quality sticker with transparent background, ready to download.</Text>
+          <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="pink.400" bgClip='text' fontSize="lg" fontWeight="semibold">AI-Powered Sticker Generation</Text>
+          <Text fontSize="md" color="fg.muted">Our advanced AI transforms your photos into professional stickers with transparent backgrounds. Upload any image and watch it become a perfect sticker in seconds, optimized for Telegram.</Text>
           <Flex flexDirection="row">
             <Box p={2}>
               <Image borderRadius={8} my={4} alignSelf="center" width={200} src={DogReal} alt="Dog Real" />
@@ -25,19 +25,19 @@ const Features = () => {
               <Image alignSelf="center" width={250} src={DogSticker} alt="Dog Sticker" />
             </Box>
           </Flex>
-          <PrimaryButton text="Discover stickers from the community" to="/explore" />
+          <PrimaryButton text="Discover Community Stickers" to="/explore" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
-          <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="cyan.400" bgClip='text' fontSize="lg" fontWeight="semibold">Personalize with AI Prompts</Text>
-          <Text fontSize="md" color="fg.muted">Add an optional text prompt to change mood or theme, make your sticker truly unique.</Text>
+          <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="cyan.400" bgClip='text' fontSize="lg" fontWeight="semibold">Customize with AI Instructions</Text>
+          <Text fontSize="md" color="fg.muted">Want to add a specific style, mood, or effect? Simply describe what you want and our AI will apply your creative vision. Change expressions, add accessories, or transform the art style with simple text instructions.</Text>
           <Image borderRadius={19} my={4} alignSelf="center" w="full" src="https://placehold.co/380x250" alt="Telegram Integration" />
-          <PrimaryButton text="Customize Your Stickers" to="/generate-sticker" />
+          <PrimaryButton text="Start Creating" to="/generate-sticker" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
-          <Text bgGradient="to-r" gradientFrom="pink.400" gradientTo="orange.400" bgClip='text' fontSize="lg" fontWeight="semibold">Seamless Telegram Integration</Text>
-          <Text fontSize="md" color="fg.muted">If you use Telegram, your stickers are automatically compiled into a ready-to-use pack.</Text>
+          <Text bgGradient="to-r" gradientFrom="pink.400" gradientTo="orange.400" bgClip='text' fontSize="lg" fontWeight="semibold">Build Complete Sticker Packs</Text>
+          <Text fontSize="md" color="fg.muted">Create, organize, and publish your stickers as full Telegram sticker packs. Add or remove stickers anytime, customize emojis, and share your pack instantly with a unique Telegram link.</Text>
           <Image borderRadius={4} my={4} alignSelf="center" width={200} src={telegramIntegration} alt="Telegram Integration" />
-          <PrimaryButton text="Try now" to="/generate-sticker" />
+          <PrimaryButton text="Create Your Pack" to="/generate-sticker" />
         </Flex>
       </Flex>
     </Section>
