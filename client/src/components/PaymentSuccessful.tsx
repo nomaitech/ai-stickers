@@ -1,7 +1,17 @@
 import { EmptyState, AbsoluteCenter, Flex, Icon, Text, Box } from "@chakra-ui/react"
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const PaymentSuccessful = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/generate-sticker");
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <Box h="100vh" bgGradient="to-t" gradientFrom="green.100" gradientTo="white">
             <EmptyState.Root>
