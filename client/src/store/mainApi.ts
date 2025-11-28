@@ -229,7 +229,6 @@ export const mainApi = createApi({
           const result = await queryFulfilled;
           dispatch(updateUserInfo(result.data));
         } catch (error) {
-          // Let the original error propagate instead of masking it
           console.error("Failed to fetch user info:", error);
         }
       },
