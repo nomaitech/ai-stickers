@@ -27,6 +27,7 @@ let pendingCall = true;
 
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
+    console.log("Request is ", request);
     await delay(2000);
     type LoginBody = { email: string; password: string };
     const requestBody = (await request.json()) as LoginBody;
@@ -288,7 +289,7 @@ export const handlers = [
     if (!validateAuth(request)) return unauthorizedResponse();
     type stripeProductId = { price: string };
     const body = (await request.json()) as stripeProductId;
-    if (body.price == "price_1RtrY9AttlqijaIVwcdBO5M5") {
+    if (body.price == "price_1SY6E5KnbMZqixzhdXQ2l1Qu" || "price_1SY6E5KnbMZqixzhhBPfcnfo" || "price_1SY6E5KnbMZqixzhsQu87ilP") {
       return new Response(
         JSON.stringify({
           checkout_url:
