@@ -13,7 +13,7 @@ const Billing = () => {
                     <Heading size="4xl" mr={2}>Get more </Heading>
                     <Heading size="4xl" bgGradient="to-r" gradientFrom="purple.400" gradientVia="pink.400" gradientTo="orange.400" bgClip='text' fontWeight="semibold">Credits</Heading>
                 </Flex>
-                <Text color="fg.muted">Choose the best plan for you, with no commitments - COPY WIP</Text>
+                <Text color="fg.muted">Choose the best plan for you, with no commitments</Text>
             </Section>
             <Section>
                 <Pricing onClick={()=> {getTopUpLink("price_1SY6E5KnbMZqixzhhBPfcnfo")}} name="Standard" price={10} stickerAmount={40} highlighted/>
