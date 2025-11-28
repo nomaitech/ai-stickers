@@ -1,7 +1,7 @@
 import { EmptyState, Flex, Icon, Text, Box, Button } from "@chakra-ui/react"
 import { X } from "lucide-react";
 
-const PaymentSuccessful = () => {
+const PaymentFailed = () => {
     return (
         <Box h="100vh" bgGradient="to-t" gradientFrom="red.100" gradientTo="white">
             <EmptyState.Root>
@@ -25,4 +25,4 @@ const PaymentSuccessful = () => {
     )
 }
 
-export default PaymentSuccessful;
+export default PaymentFailed;
