@@ -2,19 +2,19 @@ import { Avatar, Flex, VStack, Text, Card } from "@chakra-ui/react";
 import Section from "./Section";
 const users = [
   {
-    name: "Arom Kim",
-    avatar: "https://randomuser.me/api/portraits/men/74.jpg",
-    review: "This user has something really nice to say about our amazing product!",
-  },
-  {
-    name: "Theo Papadopoulos",
+    name: "Sarah Martinez",
     avatar: "https://randomuser.me/api/portraits/women/28.jpg",
-    review: "This user has something really nice to say about our amazing product!",
+    review: "I made stickers of my cat in minutes! The AI quality is incredible and the transparent backgrounds are perfect. My friends love the sticker pack I shared on Telegram.",
   },
   {
-    name: "Lewis Carrot",
+    name: "Alex Chen",
+    avatar: "https://randomuser.me/api/portraits/men/74.jpg",
+    review: "Super easy to use and the custom prompts feature is genius. I turned my team photos into hilarious stickers for our group chat. Worth every credit!",
+  },
+  {
+    name: "Marcus Johnson",
     avatar: "https://randomuser.me/api/portraits/men/78.jpg",
-    review: "This user has something really nice to say about our amazing product!",
+    review: "Finally, a sticker maker that actually works well. The Telegram integration is seamless and the sticker packs are professional quality. Highly recommend!",
   },
 ];
 
@@ -22,7 +22,7 @@ const Reviews = () => {
   return (
     <Section>
       <Flex w="full" flexDirection="column">
-        <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">Reviews</Text>
+        <Text m={8} fontSize="3xl" fontWeight="semibold" textAlign="center">What Our Users Say</Text>
         <VStack w="full" flexDirection="column" alignItems="center" gap={8}>
           {users.map((user) => (
             <Card.Root key={user.name} size="md" variant="elevated">
