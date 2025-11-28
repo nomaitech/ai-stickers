@@ -38,11 +38,11 @@ export const mainApi = createApi({
         dispatch(mainApi.endpoints.getUserInfo.initiate());
       },
     }),
-    getPaymentSession: builder.mutation<{ checkout_url: string }, { priceId: string }>({
-      query: ({ priceId }) => ({
+    getPaymentSession: builder.mutation<{ checkout_url: string }, { price: string }>({
+      query: ({ price }) => ({
         url: "/payments",
         method: "POST",
-        body: { priceId },
+        body: { price },
       }),
     }),
     getPaymentStatus: builder.query<PaymentStatusResponse, string>({
