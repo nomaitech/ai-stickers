@@ -3,6 +3,7 @@ import PrimaryButton from "./PrimaryButton";
 import telegramIntegration from "../assets/telegram.png";
 import DogReal from "../assets/dog-real.png";
 import DogSticker from "../assets/dog-sticker.png";
+import Dread from "../assets/existential.png";
 import Arrow from "./Arrow";
 import Section from "./Section";
 
@@ -30,7 +31,19 @@ const Features = () => {
         <Flex my={4} flexDirection="column" gap={4}>
           <Text bgGradient="to-r" gradientFrom="purple.400" gradientTo="cyan.400" bgClip='text' fontSize="lg" fontWeight="semibold">Customize with AI Instructions</Text>
           <Text fontSize="md" color="fg.muted">Want to add a specific style, mood, or effect? Simply describe what you want and our AI will apply your creative vision. Change expressions, add accessories, or transform the art style with simple text instructions.</Text>
-          <Image borderRadius={19} my={4} alignSelf="center" w="full" src="https://placehold.co/380x250" alt="Telegram Integration" />
+          <Box position="relative" my={4} alignSelf="center" width={380}>
+            <Image
+              borderRadius={4}
+              width="100%"
+              src={Dread}
+              alt="Telegram Integration"
+            />
+            <Box position="absolute" top="20%" left="20%" transform="translate(-50%, -50%) rotate(-45deg)" width={170} height={25} bg={"rgba(0, 0, 0, 0.8)"} px={2} borderRadius={4}>
+            <Text position="absolute" bgGradient="to-r" gradientFrom="red.400" gradientTo="orange.400" bgClip="text" fontWeight="bold" fontSize="lg" pointerEvents="none">
+              Existential dread!
+            </Text>
+          </Box>
+          </Box>
           <PrimaryButton text="Start Creating" to="/generate-sticker" />
         </Flex>
         <Flex my={4} flexDirection="column" gap={4}>
