@@ -14,7 +14,7 @@ const users = [
   {
     name: "Marcus Johnson",
     avatar: "https://randomuser.me/api/portraits/men/78.jpg",
-    review: "Finally, a sticker maker that actually works well. The Telegram integration is seamless and the sticker packs are professional quality. Highly recommend!",
+    review: "Finally, a sticker maker that actually works well. I can remix my favorite prompts, preview the results instantly, and export clean PNGs for any chat app. Highly recommend!",
   },
 ];
 
