@@ -27,7 +27,6 @@ let pendingCall = true;
 
 export const handlers = [
   http.post("/auth/login", async ({ request }) => {
-    console.log("Request is ", request);
     await delay(2000);
     type LoginBody = { email: string; password: string };
     const requestBody = (await request.json()) as LoginBody;

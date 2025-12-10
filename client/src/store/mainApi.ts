@@ -23,7 +23,6 @@ export const mainApi = createApi({
         const result = await queryFulfilled;
         dispatch(setToken(result.data.access_token));
         dispatch(mainApi.endpoints.getUserInfo.initiate());
-        //Fix this, this doublecall is actually correct
       },
     }),
     register: builder.mutation<RegisterResponse, Credentials>({
