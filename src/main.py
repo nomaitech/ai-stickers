@@ -100,10 +100,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://createstickersonline.com",
-        "https://ai-stickers.netlify.app",
-    ],
+    allow_origin_regex=r"https:\/\/([a-z0-9]+--)?ai-stickers\.netlify\.app|https:\/\/createstickersonline\.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
