@@ -26,7 +26,7 @@ def generate_sticker(image_data, filename, ref_path, user_prompt):
     image_data.name = filename
 
     result = client.images.edit(
-        model="gpt-image-1.5-2025-12-16",
+        model="gpt-image-1.5",
         image=[open(ref_path, "rb"), image_data],
         prompt=prompt,
         background="transparent",
