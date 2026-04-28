@@ -119,14 +119,6 @@ useEffect(() => {
                                             <Text color="orange.950" fontWeight="semibold">Create Account</Text>
                                         </Button>
                                     </Tabs.Content>
-                                    <Flex direction={"row"} align={"center"} w="full">
-                                        <Separator flex="1" />
-                                        <Text flexShrink="0" mr={8} ml={8} my={6} fontWeight="semibold">or</Text>
-                                        <Separator flex="1" />
-                                    </Flex>
-                                    <Button backgroundColor="blue.300" onClick={() => console.log("Login Google")} w="full" size="xl" variant="solid" colorPalette="gray">
-                                        <Text color="blue.800" fontWeight="semibold">Sign in with Google</Text>
-                                    </Button>
                                     <Text fontSize="xs" color="fg.subtle" my={8}>
                                         By continuing, you agree to our{' '}
                                     <ChakraLink asChild display="inline" color="fg.subtle" textDecoration="underline" textUnderlineOffset="2px" textDecorationThickness="1px" _hover={{ textDecoration: "underline" }}>
