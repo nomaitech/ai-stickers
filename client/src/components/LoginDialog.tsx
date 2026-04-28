@@ -1,4 +1,4 @@
-import { Dialog, CloseButton, Tabs, Text, Box, Field, Input, Flex, Link as ChakraLink, Button, Separator } from "@chakra-ui/react"
+import { Dialog, CloseButton, Tabs, Text, Box, Field, Input, Link as ChakraLink, Button } from "@chakra-ui/react"
 import { Link } from "react-router-dom";
 import { PasswordInput } from "./ui/password-input";
 import PrimaryButton from "./PrimaryButton";
